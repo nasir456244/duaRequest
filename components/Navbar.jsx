@@ -24,7 +24,7 @@ const styles = {
 }
 
 const Navbar = () => {
-  const { user, logout, isAuthenticated, Moralis } = useMoralis()
+  const { logout, isAuthenticated, Moralis } = useMoralis()
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const { userAddress, formattedAddress, buyTokens } = useContext(PrayerRequestContext)
   const [ethBalance, setEthBalance] = useState()

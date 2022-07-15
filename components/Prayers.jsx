@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import Skeleton from './Skeleton'
+import PrayerSkeleton from './PrayerSkeleton'
 import { db } from '../lib/firebaseConfig'
 import { collection, onSnapshot, orderBy, query } from 'firebase/firestore'
 import Prayer from './Prayer'
@@ -31,7 +31,7 @@ const Prayers = () => {
     <div className={styles.container}>
         {isPrayerLoading ? (
             <>
-            <Skeleton />
+            <PrayerSkeleton />
             </>
         ):(
 

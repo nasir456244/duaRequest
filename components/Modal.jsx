@@ -102,10 +102,9 @@ const Modal = () => {
             <div className={styles.body}>
                 <textarea {...register("prayer", { required: true })} className={styles.input} rows={8} onChange={(e) => { setPrayer(e.target.value)}} minLength={50} maxLength={250} placeholder='Your prayer...' />
             </div>
-            {errors.prayer && <p className='flex justify-center text-[#f00]'>- The prayer field is required Please</p>}
             <div className={styles.footer}>
                 <button className={styles.cancel} type='submit' onClick={() => {setModalOpen(false)}}>Cancel</button>
-                <button type='submit' disabled={!prayer.trim()} className={`${styles.post} ${!prayer || onlySpaces(prayer) ? 'cursor-not-allowed bg-[#9d9d9d] text-white' : 'bg-[#0bbe20] transition-all duration-300  hover:scale-105'}`} >Post</button>
+                <button type='submit' disabled={!prayer.trim()} className={`${styles.post} ${!prayer ? 'cursor-not-allowed bg-[#9d9d9d] text-white' : 'bg-[#0bbe20] transition-all duration-300  hover:scale-105'}`} >Post</button>
             </div>
           </form>
           </>

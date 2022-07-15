@@ -74,7 +74,7 @@ const Prayer = ({address, id, prayer, timestamp}) => {
         <p className='text-[18px] p-2'>{`${address.slice(0,6)}...${address.slice(36,42)}`}</p>
         <p className='text-[20px] p-2'>{prayer}</p>
         <div className='flex flex-row items-center ml-2 relative top-[34px]'>
-            {hasliked ?
+            {isAuthenticated && hasliked ?
                 <BsHeartFill className={`cursor-pointer text-[#f00] ${!isAuthenticated && 'cursor-not-allowed'}`} disabled={!isAuthenticated} onClick={likepost} size={30} />    
                 :
                 <BsHeart disabled={!isAuthenticated} onClick={likepost} className={`${!isAuthenticated ? 'cursor-not-allowed' : 'hover:scale-125 transition-all duration-150 ease-out cursor-pointer'}`} size={30} /> 

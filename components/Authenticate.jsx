@@ -8,8 +8,7 @@ const styles = {
 
 
 const Authenticate = () => {
-  const { isAuthenticated, authenticate, authError, isAuthenticating,hasAuthError } = useMoralis()
-
+  const { isAuthenticated, authenticate } = useMoralis()
   
   const connect = async () => {
     if (!isAuthenticated) {
@@ -26,8 +25,7 @@ const Authenticate = () => {
             "pillar",
             ] 
           }).then(function (user) {
-            const address = user?.get("ethAddress")
-            user !== undefined && toast.success('Authenticated!',{style: {background: '#04111d',color: '#fff',},}) 
+            user !== undefined && toast.success('Authenticated!',{style: {background: '#04111d',color: '#fff',},})
           })
           .catch(function (error) {
             console.log(error);
@@ -36,13 +34,10 @@ const Authenticate = () => {
         else {
           await authenticate()
           .then( (user) => {
-            const address = user?.get("ethAddress")
             user !== undefined && toast.success('Authenticated!',{style: {background: '#04111d',color: '#fff',},}) 
-            
           })
           .catch(function (error) {
            console.log(error)
-           toast.error(authError.message,{style: {background: '#04111d',color: '#fff',},})
           });
         }
       }      

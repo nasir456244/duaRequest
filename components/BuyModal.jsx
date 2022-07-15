@@ -63,7 +63,7 @@ const BuyModal = ({setOpenBuyModal}) => {
         <p className='flex justify-center relative top-[40px] text-xl'>Total due: {''} {amountDue && tokenAmount > 0 ? amountDue + 'ETH' : '0 ETH' }</p>
         
         <div className={styles.footer}>
-            <button onClick={() => {setIsBuyModalLoading(true); buyTokens(); setTokenAmount('');setEthersScanLink('')}} disabled={!tokenAmount || tokenAmount <= 0 || onlySpaces(tokenAmount)} className={`${styles.post} ${!tokenAmount || tokenAmount <= 0 || isNaN(tokenAmount) || onlySpaces(tokenAmount)? 'cursor-not-allowed bg-[#fa060a] text-white' : 'bg-[#0dc907] transition-all duration-300 hover:scale-105'}`} type='submit' >Buy</button>
+            <button onClick={() => {setIsBuyModalLoading(true); buyTokens(); setTokenAmount('');setEthersScanLink('')}} disabled={!tokenAmount || tokenAmount <= 0 } className={`${styles.post} ${!tokenAmount || tokenAmount <= 0 || isNaN(tokenAmount) ? 'cursor-not-allowed bg-[#fa060a] text-white' : 'bg-[#0dc907] transition-all duration-300 hover:scale-105'}`} type='submit' >Buy</button>
         </div>
         </>
           )}
