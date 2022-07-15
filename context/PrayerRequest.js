@@ -39,8 +39,7 @@ export const PrayerRequestProvider = ( { children } ) => {
     const getBalance = async () => {
       try {
         if(!isAuthenticated || !userAddress ) return
-
-        const web3 = Moralis.web3
+        const web3 =  Moralis.web3;
         const options = {
           contractAddress: requestPrayerCoinAddress,
           functionName: 'balanceOf',
@@ -49,8 +48,6 @@ export const PrayerRequestProvider = ( { children } ) => {
             account: userAddress
           },
         }
-        
-        
         const response = await Moralis.executeFunction(options)
         setBalance(response.toString())
         

@@ -1,13 +1,14 @@
 import React, { useState, useRef, useContext, useEffect } from 'react'
-import CommentSkeleton from '../../components/CommentSkeleton'
-import { useMoralis } from 'react-moralis'
-import TimeAgo from 'timeago-react'
-import { useForm, SubmitHandler } from 'react-hook-form'
-import { RiSendPlane2Fill } from 'react-icons/ri'
-import { PrayerRequestContext } from '../../context/PrayerRequest'
-import Link from 'next/link'
-import { useRouter } from 'next/router'
-import { AiOutlineArrowLeft } from 'react-icons/ai'
+// import CommentSkeleton from '../../components/CommentSkeleton'
+// import { useMoralis } from 'react-moralis'
+// import TimeAgo from 'timeago-react'
+// import { useForm, SubmitHandler } from 'react-hook-form'
+// import { RiSendPlane2Fill } from 'react-icons/ri'
+// import { PrayerRequestContext } from '../../context/PrayerRequest'
+// import { useRouter } from 'next/router'
+// import { AiOutlineArrowLeft } from 'react-icons/ai'
+// import { db } from '../../lib/firebaseConfig'
+// import { query, onSnapshot, orderBy, doc, collection } from 'firebase/firestore'
 
 const styles = {
     modalContainer: `overflow-hidden max-w-screen h-screen flex flex-col px-[8px] py-[20px]`,
@@ -26,52 +27,61 @@ const styles = {
 
 
 
-const CommentPage = ({comment, id}) => {
-    const [commentsLoading, setCommentsLoding] = useState(true)
-    const {user} = useMoralis()
-    const btnRef = useRef(null);
-    const form = useRef(null)
-    const [chat, setChat] = useState('')
-    const { register, handleSubmit, formState: { errors } } = useForm()
-    const { onlySpaces , userAddress } = useContext(PrayerRequestContext)
-    const router = useRouter();
-    const refreshData = () => router.replace(`/comment/${id}`);
+const CommentPage = () => {
+  //   const [commentsLoading, setCommentsLoding] = useState(true)
+  //   const btnRef = useRef(null);
+  //   const form = useRef(null)
+  //   const [chat, setChat] = useState('')
+  //   const { register, handleSubmit, formState: { errors } } = useForm()
+  //   const { onlySpaces , userAddress } = useContext(PrayerRequestContext)
+  //   const router = useRouter();
+  //   const refreshData = () => router.replace(`/comment/${id}`);
+  //   // const databaseref = collection(db, 'Prayers')
+  //   const [comments, setComments] = useState([])
 
+  //   useEffect( 
+  //     () => 
+  //     onSnapshot(
+  //         query(doc(db, 'Prayers', router.query.id, 'comments'),
+  //          orderBy('createdAt', 'asc')),
+  //         snapshot => setComments(snapshot.docs)) 
 
+  //   [db])
 
-    // Post Comment
-   const postComment = async () => {
-    if(!chat || !userAddress || onlySpaces(chat)) return
-    const CmDoc = {
-      _type: 'comments',
-      address: userAddress,
-      comment: chat,
-      commentId: id
-    }
-    setChat('')
-    form.current.reset();          
-    await client.create(CmDoc).then((result) => {
-      btnRef.current?.scrollIntoView()
-      refreshData()
-    }),
-    (err) => console.log(err)
+  //   console.log(comments)
+  //   // Post Comment
+  //  const postComment = async () => {
+  //   if(!chat || !userAddress || onlySpaces(chat)) return
+  //   const CmDoc = {
+  //     _type: 'comments',
+  //     address: userAddress,
+  //     comment: chat,
+  //     commentId: id
+  //   }
+  //   setChat('')
+  //   form.current.reset();          
+  //   await client.create(CmDoc).then((result) => {
+  //     btnRef.current?.scrollIntoView()
+  //     refreshData()
+  //   }),
+  //   (err) => console.log(err)
   
-  }
+  // }
 
-  useEffect( () => {
-    btnRef.current?.scrollIntoView()
-    setTimeout(() => {setCommentsLoding(false)},800)
-  },[])
+  // useEffect( () => {
+  //   btnRef.current?.scrollIntoView()
+  //   setTimeout(() => {setCommentsLoding(false)},800)
+  // },[])
 
-  useEffect(() => {
-    btnRef.current?.scrollIntoView()
-  },[refreshData])
+  // useEffect(() => {
+  //   btnRef.current?.scrollIntoView()
+  // },[refreshData])
 
   return (
       <div className={styles.modalContainer}>
-        <div className='text-[#fff] text-lg flex items-center underline'>
+        {/* <div className='text-[#fff] text-lg flex items-center underline'>
           <AiOutlineArrowLeft className='mr-1' size={25} />
-          <Link href='/'> Go back to Prayers</Link>
+          <p>Go back to Prayers</p>
 
         </div>
         <div className={styles.title}>
@@ -82,16 +92,16 @@ const CommentPage = ({comment, id}) => {
         ):(
           <div className={styles.body}>
 
-            {comment?.map((comm, index) => (
-              <div key={index} className={`${comm?.address == userAddress ? 'flex justify-end py-3 w-full ' : 'flex justify-start py-3 w-full'}`}>
-                <div className={`${styles.commentBody} ${comm?.address == userAddress && 'bg-[#10c850]'}`}>
+            {comments?.map((item, index) => (
+              <div key={index} className={`${item?.data().address == userAddress ? 'flex justify-end py-3 w-full ' : 'flex justify-start py-3 w-full'}`}>
+                <div className={`${styles.commentBody} ${item?.data().address == userAddress && 'bg-[#10c850]'}`}>
                   <div className={styles.address}>
-                    <p className={`${comm?.address == userAddress ? 'text-[#434544]' : 'text-[#484949]'}`}>{`${comm?.address.slice(0,4)}...${comm?.address.slice(38,44)}`}</p>
+                    <p className={`${item?.data().address == userAddress ? 'text-[#434544]' : 'text-[#484949]'}`}>{`${item?.data().address.slice(0,4)}...${item?.data().address.slice(38,44)}`}</p>
 
                   </div>
-                  <p className={`${styles.comment}${comm?.address == userAddress ? 'text-[#fff]' : 'text-black'}`}>{comm?.comment}</p>
+                  <p className={`${styles.comment}${item?.data().address == userAddress ? 'text-[#fff]' : 'text-black'}`}>{item?.data().comment}</p>
                   <div className={styles.time}>
-                    <p className={`${comm?.address == userAddress ? 'text-[#434544]' : 'text-[#484949]'}`}><TimeAgo datetime={comm._createdAt} /></p>
+                    <p className={`${comm?.address == userAddress ? 'text-[#434544]' : 'text-[#484949]'}`}><TimeAgo datetime={item.data().createdAt?.toDate()} /></p>
                   </div>
                 </div>
               
@@ -115,7 +125,9 @@ const CommentPage = ({comment, id}) => {
             </button>
             }
           </div>
-        </form>
+        </form> */}
+
+        <h2>Working on it mate</h2>
       </div>
   )
 }
@@ -123,77 +135,25 @@ const CommentPage = ({comment, id}) => {
 export default CommentPage;
 
 
-// export const getStaticPaths = async () => {
-//     const query = `*[_type == "prayers"]{_id}`;
-//     const prayers = await client.fetch(query);
-//     const paths = prayers?.map((prayer) => ({
+// export async function getServerSideProps(context) {
+//   console.log(context.query.id)
 
-//             params: {
-//                 id: prayer?._id,
-//                 fallback: false
-//             }
-    
-//     }));
-//     return {
-//         paths,
-//         fallback: false
-//     };
-// };
+//     const result = await getDoc(doc(collection(db, 'Prayers', context.query.id, 'comments')));
+//     const data = result?.data()
+//     console.log(data)
+//     // if(!result) {
+//     //     return {
+//     //         notFound: true,
+//     //     }
+//     // }
 
-
-// export const getStaticProps = async ({params}) => {
-//     console.log(params?.id, 'params')
-//     const query = `*[_type == 'comments' && commentId == $commentid]
-//     {
-//          _createdAt, 
-//         address,
-//         comment,
-//     } | order(_createdAt asc)`; 
-//     const response = client.fetch(query, {
-//         commentid: params?.id
-//     });
-//     if(!response) {
-//         return {
-//             notFound: true
-//         }
-//     }
+  
 
 //     return {
 //         props: {
-//             comment: response,
-//             commentID: commentid,
-//         }
-//     }
-// }
-
-export async function getServerSideProps(context) {
-    const { id } = context.query;
-    const checkIdExists = `*[_type == 'prayers' && _id == '${id}']{
-      _id
-    }`  
-          
-    const result = await client.fetch(checkIdExists)    
-    if(result.length == 0) {
-        return {
-            notFound: true,
-        }
-    }
-
-    const query = `*[_type == 'comments' && commentId == "${id}"]
-          {
-            _createdAt,
-            address,
-            comment,
-            commentId
-        } | order(_createdAt asc)`;
-        const response = await client.fetch(query)
-
-    return {
-        props: {
-            comment: response,
-            id,
-        },
+//             comments: data
+//         },
         
-    }
+//     }
 
-}
+// }

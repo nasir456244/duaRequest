@@ -7,6 +7,7 @@ import { db } from '../lib/firebaseConfig'
 import { addDoc, collection, deleteDoc, doc, onSnapshot, orderBy, query, serverTimestamp, setDoc, limitToLast } from 'firebase/firestore'
 import { BsEmojiSmile } from 'react-icons/bs'
 import { RiSendPlane2Fill } from 'react-icons/ri'
+import { useRouter } from 'next/router'
 
 const styles = {
     listContainer: ` tracking-2 hover:shadow-2xl flex flex-col p-[4px] bg-[#e4e6e8] rounded-2xl break-words overflow-hidden max-w-full h-fit `,
@@ -18,7 +19,7 @@ const Prayer = ({address, id, prayer, timestamp}) => {
     let userAddress = user?.get("ethAddress")
     const [comment, setComment] = useState('')
     const [comments, setComments] = useState([])
-
+    const router = useRouter()
 
     useEffect( 
         () => 
@@ -80,17 +81,17 @@ const Prayer = ({address, id, prayer, timestamp}) => {
                 <BsHeart disabled={!isAuthenticated} onClick={likepost} className={`${!isAuthenticated ? 'cursor-not-allowed' : 'hover:scale-125 transition-all duration-150 ease-out cursor-pointer'}`} size={30} /> 
             }
                 
-            <BiCommentDetail size={30} className='cursor-pointer ml-5' onClick={() => {router.push(`/comment/${item?._id}`)}} />
+            <BiCommentDetail size={30} className='cursor-pointer ml-5' onClick={() => {router.push(`/comment/${id}`)}} />
         
         </div>
         <p className='flex justify-end text-[16px] p-2'><TimeAgo datetime={timestamp} /></p>
         <p className='text-sm px-5 py-2'>
                 {likes.length > 0 && Intl.NumberFormat('en', { notation: 'compact' }).format(likes.length) + ' Prayers'}
             </p>
-        <div className='flex flex-col max-w-full max-h-full'>
+        <div className='flex flex-col max-w-full max-h-full gap-[1px]'>
 
             {comments.map((comment) => (
-                <div key={comment.id} className='max-h-full overflow-hidden flex ml-5  items-center max-w-full'>
+                <div key={comment.id} className='max-h-full overflow-hidden flex ml-5 items-center max-w-full'>
                     <img
                         src={`https://avatars.dicebear.com/api/pixel-art/${comment?.data().address}.svg`}
                         alt='profile'
@@ -100,7 +101,7 @@ const Prayer = ({address, id, prayer, timestamp}) => {
                     />
                     <p className=' mr-10  ml-[1px] text-[12px]'>{`${comment.data().address.slice(0,3)}...${comment.data().address.slice(39,42)}`}</p>
                     <p className='text-sm text-ellipsis whitespace-nowrap overflow-hidden w-[700px]'>{comment.data().comment}</p>
-                    <p className='flex mr-2 w-full text-xs justify-end'><TimeAgo datetime={comment.data().createdAt?.toDate()} /></p>
+                    <p className='flex mr-5 w-full text-xs justify-end'><TimeAgo datetime={comment.data().createdAt?.toDate()} /></p>
                 </div>        
             ))}
 
