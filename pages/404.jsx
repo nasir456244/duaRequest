@@ -12,7 +12,7 @@ const PageNotFound = () => {
   return (
     <div className={styles.container}>
         <div className={styles.body}>
-            <p className='text-[10rem] text-[#fff] animate-[wiggle_1s_ease-in-out_infinite] shadow-2xl p-3'>404</p>
+            <p className='text-[10rem] text-[#fff] animate-bounce shadow-2xl p-3'>404</p>
             <p className='text-[1.4rem]'>Oops the page your looking for not found</p>
             <Link href={'/'}><a className={styles.goBack}>Go back</a></Link>
             

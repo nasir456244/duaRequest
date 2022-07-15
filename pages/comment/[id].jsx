@@ -127,7 +127,7 @@ const CommentPage = () => {
           </div>
         </form> */}
 
-        <h2>Working on it mate</h2>
+        <h2 className='text-[#fff] text-[3rem]'>Working on it mate</h2>
       </div>
   )
 }
