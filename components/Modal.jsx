@@ -37,6 +37,7 @@ const Modal = () => {
   const postPrayer = async () => {
     try {
       if(!isAuthenticated) return
+      const web3 = Moralis.web3;
       setprayerEthersScanLink('')
       setIsPrayerPostLoading(true)
       let price = '0xA';
@@ -44,7 +45,6 @@ const Modal = () => {
 
       const prayerToPost = prayer;
       setPrayer('')
-      const web3 = Moralis.web3;
       
       const options = {
         type: 'erc20',

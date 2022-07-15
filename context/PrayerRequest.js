@@ -39,9 +39,6 @@ export const PrayerRequestProvider = ( { children } ) => {
     const getBalance = async () => {
       try {
         if(!isAuthenticated || !userAddress ) return
-        if(!isWeb3Enabled) {
-          await enableWeb3()
-        }
 
         const web3 = Moralis.web3
         const options = {
@@ -71,36 +68,34 @@ export const PrayerRequestProvider = ( { children } ) => {
  
     // buy RPC tokens
     const buyTokens = async () => {
-    try {
-      
-      if(!isAuthenticated) return
-      
-      const web3 = Moralis.web3;           
-      const amount = ethers.BigNumber.from(tokenAmount)
-      const price = ethers.BigNumber.from('100000000000000')
-      const calPrice = amount.mul(price)
-      const options = {
-        contractAddress: requestPrayerCoinAddress,
-        functionName: 'mint',
-        abi: requestPrayerAbi,
-        msgValue: calPrice,
-        params: {
-        amount,
-        }  
+      try {    
+        if(!isAuthenticated) return  
+        const web3 = Moralis.web3;           
+        const amount = ethers.BigNumber.from(tokenAmount)
+        const price = ethers.BigNumber.from('100000000000000')
+        const calPrice = amount.mul(price)
+        const options = {
+          contractAddress: requestPrayerCoinAddress,
+          functionName: 'mint',
+          abi: requestPrayerAbi,
+          msgValue: calPrice,
+          params: {
+          amount,
+          }  
+        }
+        const transaction = await Moralis.executeFunction(options)
+        const receipt = await transaction.wait()
+        setIsBuyModalLoading(false)
+        console.log(receipt)
+        toast.success('Transaction sucessfull!',{style: {background: '#04111d',color: '#fff',},}) 
+        setEthersScanLink(`https://rinkeby.etherscan.io/tx/${receipt.transactionHash}`)
+        
+      } 
+      catch(error) {
+        console.log(error)
+        setIsBuyModalLoading(false)
+        toast.error(error.message,{duration: 6000,style: {background: '#04111d',color: '#fff',}})
       }
-      const transaction = await Moralis.executeFunction(options)
-      const receipt = await transaction.wait(2)
-      setIsBuyModalLoading(false)
-      console.log(receipt)
-      toast.success('Transaction sucessfull!',{style: {background: '#04111d',color: '#fff',},}) 
-      setEthersScanLink(`https://rinkeby.etherscan.io/tx/${receipt.transactionHash}`)
-      
-    } 
-    catch(error) {
-      console.log(error)
-      setIsBuyModalLoading(false)
-      toast.error(error.message,{duration: 6000,style: {background: '#04111d',color: '#fff',}})
-    }
     
     }
      
