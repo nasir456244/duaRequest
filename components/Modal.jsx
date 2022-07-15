@@ -4,7 +4,6 @@ import { useMoralis } from 'react-moralis'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import { PrayerRequestContext } from '../context/PrayerRequest'
 import toast, { Toaster } from 'react-hot-toast'
-import { useRouter } from 'next/router';
 import { requestPrayerCoinAddress, requestPrayerAbi } from '../lib/constants'
 import Link from 'next/link'
 import Image from 'next/image'
@@ -28,60 +27,57 @@ const Modal = () => {
   const { register, handleSubmit, formState: { errors } } = useForm()
   const { userAddress, setModalOpen, onlySpaces } = useContext(PrayerRequestContext)
   const [prayer, setPrayer] = useState('')
-  const router = useRouter();
   const { isAuthenticated, isWeb3Enabled, authenticate, enableWeb3, Moralis } = useMoralis()
   const [isprayerPostLoading, setIsPrayerPostLoading] = useState(false)
   const [prayerEthersScanlink, setprayerEthersScanLink] = useState('')
   const databaseref = collection(db, 'Prayers')
 
-  const refreshData = () => router.replace("/");
   
-//Pay and Post Prayer 
-const postPrayer = async () => {
-  try {
-    if(!isAuthenticated) return
-    if(!isWeb3Enabled) {
-      await enableWeb3()
+  //Pay and Post Prayer 
+  const postPrayer = async () => {
+    try {
+      if(!isAuthenticated) return
+      if(!isWeb3Enabled) {
+        await enableWeb3()
+      }
+      setprayerEthersScanLink('')
+      setIsPrayerPostLoading(true)
+      let price = '0xA';
+      if(!prayer || !userAddress || price !== '0xA') return 
+
+      const prayerToPost = prayer;
+      setPrayer('')
+      const web3 = Moralis.web3;
+      
+      const options = {
+        type: 'erc20',
+        amount: price,
+        receiver: requestPrayerCoinAddress,
+        contractAddress: requestPrayerCoinAddress,
+      }
+
+      let transaction = await Moralis.transfer(options)
+      const receipt = await transaction.wait()
+      if(receipt) {
+        addDoc(databaseref, {
+          address: userAddress,
+          prayer: prayerToPost,
+          createdAt: serverTimestamp()
+        }).then( () => {
+          setIsPrayerPostLoading(false)
+          toast.success('Prayer Posted!',{style: {background: '#04111d',color: '#fff',},}) 
+          setprayerEthersScanLink(`https://rinkeby.etherscan.io/tx/${receipt.transactionHash}`)
+        })      
+      }
     }
-    // setprayerEthersScanLink('')
-    // setIsPrayerPostLoading(true)
-    // let price = '0xA';
-    // let initialVaue = 0;
+    catch(error) {
+      console.log(error)
+      setIsPrayerPostLoading(false)
+      toast.error(error.message,{style: {background: '#04111d',color: '#fff',},}) 
 
-    // if(!prayer || !userAddress || onlySpaces(prayer) || price !== '0xA' || initialVaue !== 0) return 
-
-    // const web3 = Moralis.web3;
-    // const options = {
-    //   type: 'erc20',
-    //   amount: price,
-    //   receiver: requestPrayerCoinAddress,
-    //   contractAddress: requestPrayerCoinAddress,
-    // }
-
-    // let transaction = await Moralis.transfer(options)
-    // const receipt = await transaction.wait()
-    // if(receipt) {
-      addDoc(databaseref, {
-        address: userAddress,
-        prayer: prayer,
-        createdAt: serverTimestamp()
-      }).then( () => {
-        setPrayer('')
-        console.log('posted')
-        setIsPrayerPostLoading(false)
-        toast.success('Prayer Posted!',{style: {background: '#04111d',color: '#fff',},}) 
-        // setprayerEthersScanLink(`https://rinkeby.etherscan.io/tx/${receipt.transactionHash}`)
-      })      
-    // }
-  }
-  catch(error) {
-    console.log(error)
-    setIsPrayerPostLoading(false)
-    toast.error(error.message,{style: {background: '#04111d',color: '#fff',},}) 
+    }
 
   }
-
-}
 
   return (
     <div className={styles.modalBackground}>
@@ -109,7 +105,7 @@ const postPrayer = async () => {
             {errors.prayer && <p className='flex justify-center text-[#f00]'>- The prayer field is required Please</p>}
             <div className={styles.footer}>
                 <button className={styles.cancel} type='submit' onClick={() => {setModalOpen(false)}}>Cancel</button>
-                <button type='submit' disabled={!prayer || onlySpaces(prayer)} className={`${styles.post} ${!prayer || onlySpaces(prayer) ? 'cursor-not-allowed bg-[#9d9d9d] text-white' : 'bg-[#0bbe20] transition-all duration-300  hover:scale-105'}`} >Post</button>
+                <button type='submit' disabled={!prayer.trim()} className={`${styles.post} ${!prayer || onlySpaces(prayer) ? 'cursor-not-allowed bg-[#9d9d9d] text-white' : 'bg-[#0bbe20] transition-all duration-300  hover:scale-105'}`} >Post</button>
             </div>
           </form>
           </>

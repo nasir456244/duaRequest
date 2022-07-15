@@ -38,12 +38,11 @@ export const PrayerRequestProvider = ( { children } ) => {
     //get balance
     const getBalance = async () => {
       try {
+        if(!isAuthenticated || !userAddress ) return
         if(!isWeb3Enabled) {
           await enableWeb3()
         }
 
-        if(!isAuthenticated || !userAddress ) return
-        
         const web3 = Moralis.web3
         const options = {
           contractAddress: requestPrayerCoinAddress,
@@ -75,6 +74,10 @@ export const PrayerRequestProvider = ( { children } ) => {
     try {
       
       if(!isAuthenticated) return
+
+      if(isWeb3Enabled) {
+        await enableWeb3()
+      }
       
       const web3 = Moralis.web3;           
       const amount = ethers.BigNumber.from(tokenAmount)
@@ -106,10 +109,7 @@ export const PrayerRequestProvider = ( { children } ) => {
     }
      
 
-    function onlySpaces(str) {
-        return str.trim().length === 0;
-    }
-      
+    
 
 
         
@@ -120,7 +120,6 @@ export const PrayerRequestProvider = ( { children } ) => {
               formattedAddress,
               modalOpen,
               setModalOpen,
-              onlySpaces,
               balance,
               buyTokens,
               ethersScanlink,
