@@ -74,10 +74,6 @@ export const PrayerRequestProvider = ( { children } ) => {
     try {
       
       if(!isAuthenticated) return
-
-      if(isWeb3Enabled) {
-        await enableWeb3()
-      }
       
       const web3 = Moralis.web3;           
       const amount = ethers.BigNumber.from(tokenAmount)

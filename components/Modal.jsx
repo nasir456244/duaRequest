@@ -37,9 +37,6 @@ const Modal = () => {
   const postPrayer = async () => {
     try {
       if(!isAuthenticated) return
-      if(!isWeb3Enabled) {
-        await enableWeb3()
-      }
       setprayerEthersScanLink('')
       setIsPrayerPostLoading(true)
       let price = '0xA';
