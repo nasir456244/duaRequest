@@ -1,0 +1,41 @@
+html,
+body {
+  padding: 0;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+
+    background: rgb(196,85,255);
+    background: -moz-radial-gradient(circle, rgba(196,85,255,1) 0%, rgba(96,156,185,1) 0%, rgba(13,2,77,1) 100%);
+    background: -webkit-radial-gradient(circle, rgba(196,85,255,1) 0%, rgba(96,156,185,1) 0%, rgba(13,2,77,1) 100%);
+    background: radial-gradient(circle, rgba(196,85,255,1) 0%, rgba(96,156,185,1) 0%, rgba(13,2,77,1) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#c455ff",endColorstr="#0d024d",GradientType=1);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body::-webkit-scrollbar {
+  width: 12px;               /* width of the entire scrollbar */
+}
+body::-webkit-scrollbar-track {
+  background: #fff;        /* color of the tracking area */
+}
+body::-webkit-scrollbar-thumb {
+  background-color: #b4b7b7;    /* color of the scroll thumb */
+  border-radius: 20px;       /* roundness of the scroll thumb */
+  border: 3px solid #fff;  /* creates padding around scroll thumb */
+}
+
+::-webkit-scrollbar{width:6px;}
+::-webkit-scrollbar-thumb{background-color:#b4b7b7; border-radius: 10px}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
