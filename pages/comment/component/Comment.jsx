@@ -28,7 +28,7 @@ const Comment = ({address, comment, createdAt}) => {
     <div className={`${address == userAddress ? 'flex justify-end py-3 w-full ' : 'flex justify-start py-3 w-full'}`}>
         <div className={`${styles.commentBody} ${address == userAddress && 'bg-[#10c850]'}`}>
             <div className={styles.address}>
-                <p className={`${address == userAddress ? 'text-[#434544]' : 'text-[#484949]'}`}>{`${address.slice(0,4)}...${address.slice(38,44)}`}</p>
+                <p className={`${address == userAddress ? 'text-[#434544]' : 'text-[#484949]'}`}>{`${address?.slice(0,4)}...${address?.slice(38,44)}`}</p>
             </div>
             <p className={`${styles.comment}${address == userAddress ? 'text-[#fff]' : 'text-black'}`}>{comment}</p>
             <div className={styles.time}>
