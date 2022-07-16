@@ -97,25 +97,3 @@ const CommentPage = () => {
 export default CommentPage;
 
 
-// export async function getServerSideProps(context) {
-//   console.log(context.query.id)
-
-//     const result = await getDoc(doc(collection(db, 'Prayers', context.query.id, 'comments')));
-//     const data = result?.data()
-//     console.log(data)
-//     // if(!result) {
-//     //     return {
-//     //         notFound: true,
-//     //     }
-//     // }
-
-  
-
-//     return {
-//         props: {
-//             comments: data
-//         },
-        
-//     }
-
-// }
