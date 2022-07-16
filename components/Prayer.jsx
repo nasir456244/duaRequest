@@ -64,7 +64,7 @@ const Prayer = ({address, id, prayer, timestamp}) => {
 
         await addDoc(collection(db, 'Prayers', id, 'comments'), {
             address: userAddress,
-            comment: commentToSend,
+            comment: commentToSend.trim(),
             createdAt: serverTimestamp()
         })
     }
@@ -108,7 +108,7 @@ const Prayer = ({address, id, prayer, timestamp}) => {
             <div className='flex items-center p-1'>
                 <BsEmojiSmile size={25} />
                 <input disabled={!isAuthenticated} required maxLength={60} minLength={1} type='text' value={comment} onChange={(e) => {setComment(e.target.value)}} placeholder={` ${isAuthenticated ? 'Add a comment...' : 'login to comment'}`} className='bg-[#e4e6e8] p-2 w-full border-none flex-1 focus:ring-0 outline-none' />
-                <button type='submit' disabled={!comment.trim()} onClick={sendComment} className={`${comment && isAuthenticated ? ' text-white bg-[#16bafb] cursor-pointer transition-all ease-out duration-300 hover:scale-105' : 'bg-[#888] text-[#fff] cursor-not-allowed' } rounded-[50%] p-[5px] flex  `}>
+                <button type='submit' disabled={!comment.trim()} onClick={sendComment} className={`${!comment || !isAuthenticated ? 'bg-[#888] text-[#fff] cursor-not-allowed' : ' text-white bg-[#16bafb] cursor-pointer transition-all ease-out duration-300 hover:scale-105' } rounded-[50%] p-[5px] flex  `}>
                     <RiSendPlane2Fill  size={25} />
                 </button>            
             </div>

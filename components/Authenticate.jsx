@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import { useMoralis } from 'react-moralis'
 import toast, { Toaster } from 'react-hot-toast'
 
+
 const styles = {
   connectButton: `w-fit text-white text-lg bg-[#6810f5f2] shadow-2xl p-4 rounded-2xl hover:bg-[#fff821f2] hover:text-[#000]`,
 }

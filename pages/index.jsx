@@ -1,12 +1,11 @@
-import React, { useState, useContext } from 'react'
+import React, { useContext } from 'react'
 import Navbar from '../components/Navbar'
 import toast, { Toaster } from 'react-hot-toast'
 import Prayers from '../components/Prayers'
-import Modal from '../components/Modal'
+import Modal from '../components/PostPrayerModal'
 import { FaRegEdit } from 'react-icons/fa'
 import { PrayerRequestContext } from '../context/PrayerRequest'
 import Head from 'next/head'
-import BuyModal from '../components/BuyModal'
 import { useMoralis } from 'react-moralis'
 
 
@@ -20,8 +19,7 @@ const styles = {
 
 
 const Home = () => {
-  const { modalOpen, setModalOpen, balance,  } = useContext(PrayerRequestContext)
-  const [openBuyModal, setOpenBuyModal] = useState(false)
+  const { modalOpen, setModalOpen,   } = useContext(PrayerRequestContext)
   const { isAuthenticated } = useMoralis()
   
 
@@ -42,16 +40,7 @@ const Home = () => {
           </button>
         </div>
       )}
-      {isAuthenticated &&  (
-        <>
-          <div className={`${styles.buyRPCContainer }${openBuyModal && 'hidden'}`}>
-            <button disabled={openBuyModal} onClick={() => {!openBuyModal && setOpenBuyModal(true)}} className={styles.BuyRPCButton}>Buy RPC</button>
-            <p className='ml-[2px] pr-2 p-1'>{ balance ? balance + ' RPC' : '0 RPC'}</p>
-          </div>
-        </>
-      )}
 
-      {openBuyModal && <BuyModal setOpenBuyModal={setOpenBuyModal} /> }
       {modalOpen && <Modal />}
       <Prayers/>
         
