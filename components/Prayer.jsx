@@ -88,20 +88,20 @@ const Prayer = ({address, id, prayer, timestamp}) => {
         <p className='text-sm px-5 py-2'>
                 {likes.length > 0 && Intl.NumberFormat('en', { notation: 'compact' }).format(likes.length) + ' Prayers'}
             </p>
-        <div className='flex flex-col max-w-full max-h-full gap-[1px]'>
+        <div className='flex flex-col max-w-full max-h-full gap-[5px] '>
 
             {comments.map((comment) => (
                 <div key={comment.id} className='max-h-full overflow-hidden flex ml-5 items-center max-w-full'>
                     <img
                         src={`https://avatars.dicebear.com/api/pixel-art/${comment?.data().address}.svg`}
                         alt='profile'
-                        height={30}
-                        width={30}
+                        height={33}
+                        width={33}
                         className='rounded-[50%] '
                     />
-                    <p className=' mr-10  ml-[1px] text-[12px]'>{`${comment.data().address.slice(0,3)}...${comment.data().address.slice(39,42)}`}</p>
-                    <p className='text-sm text-ellipsis whitespace-nowrap overflow-hidden w-[700px]'>{comment.data().comment}</p>
-                    <p className='flex mr-5 w-full text-xs justify-end'><TimeAgo datetime={comment.data().createdAt?.toDate()} /></p>
+                    <p className='pr-5 pl-1 text-[12px]'>{`${comment.data().address.slice(0,3)}...${comment.data().address.slice(39,42)}`}</p>
+                    <p className='text-[14px] text-ellipsis bg-yellow-200 whitespace-nowrap overflow-hidden w-full'>{comment.data().comment}</p>
+                    <p className='flex w-full mr-[10px] text-[10.89px] justify-end'><TimeAgo datetime={comment.data().createdAt?.toDate()} /></p>
                 </div>        
             ))}
 
