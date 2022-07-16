@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { useMoralis } from 'react-moralis'
 import toast, { Toaster } from 'react-hot-toast'
-
+import { useRouter } from 'next/router'
 
 const styles = {
   connectButton: `w-fit text-white text-lg bg-[#6810f5f2] shadow-2xl p-4 rounded-2xl hover:bg-[#fff821f2] hover:text-[#000]`,
@@ -10,6 +10,7 @@ const styles = {
 
 const Authenticate = () => {
   const { isAuthenticated, authenticate } = useMoralis()
+  const router = useRouter()
   
   const connect = async () => {
     if (!isAuthenticated) {
@@ -27,6 +28,7 @@ const Authenticate = () => {
             ] 
           }).then(function (user) {
             user !== undefined && toast.success('Authenticated!',{style: {background: '#04111d',color: '#fff',},})
+            router.replace('/')
           })
           .catch(function (error) {
             console.log(error);
@@ -35,7 +37,8 @@ const Authenticate = () => {
         else {
           await authenticate()
           .then( (user) => {
-            user !== undefined && toast.success('Authenticated!',{style: {background: '#04111d',color: '#fff',},}) 
+            user !== undefined && toast.success('Authenticated!',{style: {background: '#04111d',color: '#fff',},})
+            router.replace('/') 
           })
           .catch(function (error) {
            console.log(error)
