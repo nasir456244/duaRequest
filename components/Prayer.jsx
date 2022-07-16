@@ -100,7 +100,7 @@ const Prayer = ({address, id, prayer, timestamp}) => {
                         className='rounded-[50%] '
                     />
                     <p className='pr-5 pl-1 text-[12px]'>{`${comment.data().address.slice(0,3)}...${comment.data().address.slice(39,42)}`}</p>
-                    <p className='text-[14px] text-ellipsis bg-yellow-200 whitespace-nowrap overflow-hidden w-full'>{comment.data().comment}</p>
+                    <p className='text-[14px] text-ellipsis whitespace-nowrap overflow-hidden w-full'>{comment.data().comment}</p>
                     <p className='flex w-full mr-[10px] text-[10.89px] justify-end'><TimeAgo datetime={comment.data().createdAt?.toDate()} /></p>
                 </div>        
             ))}
