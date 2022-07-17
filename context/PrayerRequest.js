@@ -45,6 +45,8 @@ export const PrayerRequestProvider = ( { children } ) => {
               formattedAddress,
               modalOpen,
               setModalOpen,
+              setFormattedAddrress,
+              setUserAddress
               
               
                              

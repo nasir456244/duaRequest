@@ -3,10 +3,11 @@ import CommentSkeleton from '../../components/CommentSkeleton'
 import { useRouter } from 'next/router'
 import { AiOutlineArrowLeft } from 'react-icons/ai'
 import { db } from '../../lib/firebaseConfig'
-import { query, onSnapshot, orderBy, addDoc, collection, serverTimestamp } from 'firebase/firestore'
+import { query, onSnapshot, orderBy, addDoc,doc, collection, serverTimestamp, getDoc } from 'firebase/firestore'
 import Comment from './component/Comment'
 import { RiSendPlane2Fill } from 'react-icons/ri'
 import { useMoralis } from 'react-moralis'
+import { useSession } from 'next-auth/react'
 
 const styles = {
     modalContainer: `overflow-hidden max-w-screen h-screen flex flex-col px-[8px] py-[20px]`,
@@ -29,6 +30,8 @@ const CommentPage = () => {
     const [comments, setComments] = useState([])
     const { isAuthenticated, user } = useMoralis()
     let userAddress = user?.get("ethAddress")
+    const { data: session } = useSession()
+
 
 
     useEffect( 
@@ -47,7 +50,7 @@ const CommentPage = () => {
     setChat('')
 
     await addDoc(collection(db, 'Prayers', router.query.id, 'comments'), {
-        address: userAddress,
+        address: userAddress || session?.user?.email,
         comment: commentToSend.slice(0,250),
         createdAt: serverTimestamp()
     })

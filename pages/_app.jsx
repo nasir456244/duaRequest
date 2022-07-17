@@ -5,8 +5,9 @@ import { PrayerRequestProvider } from '../context/PrayerRequest'
 import Script from 'next/script'
 import { useRouter } from 'next/router'
 import * as gtag from '../lib/gtag'
+import { SessionProvider } from 'next-auth/react'
 
-function MyApp({ Component, pageProps }) {
+function MyApp({ Component, pageProps, session }) {
   const router = useRouter()
 
   useEffect(() => {
@@ -44,9 +45,11 @@ function MyApp({ Component, pageProps }) {
             serverUrl={process.env.NEXT_PUBLIC_MORALIS_SERVER_URL} 
             appId={process.env.NEXT_PUBLIC_MORALIS_APPLICATION_ID}
           >
-            <PrayerRequestProvider>
-              <Component {...pageProps} />
-            </PrayerRequestProvider>
+            <SessionProvider session={session} >
+              <PrayerRequestProvider>
+                <Component {...pageProps} />
+              </PrayerRequestProvider>
+            </SessionProvider>
           
           </MoralisProvider>
          

@@ -6,6 +6,7 @@ import { PrayerRequestContext } from '../context/PrayerRequest'
 import toast from 'react-hot-toast'
 import { db } from '../lib/firebaseConfig'
 import { addDoc, collection, serverTimestamp } from 'firebase/firestore'
+import { useSession } from 'next-auth/react'
 
 const styles = {
   modalBackground: `w-screen z-50 h-screen fixed flex justify-center items-center overflow-hidden `,
@@ -25,6 +26,8 @@ const Modal = () => {
   const [prayer, setPrayer] = useState('')
   const { isAuthenticated} = useMoralis()
   const databaseref = collection(db, 'Prayers')
+  const { data: session } = useSession()
+
 
   
   //Pay and Post Prayer 
@@ -37,7 +40,7 @@ const Modal = () => {
       setPrayer('')
 
       addDoc(databaseref, {
-        address: userAddress,
+        address: userAddress || session?.user?.email,
         prayer: prayerToPost.slice(0,250),
         createdAt: serverTimestamp()
       }).then( () => {
