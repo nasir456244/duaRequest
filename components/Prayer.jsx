@@ -18,7 +18,7 @@ const Prayer = ({address, id, prayer, timestamp, name, image}) => {
     const [comment, setComment] = useState('')
     const [comments, setComments] = useState([])
     const router = useRouter()
-    const { data: session } = useSession()
+    const { data: session, status } = useSession()
 
     useEffect( 
         () => 
@@ -85,7 +85,7 @@ const Prayer = ({address, id, prayer, timestamp, name, image}) => {
         </div>
         <p className='text-[20px] p-2'>{prayer}</p>
         <div className='flex flex-row items-center ml-2 relative top-[34px]'>
-            { session && hasliked ?
+            { status == 'authenticated' && hasliked ?
                 <BsHeartFill className={`cursor-pointer text-[#f00] ${!session && 'cursor-not-allowed'}`} disabled={!session} onClick={likepost} size={30} />    
                 :
                 <BsHeart disabled={!session} onClick={likepost} className={`${!session ? 'cursor-not-allowed' : 'hover:scale-125 transition-all duration-150 ease-out cursor-pointer'}`} size={30} /> 
