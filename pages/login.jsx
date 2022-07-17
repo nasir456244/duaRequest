@@ -6,7 +6,7 @@ import { useRouter } from 'next/router';
 
 
 
-const login = ({providers}) => {
+const Login = ({providers}) => {
     const { data: session } = useSession()
     const { isAuthenticated } = useMoralis()
     const router = useRouter()
@@ -40,7 +40,7 @@ const login = ({providers}) => {
   )
 }
 
-export default login
+export default Login
 
 
 export async function getServerSideProps(context) {
