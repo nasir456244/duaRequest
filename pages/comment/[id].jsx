@@ -88,7 +88,7 @@ const CommentPage = () => {
           </div>  
         )}
         <div className={styles.footer}>
-          <input type='text' required disabled={!isAuthenticated} className={styles.input} onChange={(e) => setChat(e.target.value)} minLength={1} maxLength={250} placeholder={`${!isAuthenticated ? 'you need to login to comment' : 'add a comment...'}`} />
+          <input type='text' required disabled={!isAuthenticated || !session} className={styles.input} onChange={(e) => setChat(e.target.value)} minLength={1} maxLength={250} placeholder={`${!isAuthenticated || !session ? 'you need to login to comment' : 'add a comment...'}`} />
           <button onClick={sendComment} disabled={!chat.trim()} type='submit' className={`${styles.postButton} ${!chat ? 'bg-[#888] cursor-not-allowed' : 'bg-[#16bafb] cursor-pointer hover:shadow-2xl text-xl transition-all duration-300 hover:scale-105'}`}>
             <RiSendPlane2Fill size={30} />
           </button>       
