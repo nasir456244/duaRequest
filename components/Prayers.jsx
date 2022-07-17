@@ -38,7 +38,7 @@ const Prayers = () => {
             <div className={styles.listMainContainer}>
 
                 {prayers?.map((prayer) => (
-                    <Prayer id={prayer.id} key={prayer.id} address={prayer.data().address} prayer={prayer.data().prayer} timestamp={prayer.data().createdAt?.toDate()} />
+                    <Prayer image={prayer?.data()?.image} name={prayer?.data()?.name} id={prayer.id} key={prayer.id} address={prayer.data().address} prayer={prayer.data().prayer} timestamp={prayer.data().createdAt?.toDate()} />
                 ))}
             </div>
         )}

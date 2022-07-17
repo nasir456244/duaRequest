@@ -6,7 +6,7 @@ import Modal from '../components/PostPrayerModal'
 import { FaRegEdit } from 'react-icons/fa'
 import { PrayerRequestContext } from '../context/PrayerRequest'
 import Head from 'next/head'
-import { useMoralis } from 'react-moralis'
+import { useSession } from 'next-auth/react'
 
 
 const styles = {
@@ -20,8 +20,8 @@ const styles = {
 
 const Home = () => {
   const { modalOpen, setModalOpen,   } = useContext(PrayerRequestContext)
-  const { isAuthenticated } = useMoralis()
-  
+  const { data: session } = useSession()
+
 
   return (
     <div className={styles.container }>
@@ -33,7 +33,7 @@ const Home = () => {
       </Head>
       <Toaster position="top-center" reverseOrder={false}/>
       <Navbar />
-      {isAuthenticated &&  (
+      {session &&  (
         <div className={ `${modalOpen ? styles.empty : styles.show}`}>
           <button className="fixed bottom-[60px] right-[60px] z-20 text-[#000] transition-all duration-500 hover:text-white hover:scale-125"
               onClick={() => {setModalOpen(true);}}><FaRegEdit size={28} />

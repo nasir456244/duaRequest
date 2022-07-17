@@ -1,6 +1,5 @@
 import Link from 'next/link'
-import React, { useContext, useState, useEffect } from 'react'
-import { useMoralis, useMoralisWeb3Api } from "react-moralis";
+import React, { useState } from 'react'
 import { PrayerRequestContext } from '../context/PrayerRequest'
 import { RiMenu2Line } from 'react-icons/ri'
 import { RiMenu3Fill } from 'react-icons/ri'
@@ -23,9 +22,7 @@ const styles = {
 }
 
 const Navbar = () => {
-  const { logout, isAuthenticated } = useMoralis()
   const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const { userAddress, formattedAddress } = useContext(PrayerRequestContext)
   const router = useRouter()
   const { data: session } = useSession()
 
@@ -54,29 +51,15 @@ const Navbar = () => {
                 </li>
         </div>
        
-        { isAuthenticated ? (
-          <>
-            {!userAddress ?          
-              <p className='w-[133px] bg-[#6b50c1] flex items-center p-[2px] rounded-2xl h-[50px]'></p>
-            : 
-              <button className={styles.disconnectWallet} onClick={disconnect}>{formattedAddress && formattedAddress}</button>
-            }
-          </>
-        )
-        :
-        (       
-          <>
-          {!session &&
-            <button onClick={() => router.push('/login')} className='text-[#000] bg-[#f3f2f5] py-2 px-5 rounded-[2px]'>Login</button>
-          }
-          </> 
-        )}
+        
 
-        {session && 
+        {session ? 
           <div className='flex items-center justify-center text-[#fff]'>
             <p className='mr-2 text-md'>{session?.user?.name}</p>
             <img onClick={() => signOut()} className='cursor-pointer rounded-[50%] w-[50px] h-[50px]' src={ session?.user?.image || 'https://deejayfarm.com/wp-content/uploads/2019/10/Profile-pic.jpg'} />
           </div> 
+          :
+            <button onClick={() => router.push('/login')} className='text-[#000] bg-[#f3f2f5] py-2 px-5 rounded-[2px]'>Login</button>
         }
 
 

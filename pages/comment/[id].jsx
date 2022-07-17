@@ -6,7 +6,6 @@ import { db } from '../../lib/firebaseConfig'
 import { query, onSnapshot, orderBy, addDoc,doc, collection, serverTimestamp, getDoc } from 'firebase/firestore'
 import Comment from './component/Comment'
 import { RiSendPlane2Fill } from 'react-icons/ri'
-import { useMoralis } from 'react-moralis'
 import { useSession } from 'next-auth/react'
 
 const styles = {
@@ -28,8 +27,6 @@ const CommentPage = () => {
     const router = useRouter();
     const refreshData = () => router.replace(`/comment/${id}`);
     const [comments, setComments] = useState([])
-    const { isAuthenticated, user } = useMoralis()
-    let userAddress = user?.get("ethAddress")
     const { data: session } = useSession()
 
 
@@ -37,22 +34,24 @@ const CommentPage = () => {
     useEffect( 
       () => 
       onSnapshot(
-          query(collection(db, 'Prayers', router.query.id, 'comments'),
+          query(collection(db, 'Prayers', router?.query?.id, 'comments'),
            orderBy('createdAt', 'asc')),
-          snapshot => setComments(snapshot.docs)) 
+          snapshot => setComments(snapshot?.docs)) 
 
     [db])
 
   const sendComment = async (e) => {
     e.preventDefault()
-    if(!isAuthenticated || !chat) return
+    if(!session || !chat) return
     const commentToSend = chat;
     setChat('')
 
-    await addDoc(collection(db, 'Prayers', router.query.id, 'comments'), {
-        address: userAddress || session?.user?.email,
-        comment: commentToSend.slice(0,250),
-        createdAt: serverTimestamp()
+    await addDoc(collection(db, 'Prayers', router?.query?.id, 'comments'), {
+        address: session?.user?.email,
+        comment: commentToSend?.slice(0,250),
+        createdAt: serverTimestamp(),
+        image: session?.user?.image,
+        name: session?.user?.name
     })
 
   }
@@ -65,7 +64,7 @@ const CommentPage = () => {
 
   return (
       <div className={styles.modalContainer}>
-        <div onClick={() => router.replace('/')} className='cursor-pointer text-[#fff] text-lg flex items-center underline'>
+        <div onClick={() => router?.replace('/')} className='cursor-pointer text-[#fff] text-lg flex items-center underline'>
           <AiOutlineArrowLeft className='mr-1' size={25} />
           <p>Go back to Prayers</p>
 
@@ -79,17 +78,17 @@ const CommentPage = () => {
           <div className={styles.body}>
 
             {comments?.map((comment, index) => (
-              <Comment key={index} address={comment.data().address} 
-              comment={comment.data().comment} 
-              createdAt={comment.data().createdAt}/>   
+              <Comment image={comment?.data()?.image} name={comment?.data()?.name} key={index} address={comment?.data()?.address} 
+              comment={comment?.data()?.comment} 
+              createdAt={comment?.data()?.createdAt}/>   
             ))}
 
             
           </div>  
         )}
         <div className={styles.footer}>
-          <input type='text' required disabled={!isAuthenticated || !session} className={styles.input} onChange={(e) => setChat(e.target.value)} minLength={1} maxLength={250} placeholder={`${!isAuthenticated || !session ? 'you need to login to comment' : 'add a comment...'}`} />
-          <button onClick={sendComment} disabled={!chat.trim()} type='submit' className={`${styles.postButton} ${!chat ? 'bg-[#888] cursor-not-allowed' : 'bg-[#16bafb] cursor-pointer hover:shadow-2xl text-xl transition-all duration-300 hover:scale-105'}`}>
+          <input type='text' required disabled={!session} className={styles.input} onChange={(e) => setChat(e.target?.value)} minLength={1} maxLength={250} placeholder={`${!session ? 'you need to login to comment' : 'add a comment...'}`} />
+          <button onClick={sendComment} disabled={!chat?.trim()} type='submit' className={`${styles.postButton} ${!chat ? 'bg-[#888] cursor-not-allowed' : 'bg-[#16bafb] cursor-pointer hover:shadow-2xl text-xl transition-all duration-300 hover:scale-105'}`}>
             <RiSendPlane2Fill size={30} />
           </button>       
         </div>

@@ -1,6 +1,6 @@
-import React, { useContext, useRef, useEffect } from 'react'
-import { PrayerRequestContext } from '../../../context/PrayerRequest'
+import React, { useRef, useEffect } from 'react'
 import TimeAgo from 'timeago-react'
+import { useSession } from 'next-auth/react'
 
 
 
@@ -14,27 +14,31 @@ const styles = {
 
 
 
-const Comment = ({address, comment, createdAt}) => {
-    const { userAddress } = useContext(PrayerRequestContext)
+const Comment = ({address, comment, createdAt, name, image}) => {
     const btnRef = useRef(null);
+    const { data: session } = useSession()
 
-    
+    console.log(session)
   useEffect( 
-    () => btnRef.current?.scrollIntoView()
+    () => btnRef?.current?.scrollIntoView()
   ,[])
 
   return (
     <div>
-    <div className={`${address == userAddress ? 'flex justify-end py-3 w-full ' : 'flex justify-start py-3 w-full'}`}>
-        <div className={`${styles.commentBody} ${address == userAddress && 'bg-[#10c850]'}`}>
+    <div className={`${address == session?.user?.email ? 'flex justify-end py-3 items-center w-full ' : 'flex items-center justify-start py-3 w-full'}`}>
+      
+        <div className={`${styles.commentBody} ${address == session?.user?.email && 'bg-[#10c850]'}`}>
             <div className={styles.address}>
-                <p className={`${address == userAddress ? 'text-[#434544]' : 'text-[#484949]'}`}>{`${address?.slice(0,4)}...${address?.slice(38,44)}`}</p>
+                <p className={`${address == session?.user?.email ? 'text-[#434544]' : 'text-[#484949]'}`}>{name}</p>
             </div>
-            <p className={`${styles.comment}${address == userAddress ? 'text-[#fff]' : 'text-black'}`}>{comment}</p>
+            <p className={`${styles.comment}${address == session?.user?.email ? 'text-[#fff]' : 'text-black'}`}>{comment}</p>
             <div className={styles.time}>
-                <p className={`${address == userAddress ? 'text-[#434544]' : 'text-[#484949]'}`}><TimeAgo datetime={createdAt?.toDate()} /></p>
+                <p className={`${address == session?.user?.email ? 'text-[#434544]' : 'text-[#484949]'}`}><TimeAgo datetime={createdAt?.toDate()} /></p>
             </div>
 
+        </div>
+        <div className={`flex mt-[55px]  order-first ${address == session?.user?.email ? 'order-last ml-2' : 'mr-2'}`}>
+          <img src={image} className=' rounded-[50%] w-[40px] h-[40px]' />
         </div>
         <div ref={btnRef} />
     </div>

@@ -1,6 +1,5 @@
 import React, { useState, useContext } from 'react'
 import { MdOutlineCancelPresentation } from 'react-icons/md'
-import { useMoralis } from 'react-moralis'
 import { useForm } from 'react-hook-form'
 import { PrayerRequestContext } from '../context/PrayerRequest'
 import toast from 'react-hot-toast'
@@ -21,10 +20,9 @@ const styles = {
 
 
 const Modal = () => {
-  const { register, handleSubmit, formState: { errors } } = useForm()
-  const { userAddress, setModalOpen } = useContext(PrayerRequestContext)
+  const { register, handleSubmit } = useForm()
+  const { setModalOpen } = useContext(PrayerRequestContext)
   const [prayer, setPrayer] = useState('')
-  const { isAuthenticated} = useMoralis()
   const databaseref = collection(db, 'Prayers')
   const { data: session } = useSession()
 
@@ -33,16 +31,18 @@ const Modal = () => {
   //Pay and Post Prayer 
   const postPrayer = async () => {
     try {
-      if(!isAuthenticated) return
-      if(!prayer || !userAddress) return 
+      if(!session) return
+      if(!prayer) return 
 
       const prayerToPost = prayer;
       setPrayer('')
 
       addDoc(databaseref, {
-        address: userAddress || session?.user?.email,
-        prayer: prayerToPost.slice(0,250),
-        createdAt: serverTimestamp()
+        address: session?.user?.email,
+        prayer: prayerToPost?.slice(0,250),
+        createdAt: serverTimestamp(),
+        image: session?.user?.image,
+        name: session?.user?.name
       }).then( () => {
         setModalOpen(false)
         toast.success('Prayer Posted!',{style: {background: '#04111d',color: '#fff',},}) 

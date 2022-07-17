@@ -1,6 +1,5 @@
 import '../styles/globals.css'
 import React, { useEffect } from 'react'
-import { MoralisProvider } from 'react-moralis'
 import { PrayerRequestProvider } from '../context/PrayerRequest'
 import Script from 'next/script'
 import { useRouter } from 'next/router'
@@ -41,17 +40,14 @@ function MyApp({ Component, pageProps, session }) {
             });`,
             }}
           />
-          <MoralisProvider 
-            serverUrl={process.env.NEXT_PUBLIC_MORALIS_SERVER_URL} 
-            appId={process.env.NEXT_PUBLIC_MORALIS_APPLICATION_ID}
-          >
-            <SessionProvider session={session} >
-              <PrayerRequestProvider>
-                <Component {...pageProps} />
-              </PrayerRequestProvider>
-            </SessionProvider>
           
-          </MoralisProvider>
+          <SessionProvider session={session} >
+            <PrayerRequestProvider>
+              <Component {...pageProps} />
+            </PrayerRequestProvider>
+          </SessionProvider>
+          
+          
          
     </>
   )

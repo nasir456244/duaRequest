@@ -9,12 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@walletconnect/web3-provider": "^1.7.8",
-    "@web3auth/web3auth": "^1.1.0",
-    "ethers": "^5.6.9",
     "firebase": "^9.9.0",
-    "magic-sdk": "^8.1.1",
-    "moralis": "^1.8.0",
     "next": "12.1.6",
     "next-auth": "^4.10.0",
     "react": "18.2.0",
@@ -22,7 +17,6 @@
     "react-hook-form": "^7.32.2",
     "react-hot-toast": "^2.2.0",
     "react-icons": "^4.4.0",
-    "react-moralis": "^1.4.0",
     "timeago": "^1.6.7",
     "timeago-react": "^3.0.5"
   },
