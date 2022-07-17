@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { useSession, signIn, getProviders, getSession } from 'next-auth/react'
 import Authenticate from '../components/Authenticate'
-import { useMoralis } from 'react-moralis'
+import { useMoralis } from 'react-moralis';
 import { useRouter } from 'next/router';
 
 
@@ -27,7 +27,7 @@ const Login = ({providers}) => {
                     <div className='w-[40px] flex justify-center items-center h-full radius-[2px] bg-[#fff]'>
                         <img className='h-full w-[30px]'  src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg"/>
                     </div>
-                    <button onClick={() => signIn(provider.id)} className='text-[#fff] spacing-[0.2px] mr-7 text-[14px]'><b>Sign in with {provider?.name}</b></button>
+                    <button onClick={() => signIn(provider?.id)} className='text-[#fff] spacing-[0.2px] mr-7 text-[14px]'><b>Sign in with {provider?.name}</b></button>
                 </div>
                 <p className='flex w-full items-center justify-center mb-4'><b>Or</b></p>
                 <Authenticate />
