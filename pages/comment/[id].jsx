@@ -48,7 +48,7 @@ const CommentPage = () => {
 
     await addDoc(collection(db, 'Prayers', router.query.id, 'comments'), {
         address: userAddress,
-        comment: commentToSend.trim(),
+        comment: commentToSend.slice(0,250),
         createdAt: serverTimestamp()
     })
 

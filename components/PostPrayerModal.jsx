@@ -38,7 +38,7 @@ const Modal = () => {
 
       addDoc(databaseref, {
         address: userAddress,
-        prayer: prayerToPost,
+        prayer: prayerToPost.slice(0,250),
         createdAt: serverTimestamp()
       }).then( () => {
         setModalOpen(false)

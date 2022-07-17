@@ -64,7 +64,7 @@ const Prayer = ({address, id, prayer, timestamp}) => {
 
         await addDoc(collection(db, 'Prayers', id, 'comments'), {
             address: userAddress,
-            comment: commentToSend.trim(),
+            comment: commentToSend.slice(0,250),
             createdAt: serverTimestamp()
         })
     }
