@@ -16,6 +16,7 @@ import {
 import Comment from "./component/Comment";
 import { RiSendPlane2Fill } from "react-icons/ri";
 import { useSession } from "next-auth/react";
+import router from "next/router";
 
 const styles = {
   modalContainer: `overflow-hidden max-w-screen h-screen flex flex-col px-[8px] py-[20px]`,
@@ -36,6 +37,11 @@ const CommentPage = () => {
   const [queryId, setqueryId] = useState("");
   useEffect(() => {
     const queryId = window.location.pathname.split("/")[2];
+    getDoc(doc(db, `Prayers/${queryId}`))
+      .then((res) => {
+        if (!res.data()) router.push("/404");
+      })
+      .catch((error) => console.log(error));
     setqueryId(queryId);
     const unsub = onSnapshot(
       query(
