@@ -133,7 +133,7 @@ const Modal = () => {
         <div className={styles.title}>
           <h1>Request prayer</h1>
         </div>
-          {postTimer && !isTimeGone && 
+          {!isTimeGone && postTimer && 
           <div className="flex h-full relative top-[60px] w-full flex-col justify-center items-center">
             <h2 className="flex items-center justify-center z-50 flex-col p-5 text-xl">
               Time Left: <Countdown date={postTimer} renderer={renderer} />
@@ -141,7 +141,7 @@ const Modal = () => {
             <img className="object-contain relative bottom-[80px] h-80 w-80" src="https://miro.medium.com/max/1400/0*4Gzjgh9Y7Gu8KEtZ.gif"  />
           </div>
           }
-        {isTimeGone && 
+        {!postNumber && isTimeGone && 
         <form onSubmit={handleSubmit(postPrayer)}>
           <div className={styles.body}>
             <textarea
@@ -181,7 +181,7 @@ const Modal = () => {
           </div>
         </form>
     
-    }
+        }
       </div>
     </div>
   );
