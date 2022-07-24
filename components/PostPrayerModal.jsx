@@ -141,7 +141,7 @@ const Modal = () => {
             <img className="object-contain relative bottom-[80px] h-80 w-80" src="https://miro.medium.com/max/1400/0*4Gzjgh9Y7Gu8KEtZ.gif"  />
           </div>
           }
-        {!postNumber && isTimeGone && 
+        {isTimeGone && 
         <form onSubmit={handleSubmit(postPrayer)}>
           <div className={styles.body}>
             <textarea
