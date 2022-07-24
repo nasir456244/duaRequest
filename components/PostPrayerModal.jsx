@@ -21,7 +21,7 @@ const styles = {
   modalBackground: `w-screen z-50 h-screen fixed flex justify-center items-center overflow-hidden `,
   modalContainer: `overflow-hidden sm:w-[490px] min-w-[390px] max-h-[600px] transitio-all rounded-[12px] bg-[#fff] shadow-2xl flex flex-col p-[25px]`,
   title: `inline-block text-center mt-[10px] mb-[40px] text-2xl`,
-  input: `w-full p-2 text-xl resize-none break-all border-2 rounded-lg`,
+  input: `w-full h-full p-2 z-50 text-xl resize-none break-all border-2 rounded-lg`,
   footer: `flex justify-around pt-6 `,
   cancel: `bg-[#ff0e0e] px-6 py-3 text-white text-xl rounded-lg hover:shadow-2xl transition-all duration-300  hover:scale-105`,
   post: ` px-9 py-3 hover:shadow-2xl text-xl rounded-lg `,
@@ -39,7 +39,7 @@ const Modal = () => {
 
   useEffect(() => {
     onSnapshot(
-      doc(db, "Prayers", "defaultDoc", "users", session?.user?.email),
+      doc(db, "TimeOut", "TimeOutUsers", "users", session?.user?.email),
       (snapshot) => {
         const postNumber = snapshot?.data()?.postNumber || 0;
         const postTimer = snapshot?.data()?.postTimer;
@@ -72,6 +72,7 @@ const Modal = () => {
 
       const prayerToPost = prayer;
       setPrayer("");
+      setModalOpen(false);
 
       await addDoc(databaseref, {
         address: session?.user?.email,
@@ -82,7 +83,7 @@ const Modal = () => {
       });
       if (postNumber === 0) {
         await setDoc(
-          doc(db, "Prayers", "defaultDoc", "users", session?.user?.email),
+          doc(db, "TimeOut", "TimeOutUsers", "users", session?.user?.email),
           {
             postNumber: 1,
             postTimer: 0,
@@ -90,14 +91,13 @@ const Modal = () => {
         );
       } else {
         await updateDoc(
-          doc(db, "Prayers", "defaultDoc", "users", session?.user?.email),
+          doc(db, "TimeOut", "TimeOutUsers", "users", session?.user?.email),
           {
             postNumber: increment(1),
             postTimer: postNumber === 2 ? serverTimestamp() : 0,
           }
         );
       }
-      setModalOpen(false);
       toast.success("Prayer Posted!", {
         style: { background: "#04111d", color: "#fff" },
       });
@@ -108,6 +108,14 @@ const Modal = () => {
       });
     }
   };
+
+  const renderer = ({ hours, minutes, seconds }) => (
+    <h1 className="tracking-widest	">
+      {hours}:{minutes}:{seconds}
+    </h1>
+  );
+
+ 
 
   return (
     <div className={styles.modalBackground}>
@@ -124,14 +132,16 @@ const Modal = () => {
         </div>
         <div className={styles.title}>
           <h1>Request prayer</h1>
-          <h2>Post Count: {postNumber}</h2>
-          {postTimer ? (
-            <h2>
-              Time Left: <Countdown date={postTimer} />
-            </h2>
-          ) : null}
         </div>
-
+          {postTimer && !isTimeGone && 
+          <div className="flex h-full relative top-[60px] w-full flex-col justify-center items-center">
+            <h2 className="flex items-center justify-center z-50 flex-col p-5 text-xl">
+              Time Left: <Countdown date={postTimer} renderer={renderer} />
+            </h2>
+            <img className="object-contain relative bottom-[80px] h-80 w-80" src="https://miro.medium.com/max/1400/0*4Gzjgh9Y7Gu8KEtZ.gif"  />
+          </div>
+          }
+        {isTimeGone && 
         <form onSubmit={handleSubmit(postPrayer)}>
           <div className={styles.body}>
             <textarea
@@ -144,7 +154,9 @@ const Modal = () => {
               minLength={50}
               maxLength={250}
               placeholder="Your prayer..."
-            />
+              />
+            <p className="flex w-full justify-end pr-3">Post Count: {postNumber}</p>
+
           </div>
           <div className={styles.footer}>
             <button
@@ -153,7 +165,7 @@ const Modal = () => {
               onClick={() => {
                 setModalOpen(false);
               }}
-            >
+              >
               Cancel
             </button>
             <button
@@ -162,12 +174,14 @@ const Modal = () => {
               className={`${
                 styles.post
               } ${`disabled:cursor-not-allowed disabled:bg-[#9d9d9d] disabled:text-white
-                   bg-[#0bbe20] transition-all duration-300  hover:scale-105`}`}
-            >
+              bg-[#0bbe20] transition-all duration-300  hover:scale-105`}`}
+              >
               Post
             </button>
           </div>
         </form>
+    
+    }
       </div>
     </div>
   );
