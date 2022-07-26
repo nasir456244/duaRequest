@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import CommentSkeleton from "../../components/CommentSkeleton";
 import { useRouter } from "next/router";
 import { AiOutlineArrowLeft } from "react-icons/ai";
 import { db } from "../../lib/firebaseConfig";
+import DeleteModal from "../../components/DeleteModal";
 import {
   query,
   onSnapshot,
@@ -16,6 +17,7 @@ import {
 import Comment from "./component/Comment";
 import { RiSendPlane2Fill } from "react-icons/ri";
 import { getAuth } from 'firebase/auth'
+import { PrayerRequestContext } from "../../context/PrayerRequest";
 
 const styles = {
   modalContainer: `overflow-hidden max-w-screen h-screen flex flex-col px-[8px] py-[20px]`,
@@ -34,6 +36,8 @@ const CommentPage = () => {
   const [comments, setComments] = useState([]);
   const [queryId, setqueryId] = useState("");
   const auth = getAuth()
+  const { isDeleteModalOpen,setIsDeleteModalOpen, deleteDua, setDeleteDua} = useContext(PrayerRequestContext)
+
 
 
 
@@ -79,6 +83,7 @@ const CommentPage = () => {
 
   return (
     <div className={styles.modalContainer}>
+      {isDeleteModalOpen && <DeleteModal setDeleteDua={setDeleteDua} setIsDeleteModalOpen={setIsDeleteModalOpen} />}
       <div
         onClick={() => router?.replace("/")}
         className="cursor-pointer text-[#fff] text-lg flex items-center underline"
@@ -93,14 +98,18 @@ const CommentPage = () => {
         <CommentSkeleton />
       ) : (
         <div className={styles.body}>
-          {comments?.map((comment, index) => (
+          {comments?.map((comment) => (
             <Comment
               image={comment?.data()?.image}
               name={comment?.data()?.name}
-              key={index}
+              key={comment?.id}
               address={comment?.data()?.address}
               comment={comment?.data()?.comment}
               createdAt={comment?.data()?.createdAt}
+              id={comment?.id}
+              deleteDua={deleteDua}
+              setDeleteDua={setDeleteDua}
+              setIsDeleteModalOpen={setIsDeleteModalOpen}
             />
           ))}
         </div>

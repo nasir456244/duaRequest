@@ -4,7 +4,8 @@ export const PrayerRequestContext = createContext()
 
 export const PrayerRequestProvider = ( { children } ) => {
     const [modalOpen, setModalOpen] = useState(false)
-  
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
+    const [deleteDua, setDeleteDua] = useState()
   
 
 
@@ -23,7 +24,10 @@ export const PrayerRequestProvider = ( { children } ) => {
             value={{
               modalOpen,
               setModalOpen,
-              
+              isDeleteModalOpen,
+              setIsDeleteModalOpen,
+              deleteDua,
+              setDeleteDua
               
               
                              

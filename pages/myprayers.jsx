@@ -1,11 +1,12 @@
 import { collection, onSnapshot, orderBy, query } from 'firebase/firestore';
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import Navbar from '../components/Navbar'
 import { db } from '../lib/firebaseConfig';
 import { getAuth } from 'firebase/auth';
 import MyPrayers from '../components/MyPrayers';
 import PrayerSkeleton from '../components/PrayerSkeleton'
 import DeleteModal from '../components/DeleteModal';
+import { PrayerRequestContext } from '../context/PrayerRequest';
 
 const styles = {
   container: `w-full flex justify-center p-[12px] text-[#27425d]  overflow-x-hidden`,
@@ -16,8 +17,7 @@ const MyPrayer = () => {
     const [prayers, setPrayers] = useState()
     const auth = getAuth()
     const [isMyPrayerLoading, setIsMyPrayerLoading] = useState(true);
-    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
-    const [deleteDua, setDeleteDua] = useState()
+    const { isDeleteModalOpen, setIsDeleteModalOpen, deleteDua, setDeleteDua} = useContext(PrayerRequestContext)
 
 
 

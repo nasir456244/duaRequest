@@ -1,19 +1,49 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import TimeAgo from "timeago-react";
 import { getAuth } from 'firebase/auth'
-
+import { collection, deleteDoc, doc, getDoc,query, onSnapshot,orderBy, where } from "firebase/firestore";
+import { db } from "../../../lib/firebaseConfig";
+import { AiFillDelete } from 'react-icons/ai'
 const styles = {
-  commentBody: `bg-[#e8e8e8] w-contain p-3 rounded-2xl break-words max-w-[60%] min-w-[150px] overflow-hidden`,
-  address: `text-[17px]`,
+  commentBody: `bg-[#e8e8e8] w-contain p-3 rounded-2xl break-words max-w-[50%] min-w-[200px] overflow-hidden`,
+  address: `text-[17px] w-full flex items-center justify-between `,
   time: `flex justify-end text-[14px] `,
   comment: `text-[22px] py-[2px] `,
 };
 
-const Comment = ({ address, comment, createdAt, name, image }) => {
+const Comment = ({ address, comment, createdAt, name, image,id, deleteDua, setDeleteDua, setIsDeleteModalOpen }) => {
   const btnRef = useRef(null);
   const auth = getAuth()
+  const [owner, setOwner] = useState()
 
   useEffect(() => btnRef?.current?.scrollIntoView(), []);
+
+  // console.log(id)
+  const queryId = window.location.pathname.split("/")[2];
+  console.log(queryId)
+
+  useEffect(
+    () => {getDoc(doc(db, `Prayers/${queryId}`)).then((res) => 
+      setOwner(res?.data()?.address == auth?.currentUser?.email))
+  },[]
+  );
+
+  
+
+  console.log(owner)
+
+  const deleteComment = (id) => {
+    if(!auth?.currentUser) return
+    if(!owner) return
+    setIsDeleteModalOpen(true)
+    if(deleteDua === true) {
+
+      const commentToDelete = id
+      deleteDoc(doc(db,'Prayers', queryId, 'comments', commentToDelete))
+      setDeleteDua(false)
+    }
+    return
+  }
 
   return (
     <div>
@@ -39,6 +69,7 @@ const Comment = ({ address, comment, createdAt, name, image }) => {
             >
               {name}
             </p>
+            {owner && <AiFillDelete size={16} onClick={() => deleteComment(id)} className='text-[#f00] cursor-pointer '/>}
           </div>
           <p
             className={`${styles.comment}${

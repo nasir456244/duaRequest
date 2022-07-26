@@ -14,7 +14,7 @@ const DeleteModal = ({setIsDeleteModalOpen, setDeleteDua}) => {
 
         <div className={styles?.modalContainer}>
             <h3>
-                Are sure you want to delete this prayer?
+                Are sure you want to delete it?
             </h3>
             <div className={styles.buttons}>
                 <button onClick={() => {setDeleteDua(false);setIsDeleteModalOpen(false);}} className={styles.no}>Sike</button>
