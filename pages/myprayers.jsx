@@ -12,8 +12,8 @@ const styles = {
   listMainContainer: `grid mb-[65px] grid-cols-1 p-2 gap-[12px] max-w-full sm:max-w-[700px] max-h-full`,
 };
 
-const MyPrayers = () => {
-    const [myprayers, setMyPrayers] = useState()
+const MyPrayer = () => {
+    const [prayers, setPrayers] = useState()
     const auth = getAuth()
     const [isMyPrayerLoading, setIsMyPrayerLoading] = useState(true);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
@@ -25,7 +25,7 @@ const MyPrayers = () => {
         () =>
           onSnapshot(
             query(collection(db, "Prayers"), orderBy("createdAt", "desc")),
-            (snapshot) => { setMyPrayers(snapshot?.docs?.filter((data) => 
+            (snapshot) => { setPrayers(snapshot?.docs?.filter((data) => 
               data?._document?.data?.value?.mapValue?.fields?.
               address?.stringValue == auth?.currentUser?.email));
               setIsMyPrayerLoading(false)
@@ -52,7 +52,7 @@ const MyPrayers = () => {
       
             <div className={styles?.listMainContainer}>
 
-                {myprayers?.map((item) => (
+                {prayers?.map((item) => (
                   <MyPrayers key={item?.id}
                   address={item?.data()?.address}
                   name={item?.data()?.name}
@@ -75,4 +75,4 @@ const MyPrayers = () => {
   )
 }
 
-export default My
+export default MyPrayer
