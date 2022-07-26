@@ -1,6 +1,6 @@
 import React, { useRef, useEffect } from "react";
 import TimeAgo from "timeago-react";
-import { useSession } from "next-auth/react";
+import { getAuth } from 'firebase/auth'
 
 const styles = {
   commentBody: `bg-[#e8e8e8] w-contain p-3 rounded-2xl break-words max-w-[60%] min-w-[150px] overflow-hidden`,
@@ -11,7 +11,7 @@ const styles = {
 
 const Comment = ({ address, comment, createdAt, name, image }) => {
   const btnRef = useRef(null);
-  const { data: session } = useSession();
+  const auth = getAuth()
 
   useEffect(() => btnRef?.current?.scrollIntoView(), []);
 
@@ -19,20 +19,20 @@ const Comment = ({ address, comment, createdAt, name, image }) => {
     <div>
       <div
         className={`${
-          address == session?.user?.email
+          address == auth?.currentUser?.email
             ? "flex justify-end py-3 items-center w-full "
             : "flex items-center justify-start py-3 w-full"
         }`}
       >
         <div
           className={`${styles.commentBody} ${
-            address == session?.user?.email && "bg-[#10c850]"
+            address == auth?.currentUser?.email && "bg-[#10c850]"
           }`}
         >
           <div className={styles.address}>
             <p
               className={`${
-                address == session?.user?.email
+                address == auth?.currentUser?.email
                   ? "text-[#434544]"
                   : "text-[#484949]"
               }`}
@@ -42,7 +42,7 @@ const Comment = ({ address, comment, createdAt, name, image }) => {
           </div>
           <p
             className={`${styles.comment}${
-              address == session?.user?.email ? "text-[#fff]" : "text-black"
+              address == auth?.currentUser?.email ? "text-[#fff]" : "text-black"
             }`}
           >
             {comment}
@@ -50,7 +50,7 @@ const Comment = ({ address, comment, createdAt, name, image }) => {
           <div className={styles.time}>
             <p
               className={`${
-                address == session?.user?.email
+                address == auth?.currentUser?.email
                   ? "text-[#434544]"
                   : "text-[#484949]"
               }`}
@@ -61,7 +61,7 @@ const Comment = ({ address, comment, createdAt, name, image }) => {
         </div>
         <div
           className={`flex mt-[55px]  order-first ${
-            address == session?.user?.email ? "order-last ml-2" : "mr-2"
+            address == auth?.currentUser?.email ? "order-last ml-2" : "mr-2"
           }`}
         >
           <img src={image} className=" rounded-[50%] w-[40px] h-[40px]" />

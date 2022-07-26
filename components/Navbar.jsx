@@ -1,10 +1,9 @@
 import Link from "next/link";
 import React, { useState } from "react";
-import { PrayerRequestContext } from "../context/PrayerRequest";
 import { RiMenu2Line } from "react-icons/ri";
 import { RiMenu3Fill } from "react-icons/ri";
 import { useRouter } from "next/router";
-import { useSession, signOut } from "next-auth/react";
+import { getAuth, signOut  } from 'firebase/auth'
 
 const styles = {
   container: `w-full h-[150px] flex justify-around items-center overflow-hidden`,
@@ -20,11 +19,12 @@ const styles = {
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const router = useRouter();
-  const { data: session, status } = useSession();
+  const auth = getAuth()
 
-  const disconnect = async () => {
-    await logout();
-  };
+
+
+  
+
 
   return (
     <div className={styles.container}>
@@ -51,38 +51,26 @@ const Navbar = () => {
         </li>
       </div>
 
-      {session && (
+      {auth?.currentUser && 
         <div className="flex items-center justify-center text-[#fff]">
-          <p className="mr-2 text-md">{session?.user?.name}</p>
+          <p className="mr-2 text-md">{auth?.currentUser?.displayName}</p>
           <img
-            onClick={() => signOut()}
+            onClick={() => signOut(auth).then((router.push('/')))}
             className="cursor-pointer rounded-[50%] w-[50px] h-[50px]"
             src={
-              session?.user?.image ||
-              "https://deejayfarm.com/wp-content/uploads/2019/10/Profile-pic.jpg"
+              auth?.currentUser?.photoURL
             }
           />
         </div>
-      )}
-      {status === "loading" && (
-        <div className="flex items-center justify-center text-[#fff]">
-          <img
-            onClick={() => signOut()}
-            className="cursor-pointer rounded-[50%] w-[50px] h-[50px] animate-pulse"
-            src={
-              "https://deejayfarm.com/wp-content/uploads/2019/10/Profile-pic.jpg"
-            }
-          />
-        </div>
-      )}
-      {status === "unauthenticated" && (
+      }
+      {!auth?.currentUser &&
         <button
           onClick={() => router.push("/login")}
           className="text-[#000] bg-[#f3f2f5] py-2 px-5 rounded-[2px]"
         >
           Login
         </button>
-      )}
+      }
 
       <div className={styles.menuContainer}>
         <RiMenu2Line

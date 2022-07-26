@@ -14,8 +14,8 @@ import {
   setDoc,
   updateDoc,
 } from "firebase/firestore";
-import { useSession } from "next-auth/react";
 import Countdown from "react-countdown";
+import { getAuth } from "firebase/auth";
 
 const styles = {
   modalBackground: `w-screen z-50 h-screen fixed flex justify-center items-center overflow-hidden `,
@@ -31,15 +31,16 @@ const Modal = () => {
   const { register, handleSubmit } = useForm();
   const { setModalOpen } = useContext(PrayerRequestContext);
   const [prayer, setPrayer] = useState("");
-  const databaseref = collection(db, "Prayers");
-  const { data: session } = useSession();
   const [postNumber, setpostNumber] = useState(0);
   const [postTimer, setpostTimer] = useState(0);
   const [isTimeGone, setisTimeGone] = useState(true);
+  const auth = getAuth()
+  const databaseref = collection(db, "Prayers");
+
 
   useEffect(() => {
     onSnapshot(
-      doc(db, "TimeOut", "TimeOutUsers", "users", session?.user?.email),
+      doc(db, "TimeOut", "TimeOutUsers", "users", auth?.currentUser?.email),
       (snapshot) => {
         const postNumber = snapshot?.data()?.postNumber || 0;
         const postTimer = snapshot?.data()?.postTimer;
@@ -63,7 +64,7 @@ const Modal = () => {
   //Pay and Post Prayer
   const postPrayer = async () => {
     try {
-      if (!session) return;
+      if (!auth?.currentUser) return;
       if (!prayer) return;
       if (!isTimeGone || postNumber === 3) {
         toast.error("You have reached max post number");
@@ -74,16 +75,16 @@ const Modal = () => {
       setPrayer("");
       setModalOpen(false);
 
-      await addDoc(databaseref, {
-        address: session?.user?.email,
+      await addDoc(collection(db, 'Prayers'), {
+        address: auth?.currentUser?.email,
         prayer: prayerToPost?.slice(0, 250),
         createdAt: serverTimestamp(),
-        image: session?.user?.image,
-        name: session?.user?.name,
+        image: auth?.currentUser?.photoURL,
+        name: auth?.currentUser?.displayName,
       });
       if (postNumber === 0) {
         await setDoc(
-          doc(db, "TimeOut", "TimeOutUsers", "users", session?.user?.email),
+          doc(db, "TimeOut", "TimeOutUsers", "users", auth?.currentUser?.email),
           {
             postNumber: 1,
             postTimer: 0,
@@ -91,7 +92,7 @@ const Modal = () => {
         );
       } else {
         await updateDoc(
-          doc(db, "TimeOut", "TimeOutUsers", "users", session?.user?.email),
+          doc(db, "TimeOut", "TimeOutUsers", "users", auth?.currentUser?.email),
           {
             postNumber: increment(1),
             postTimer: postNumber === 2 ? serverTimestamp() : 0,

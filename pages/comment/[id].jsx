@@ -15,8 +15,7 @@ import {
 } from "firebase/firestore";
 import Comment from "./component/Comment";
 import { RiSendPlane2Fill } from "react-icons/ri";
-import { useSession } from "next-auth/react";
-import router from "next/router";
+import { getAuth } from 'firebase/auth'
 
 const styles = {
   modalContainer: `overflow-hidden max-w-screen h-screen flex flex-col px-[8px] py-[20px]`,
@@ -33,8 +32,11 @@ const CommentPage = () => {
   const router = useRouter();
   const refreshData = () => router.replace(`/comment/${id}`);
   const [comments, setComments] = useState([]);
-  const { data: session } = useSession();
   const [queryId, setqueryId] = useState("");
+  const auth = getAuth()
+
+
+
   useEffect(() => {
     const queryId = window.location.pathname.split("/")[2];
     getDoc(doc(db, `Prayers/${queryId}`))
@@ -55,16 +57,17 @@ const CommentPage = () => {
 
   const sendComment = async (e) => {
     e.preventDefault();
-    if (!session || !chat) return;
+    if (!auth?.currentUser) return;
+    if(!chat) return;
     const commentToSend = chat;
     setChat("");
 
     await addDoc(collection(db, "Prayers", queryId, "comments"), {
-      address: session?.user?.email,
+      address: auth?.currentUser?.email,
       comment: commentToSend?.slice(0, 250),
       createdAt: serverTimestamp(),
-      image: session?.user?.image,
-      name: session?.user?.name,
+      image: auth?.currentUser?.photoURL,
+      name: auth?.currentUser?.displayName,
     });
   };
 
@@ -106,14 +109,14 @@ const CommentPage = () => {
         <input
           type="text"
           required
-          disabled={!session}
+          disabled={!auth?.currentUser}
           value={chat}
           className={styles.input}
           onChange={(e) => setChat(e.target?.value)}
           minLength={1}
           maxLength={250}
           placeholder={`${
-            !session ? "you need to login to comment" : "add a comment..."
+            !auth?.currentUser ? "login to comment" : "add a comment..."
           }`}
         />
         <button

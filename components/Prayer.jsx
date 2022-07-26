@@ -18,7 +18,7 @@ import {
 import { BsEmojiSmile } from "react-icons/bs";
 import { RiSendPlane2Fill } from "react-icons/ri";
 import { useRouter } from "next/router";
-import { useSession } from "next-auth/react";
+import { getAuth } from 'firebase/auth'
 
 const styles = {
   listContainer: ` tracking-2 hover:shadow-2xl flex flex-col p-[4px] bg-[#e4e6e8] rounded-2xl break-words overflow-hidden max-w-full h-fit `,
@@ -29,7 +29,7 @@ const Prayer = ({ address, id, prayer, timestamp, name, image }) => {
   const [comment, setComment] = useState("");
   const [comments, setComments] = useState([]);
   const router = useRouter();
-  const { data: session } = useSession();
+  const auth = getAuth()
 
   useEffect(
     () =>
@@ -42,19 +42,19 @@ const Prayer = ({ address, id, prayer, timestamp, name, image }) => {
   useEffect(
     () =>
       setHasLiked(
-        likes?.findIndex((like) => like?.id === session?.user?.email) !== -1
+        likes?.findIndex((like) => like?.id === auth?.currentUser?.email) !== -1
       ),
     [likes]
   );
 
   const likepost = async () => {
-    if (!session) return;
+    if (!auth?.currentUser) return;
 
     if (hasliked) {
-      await deleteDoc(doc(db, "Prayers", id, "likes", session?.user?.email));
+      await deleteDoc(doc(db, "Prayers", id, "likes", auth?.currentUser?.email));
     } else {
-      await setDoc(doc(db, "Prayers", id, "likes", session?.user?.email), {
-        address: session?.user?.email,
+      await setDoc(doc(db, "Prayers", id, "likes", auth?.currentUser?.email), {
+        address: auth?.currentUser?.email,
       });
     }
     return;
@@ -75,17 +75,17 @@ const Prayer = ({ address, id, prayer, timestamp, name, image }) => {
 
   const sendComment = async (e) => {
     e.preventDefault();
-    if (!session) return;
+    if (!auth?.currentUser) return;
 
     const commentToSend = comment;
     setComment("");
 
     await addDoc(collection(db, "Prayers", id, "comments"), {
-      address: session?.user?.email,
-      name: session?.user?.name,
+      address: auth?.currentUser?.email,
+      name: auth?.currentUser?.displayName,
       comment: commentToSend?.slice(0, 250),
       createdAt: serverTimestamp(),
-      image: session?.user?.image,
+      image: auth?.currentUser?.photoURL,
     });
 
     return;
@@ -99,21 +99,21 @@ const Prayer = ({ address, id, prayer, timestamp, name, image }) => {
       </div>
       <p className="text-[20px] p-2">{prayer}</p>
       <div className="flex flex-row items-center ml-2 relative top-[34px]">
-        {session && hasliked ? (
+        {auth?.currentUser && hasliked ? (
           <BsHeartFill
             className={`cursor-pointer text-[#f00] ${
-              !session && "cursor-not-allowed"
+              !auth?.currentUser && "cursor-not-allowed"
             }`}
-            disabled={!session}
+            disabled={!auth?.currentUser}
             onClick={likepost}
             size={30}
           />
         ) : (
           <BsHeart
-            disabled={!session}
+            disabled={!auth?.currentUser}
             onClick={likepost}
             className={`${
-              !session
+              !auth?.currentUser
                 ? "cursor-not-allowed"
                 : "hover:scale-125 transition-all duration-150 ease-out cursor-pointer"
             }`}
@@ -164,7 +164,7 @@ const Prayer = ({ address, id, prayer, timestamp, name, image }) => {
         <div className="flex items-center p-1">
           <BsEmojiSmile size={25} />
           <input
-            disabled={!session}
+            disabled={!auth?.currentUser}
             required
             maxLength={60}
             minLength={1}
@@ -174,7 +174,7 @@ const Prayer = ({ address, id, prayer, timestamp, name, image }) => {
               setComment(e.target?.value);
             }}
             placeholder={` ${
-              session ? "Add a comment..." : "login to comment"
+              auth?.currentUser ? "Add a comment..." : "login to comment"
             }`}
             className="bg-[#e4e6e8] p-2 w-full border-none flex-1 focus:ring-0 outline-none"
           />
@@ -183,7 +183,7 @@ const Prayer = ({ address, id, prayer, timestamp, name, image }) => {
             disabled={!comment?.trim()}
             onClick={sendComment}
             className={`${
-              !comment || !session
+              !comment || !auth?.currentUser
                 ? "bg-[#888] text-[#fff] cursor-not-allowed"
                 : " text-white bg-[#16bafb] cursor-pointer transition-all ease-out duration-300 hover:scale-105"
             } rounded-[50%] p-[5px] flex  `}

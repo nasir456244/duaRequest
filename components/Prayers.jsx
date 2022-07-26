@@ -42,6 +42,8 @@ const Prayers = () => {
               address={prayer.data().address}
               prayer={prayer.data().prayer}
               timestamp={prayer.data().createdAt?.toDate()}
+
+              
             />
           ))}
         </div>
