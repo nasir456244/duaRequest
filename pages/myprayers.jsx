@@ -12,7 +12,7 @@ const styles = {
   listMainContainer: `grid mb-[65px] grid-cols-1 p-2 gap-[12px] max-w-full sm:max-w-[700px] max-h-full`,
 };
 
-const myprayers = () => {
+const MyPrayers = () => {
     const [myprayers, setMyPrayers] = useState()
     const auth = getAuth()
     const [isMyPrayerLoading, setIsMyPrayerLoading] = useState(true);
@@ -75,4 +75,4 @@ const myprayers = () => {
   )
 }
 
-export default myprayers
+export default My
