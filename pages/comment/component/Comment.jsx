@@ -20,9 +20,9 @@ const Comment = ({ address, comment, createdAt, name, image,id, deleteDua, setDe
 
   // console.log(id)
   
-  const queryId = window.location.pathname.split("/")[2];
   useEffect(
     () => {
+      const queryId = window.location.pathname.split("/")[2];
       getDoc(doc(db, `Prayers/${queryId}`)).then((res) => 
       setOwner(res?.data()?.address == auth?.currentUser?.email))
   },[]
@@ -30,13 +30,13 @@ const Comment = ({ address, comment, createdAt, name, image,id, deleteDua, setDe
 
   
 
+  const queryId = window.location.pathname.split("/")[2];
 
   const deleteComment = (id) => {
     if(!auth?.currentUser) return
     if(!owner) return
     setIsDeleteModalOpen(true)
     if(deleteDua === true) {
-
       const commentToDelete = id
       deleteDoc(doc(db,'Prayers', queryId, 'comments', commentToDelete))
       setDeleteDua(false)
