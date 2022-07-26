@@ -19,18 +19,17 @@ const Comment = ({ address, comment, createdAt, name, image,id, deleteDua, setDe
   useEffect(() => btnRef?.current?.scrollIntoView(), []);
 
   // console.log(id)
-  const queryId = window.location.pathname.split("/")[2];
-  console.log(queryId)
-
+  
   useEffect(
-    () => {getDoc(doc(db, `Prayers/${queryId}`)).then((res) => 
+    () => {
+      const queryId = window.location.pathname.split("/")[2];
+      getDoc(doc(db, `Prayers/${queryId}`)).then((res) => 
       setOwner(res?.data()?.address == auth?.currentUser?.email))
   },[]
   );
 
   
 
-  console.log(owner)
 
   const deleteComment = (id) => {
     if(!auth?.currentUser) return
