@@ -20,9 +20,9 @@ const Comment = ({ address, comment, createdAt, name, image,id, deleteDua, setDe
 
   // console.log(id)
   
+  const queryId = window.location.pathname.split("/")[2];
   useEffect(
     () => {
-      const queryId = window.location.pathname.split("/")[2];
       getDoc(doc(db, `Prayers/${queryId}`)).then((res) => 
       setOwner(res?.data()?.address == auth?.currentUser?.email))
   },[]
