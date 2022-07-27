@@ -35,7 +35,6 @@ const Modal = () => {
   const [postTimer, setpostTimer] = useState(0);
   const [isTimeGone, setisTimeGone] = useState(true);
   const auth = getAuth()
-  const databaseref = collection(db, "Prayers");
 
 
   useEffect(() => {
@@ -61,7 +60,7 @@ const Modal = () => {
     );
   }, []);
 
-  //Pay and Post Prayer
+  //Post Prayer
   const postPrayer = async () => {
     try {
       if (!auth?.currentUser) return;
@@ -111,9 +110,9 @@ const Modal = () => {
   };
 
   const renderer = ({ hours, minutes, seconds }) => (
-    <h1 className="tracking-widest	">
+    <h2 className="tracking-widest	">
       {hours}:{minutes}:{seconds}
-    </h1>
+    </h2>
   );
 
  
@@ -136,9 +135,9 @@ const Modal = () => {
         </div>
           {!isTimeGone && postTimer && 
           <div className="flex h-full relative top-[60px] w-full flex-col justify-center items-center">
-            <h2 className="flex items-center justify-center z-50 flex-col p-5 text-xl">
+            <h1 className="flex items-center justify-center z-50 flex-col p-5 text-xl">
               Time Left: <Countdown date={postTimer} renderer={renderer} />
-            </h2>
+            </h1>
             <img className="object-contain relative bottom-[80px] h-80 w-80" src="https://miro.medium.com/max/1400/0*4Gzjgh9Y7Gu8KEtZ.gif"  />
           </div>
           }

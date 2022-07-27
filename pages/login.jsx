@@ -1,30 +1,16 @@
-import React from 'react'
-import { useRouter } from 'next/router';
-import { getAuth, GoogleAuthProvider, signInWithPopup } from 'firebase/auth'
-
-
-
+import React, { useContext } from 'react'
+import { PrayerRequestContext } from '../context/PrayerRequest'
+import { useRouter } from 'next/router'
+import { getAuth } from 'firebase/auth'
 const Login = () => {
+
+    const { user, SignInWithGoogle } = useContext(PrayerRequestContext)
     const router = useRouter()
     const auth = getAuth()
-    const googleProvider = new GoogleAuthProvider()
-
-    const SignInWithGoogle = () => {
-        signInWithPopup(auth, googleProvider)
-         .then((response) => {
-            alert('You logged in')
-            sessionStorage.setItem('Token', response.user.accessToken)
-            router.push('/')
-           })
-           .catch((error) => {
-            console.error(error)
-           })
-    }
-
    
   return (
     <div className='text-[#fff]  w-screen h-screen flex items-center justify-center'>
-        {auth?.currentUser ? 
+        {auth?.currentUser? 
         <div className='flex flex-col items-center'>
             <p>You are logged in</p>
             <a onClick={() => router.push('/')} className='underline cursor-pointer'>Please go back to home page</a>

@@ -23,6 +23,12 @@ const Navbar = () => {
 
 
 
+  const logout = () => {
+    signOut(auth).then(() => {
+      sessionStorage.clear();
+      router.push('/')
+    })
+  }
   
 
 
@@ -55,7 +61,7 @@ const Navbar = () => {
         <div className="flex items-center justify-center text-[#fff]">
           <p className="mr-2 text-md">{auth?.currentUser?.displayName}</p>
           <img
-            onClick={() => signOut(auth).then((router.push('/')))}
+            onClick={logout}
             className="cursor-pointer rounded-[50%] w-[50px] h-[50px]"
             src={
               auth?.currentUser?.photoURL
