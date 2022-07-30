@@ -1,18 +1,18 @@
-import React, { useEffect, useState } from 'react'
-import { getAuth } from 'firebase/auth';
+import React, { useContext, useEffect, useState } from 'react'
 import TimeAgo from 'timeago-react';
-import { collection, deleteDoc, onSnapshot, doc } from 'firebase/firestore';
+import { collection, onSnapshot } from 'firebase/firestore';
 import { db } from '../lib/firebaseConfig';
 import { MdDelete } from 'react-icons/md'
-import DeleteModal from './DeleteModal';
 import { DeletePrayer } from '../lib/db';
+import { PrayerRequestContext} from '@/context/PrayerRequest'
+
 const styles = {
     listContainer: ` tracking-2 hover:shadow-2xl flex flex-col p-[4px] bg-[#e4e6e8] rounded-2xl break-words overflow-hidden max-w-full h-fit `,
   };
 
 const MyPrayers = ({ name, createdAt, image, prayer, id, setIsDeleteModalOpen,setDeleteDua ,deleteDua}) => {
-    const auth = getAuth()
     const [likes, setLikes] = useState()
+    const { user } = useContext(PrayerRequestContext)
 
     useEffect(
         () =>
@@ -24,7 +24,7 @@ const MyPrayers = ({ name, createdAt, image, prayer, id, setIsDeleteModalOpen,se
 
 
     const deletePrayer = (id) => {
-        if(!auth?.currentUser) return;
+        if(!user) return;
         setIsDeleteModalOpen(true)
         if(deleteDua === true) {
           const prayertoDelete = id;

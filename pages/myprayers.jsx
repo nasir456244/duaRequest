@@ -2,7 +2,6 @@ import { collection, onSnapshot, orderBy, query } from 'firebase/firestore';
 import React, { useContext, useEffect, useState } from 'react'
 import Navbar from '../components/Navbar'
 import { db } from '../lib/firebaseConfig';
-import { getAuth } from 'firebase/auth';
 import MyPrayers from '../components/MyPrayers';
 import PrayerSkeleton from '../components/PrayerSkeleton'
 import DeleteModal from '../components/DeleteModal';
@@ -15,9 +14,8 @@ const styles = {
 
 const MyPrayer = () => {
     const [prayers, setPrayers] = useState()
-    const auth = getAuth()
     const [isMyPrayerLoading, setIsMyPrayerLoading] = useState(true);
-    const { isDeleteModalOpen, setIsDeleteModalOpen, deleteDua, setDeleteDua} = useContext(PrayerRequestContext)
+    const { isDeleteModalOpen, user, setIsDeleteModalOpen, deleteDua, setDeleteDua} = useContext(PrayerRequestContext)
 
 
 
@@ -27,7 +25,7 @@ const MyPrayer = () => {
             query(collection(db, "Prayers"), orderBy("createdAt", "desc")),
             (snapshot) => { setPrayers(snapshot?.docs?.filter((data) => 
               data?._document?.data?.value?.mapValue?.fields?.
-              address?.stringValue == auth?.currentUser?.email));
+              address?.stringValue == user.email));
               setIsMyPrayerLoading(false)
             }
           ),

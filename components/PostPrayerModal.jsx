@@ -11,7 +11,6 @@ import {
   serverTimestamp,
 } from "firebase/firestore";
 import Countdown from "react-countdown";
-import { getAuth } from "firebase/auth";
 import { createPrayer, createTimeOutDoc, UpdateTimeOutDoc } from "../lib/db";
 
 const styles = {
@@ -26,17 +25,17 @@ const styles = {
 
 const Modal = () => {
   const { register, handleSubmit } = useForm();
-  const { setModalOpen } = useContext(PrayerRequestContext);
+  const { setModalOpen, user } = useContext(PrayerRequestContext);
   const [prayer, setPrayer] = useState("");
   const [postNumber, setpostNumber] = useState(0);
   const [postTimer, setpostTimer] = useState(0);
   const [isTimeGone, setisTimeGone] = useState(true);
-  const auth = getAuth()
+
 
 
   useEffect(() => {
     onSnapshot(
-      doc(db, "TimeOut", "TimeOutUsers", "users", auth?.currentUser?.uid),
+      doc(db, "TimeOut", "TimeOutUsers", "users", user.uid),
       (snapshot) => {
         const postNumber = snapshot?.data()?.postNumber || 0;
         const postTimer = snapshot?.data()?.postTimer;
@@ -60,7 +59,7 @@ const Modal = () => {
   //Post Prayer
   const postPrayer = () => {
     try {
-      if (!auth?.currentUser) return;
+      if (!user) return;
       if (!prayer) return;
       if (!isTimeGone || postNumber === 3) {
         toast.error("You have reached max post number");
@@ -72,12 +71,12 @@ const Modal = () => {
       setModalOpen(false);
 
       const newPrayer = {
-        address: auth?.currentUser?.email,
+        address: user.email,
         prayer: prayerToPost?.slice(0, 250),
         createdAt: serverTimestamp(),
-        image: auth?.currentUser?.photoURL,
-        name: auth?.currentUser?.displayName,
-        uid: auth?.currentUser?.uid
+        image: user.image,
+        name: user.name,
+        uid: user.uid
       }
 
       createPrayer(newPrayer)
@@ -88,7 +87,7 @@ const Modal = () => {
           postNumber: 1,
           postTimer: 0,
         }
-        createTimeOutDoc(auth?.currentUser?.uid,timeOutDoc)
+        createTimeOutDoc(user.uid, timeOutDoc)
 
       } else {
 
@@ -96,7 +95,7 @@ const Modal = () => {
           postNumber: increment(1),
           postTimer: postNumber === 2 ? serverTimestamp() : 0,
         }
-        UpdateTimeOutDoc(auth?.currentUser?.uid, updatetimeoutdoc)
+        UpdateTimeOutDoc(user.uid, updatetimeoutdoc)
       }
       toast.success("Prayer Posted!", {
         style: { background: "#04111d", color: "#fff" },
@@ -135,9 +134,9 @@ const Modal = () => {
         </div>
           {!isTimeGone && postTimer && 
           <div className="flex h-full relative top-[60px] w-full flex-col justify-center items-center">
-            <h1 className="flex items-center justify-center z-50 flex-col p-5 text-xl">
+            <div className="flex items-center justify-center z-50 flex-col p-5 text-xl">
               Time Left: <Countdown date={postTimer} renderer={renderer} />
-            </h1>
+            </div>
             <img className="object-contain relative bottom-[80px] h-80 w-80" src="https://miro.medium.com/max/1400/0*4Gzjgh9Y7Gu8KEtZ.gif"  />
           </div>
           }

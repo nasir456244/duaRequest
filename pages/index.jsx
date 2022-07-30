@@ -6,7 +6,6 @@ import Modal from '../components/PostPrayerModal'
 import { FaRegEdit } from 'react-icons/fa'
 import { PrayerRequestContext } from '../context/PrayerRequest'
 import Head from 'next/head'
-import { getAuth } from 'firebase/auth'
 
 
 const styles = {
@@ -19,8 +18,7 @@ const styles = {
 
 
 const Home = () => {
-  const { modalOpen, setModalOpen,   } = useContext(PrayerRequestContext)
-  const auth = getAuth()
+  const { modalOpen, setModalOpen, user   } = useContext(PrayerRequestContext)
 
 
 
@@ -34,7 +32,7 @@ const Home = () => {
       </Head>
       <Toaster position="top-center" reverseOrder={false}/>
       <Navbar />
-      {auth?.currentUser &&  (
+      {user &&  (
         <div className={ `${modalOpen ? styles.empty : styles.show}`}>
           <button className="fixed bottom-[60px] right-[60px] z-20 text-[#000] transition-all duration-500 hover:text-white hover:scale-125"
               onClick={() => {setModalOpen(true);}}><FaRegEdit size={28} />

@@ -1,9 +1,10 @@
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { RiMenu2Line } from "react-icons/ri";
 import { RiMenu3Fill } from "react-icons/ri";
 import { useRouter } from "next/router";
-import { getAuth, signOut  } from 'firebase/auth'
+import { signOut  } from 'firebase/auth'
+import { PrayerRequestContext } from "@/context/PrayerRequest";
 
 const styles = {
   container: `w-full h-[150px] flex justify-around items-center overflow-hidden`,
@@ -19,17 +20,9 @@ const styles = {
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const router = useRouter();
-  const auth = getAuth()
+  const { user, logout } = useContext(PrayerRequestContext)
 
-
-
-  const logout = () => {
-    signOut(auth).then(() => {
-      sessionStorage.clear();
-      router.push('/')
-    })
-  }
-  
+ 
 
 
   return (
@@ -57,19 +50,19 @@ const Navbar = () => {
         </li>
       </div>
 
-      {auth?.currentUser && 
+      {user && 
         <div className="flex items-center justify-center text-[#fff]">
-          <p className="mr-2 text-md">{auth?.currentUser?.displayName}</p>
+          <p className="mr-2 text-md">{user.name}</p>
           <img
             onClick={logout}
             className="cursor-pointer rounded-[50%] w-[50px] h-[50px]"
             src={
-              auth?.currentUser?.photoURL
+              user.image
             }
           />
         </div>
       }
-      {!auth?.currentUser &&
+      {!user &&
         <button
           onClick={() => router.push("/login")}
           className="text-[#000] bg-[#f3f2f5] py-2 px-5 rounded-[2px]"

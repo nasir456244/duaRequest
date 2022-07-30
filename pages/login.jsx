@@ -1,19 +1,17 @@
 import React, { useContext, useState } from 'react'
 import { PrayerRequestContext } from '../context/PrayerRequest'
 import { useRouter } from 'next/router'
-import { getAuth } from 'firebase/auth'
 
 const Login = () => {
 
     const { user, SignInWithGoogle } = useContext(PrayerRequestContext)
 
     const router = useRouter()
-    const auth = getAuth()
     console.log(user)
    
   return (
     <div className='text-[#fff]  w-screen h-screen flex flex-col items-center justify-center'>
-        {auth?.currentUser? 
+        {user? 
         <div className='flex flex-col items-center'>
             <p>You are logged in</p>
             <a onClick={() => router.push('/')} className='underline cursor-pointer'>Please go back to home page</a>
