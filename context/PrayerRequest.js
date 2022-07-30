@@ -13,11 +13,12 @@ export const PrayerRequestProvider = ( { children } ) => {
     const googleProvider = new GoogleAuthProvider()
     const [user, setUser] = useState(null)
 
+
     const handleUser = (rawUser) => {
         if(rawUser) {
             const user = formatUser(rawUser)
-
-            createUser(user?.uid, user)
+            const { token, ...userWithoutToken } = user;
+            createUser(user?.uid, userWithoutToken)
             setUser(user)
             return user
         } else {
@@ -26,12 +27,14 @@ export const PrayerRequestProvider = ( { children } ) => {
         }
     }
 
+    
+
     const SignInWithGoogle = () => {
         signInWithPopup(auth, googleProvider)
          .then((response) => {
             handleUser(response?.user)
             alert('You logged in')
-            sessionStorage.setItem('Token', response.user.accessToken)
+            sessionStorage.setItem('Token', response?.user?.accessToken)
             router.push('/')
            })
            .catch((error) => {
@@ -39,12 +42,14 @@ export const PrayerRequestProvider = ( { children } ) => {
            })
     }
 
-    const formatUser = (user) => {
+    const formatUser = async (user) => {
+        const token = await user?.getIdToken()
         return {
             uid: user?.uid,
             name: user?.displayName,
             email: user?.email,
             image: user?.photoURL,
+            token
         }
     }
 
@@ -66,11 +71,7 @@ export const PrayerRequestProvider = ( { children } ) => {
               deleteDua,
               setDeleteDua,
               user,
-              SignInWithGoogle
-              
-              
-                             
-                              
+              SignInWithGoogle,                     
             }}>
 
                 {children}

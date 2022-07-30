@@ -4,6 +4,7 @@ import { getAuth } from 'firebase/auth'
 import { collection, deleteDoc, doc, getDoc,query, onSnapshot,orderBy, where } from "firebase/firestore";
 import { db } from "../../../lib/firebaseConfig";
 import { AiFillDelete } from 'react-icons/ai'
+import { DeleteComment } from "../../../lib/db";
 const styles = {
   commentBody: `bg-[#e8e8e8] w-contain p-3 rounded-2xl break-words max-w-[50%] min-w-[200px] overflow-hidden`,
   address: `text-[17px] w-full flex items-center justify-between `,
@@ -38,7 +39,7 @@ const Comment = ({ address, comment, createdAt, name, image,id, deleteDua, setDe
     if(deleteDua === true) {
       const queryId = window.location.pathname.split("/")[2];
       const commentToDelete = id
-      deleteDoc(doc(db,'Prayers', queryId, 'comments', commentToDelete))
+      DeleteComment(queryId, commentToDelete)
       setDeleteDua(false)
     }
     return

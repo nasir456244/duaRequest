@@ -1,12 +1,11 @@
 import React, { useContext } from 'react'
 import Navbar from '../components/Navbar'
-import toast, { Toaster } from 'react-hot-toast'
+import { Toaster } from 'react-hot-toast'
 import Prayers from '../components/Prayers'
 import Modal from '../components/PostPrayerModal'
 import { FaRegEdit } from 'react-icons/fa'
 import { PrayerRequestContext } from '../context/PrayerRequest'
 import Head from 'next/head'
-import { useSession } from 'next-auth/react'
 import { getAuth } from 'firebase/auth'
 
 
@@ -22,6 +21,7 @@ const styles = {
 const Home = () => {
   const { modalOpen, setModalOpen,   } = useContext(PrayerRequestContext)
   const auth = getAuth()
+
 
 
   return (

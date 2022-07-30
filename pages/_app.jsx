@@ -4,7 +4,6 @@ import { PrayerRequestProvider } from '../context/PrayerRequest'
 import Script from 'next/script'
 import { useRouter } from 'next/router'
 import * as gtag from '../lib/gtag'
-import { SessionProvider } from 'next-auth/react'
 
 function MyApp({ Component, pageProps, session }) {
   const router = useRouter()
@@ -41,11 +40,9 @@ function MyApp({ Component, pageProps, session }) {
             }}
           />
           
-          <SessionProvider session={session} >
             <PrayerRequestProvider>
               <Component {...pageProps} />
             </PrayerRequestProvider>
-          </SessionProvider>
           
           
          

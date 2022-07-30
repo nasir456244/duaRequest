@@ -19,6 +19,7 @@ import { BsEmojiSmile } from "react-icons/bs";
 import { RiSendPlane2Fill } from "react-icons/ri";
 import { useRouter } from "next/router";
 import { getAuth } from 'firebase/auth'
+import { addComment, dislikePrayer, likePrayer } from "../lib/db";
 
 const styles = {
   listContainer: ` tracking-2 hover:shadow-2xl flex flex-col p-[4px] bg-[#e4e6e8] rounded-2xl break-words overflow-hidden max-w-full h-fit `,
@@ -42,20 +43,18 @@ const Prayer = ({ address, id, prayer, timestamp, name, image }) => {
   useEffect(
     () =>
       setHasLiked(
-        likes?.findIndex((like) => like?.id === auth?.currentUser?.email) !== -1
+        likes?.findIndex((like) => like?.id === auth?.currentUser?.uid) !== -1
       ),
     [likes]
   );
 
-  const likepost = async () => {
+  const likepost = () => {
     if (!auth?.currentUser) return;
 
     if (hasliked) {
-      await deleteDoc(doc(db, "Prayers", id, "likes", auth?.currentUser?.email));
+      dislikePrayer(id, auth?.currentUser?.uid)
     } else {
-      await setDoc(doc(db, "Prayers", id, "likes", auth?.currentUser?.email), {
-        address: auth?.currentUser?.email,
-      });
+      likePrayer(id, auth?.currentUser?.uid)
     }
     return;
   };
@@ -73,20 +72,23 @@ const Prayer = ({ address, id, prayer, timestamp, name, image }) => {
     []
   );
 
-  const sendComment = async (e) => {
+  const sendComment = (e) => {
     e.preventDefault();
     if (!auth?.currentUser) return;
 
     const commentToSend = comment;
     setComment("");
 
-    await addDoc(collection(db, "Prayers", id, "comments"), {
+    const newComment = {
       address: auth?.currentUser?.email,
       name: auth?.currentUser?.displayName,
       comment: commentToSend?.slice(0, 250),
       createdAt: serverTimestamp(),
       image: auth?.currentUser?.photoURL,
-    });
+      uid: auth?.currentUser?.uid
+
+    }
+    addComment(id, newComment)
 
     return;
   };

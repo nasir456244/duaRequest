@@ -54,7 +54,6 @@ const MyPrayer = () => {
 
                 {prayers?.map((item) => (
                   <MyPrayers key={item?.id}
-                  address={item?.data()?.address}
                   name={item?.data()?.name}
                   prayer={item?.data()?.prayer}
                   createdAt={item?.data()?.createdAt?.toDate()}

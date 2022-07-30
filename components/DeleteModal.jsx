@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 
 const styles = {
     container: `w-screen z-50 h-screen fixed flex justify-center items-center overflow-hidden`,
@@ -17,7 +17,7 @@ const DeleteModal = ({setIsDeleteModalOpen, setDeleteDua}) => {
                 Are sure you want to delete it?
             </h3>
             <div className={styles.buttons}>
-                <button onClick={() => {setDeleteDua(false);setIsDeleteModalOpen(false);}} className={styles.no}>Sike</button>
+                <button onClick={() => {setDeleteDua(false);setIsDeleteModalOpen(false);}} className={styles.no}>Cancel</button>
                 <button onClick={() => {setDeleteDua(true);setIsDeleteModalOpen(false);}} className={styles.yes}>Delete</button>
             </div>
 

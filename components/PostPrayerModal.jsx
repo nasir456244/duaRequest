@@ -5,17 +5,14 @@ import { PrayerRequestContext } from "../context/PrayerRequest";
 import toast from "react-hot-toast";
 import { db } from "../lib/firebaseConfig";
 import {
-  addDoc,
-  collection,
   doc,
   increment,
   onSnapshot,
   serverTimestamp,
-  setDoc,
-  updateDoc,
 } from "firebase/firestore";
 import Countdown from "react-countdown";
 import { getAuth } from "firebase/auth";
+import { createPrayer, createTimeOutDoc, UpdateTimeOutDoc } from "../lib/db";
 
 const styles = {
   modalBackground: `w-screen z-50 h-screen fixed flex justify-center items-center overflow-hidden `,
@@ -39,7 +36,7 @@ const Modal = () => {
 
   useEffect(() => {
     onSnapshot(
-      doc(db, "TimeOut", "TimeOutUsers", "users", auth?.currentUser?.email),
+      doc(db, "TimeOut", "TimeOutUsers", "users", auth?.currentUser?.uid),
       (snapshot) => {
         const postNumber = snapshot?.data()?.postNumber || 0;
         const postTimer = snapshot?.data()?.postTimer;
@@ -61,7 +58,7 @@ const Modal = () => {
   }, []);
 
   //Post Prayer
-  const postPrayer = async () => {
+  const postPrayer = () => {
     try {
       if (!auth?.currentUser) return;
       if (!prayer) return;
@@ -74,29 +71,32 @@ const Modal = () => {
       setPrayer("");
       setModalOpen(false);
 
-      await addDoc(collection(db, 'Prayers'), {
+      const newPrayer = {
         address: auth?.currentUser?.email,
         prayer: prayerToPost?.slice(0, 250),
         createdAt: serverTimestamp(),
         image: auth?.currentUser?.photoURL,
         name: auth?.currentUser?.displayName,
-      });
+        uid: auth?.currentUser?.uid
+      }
+
+      createPrayer(newPrayer)
+      
       if (postNumber === 0) {
-        await setDoc(
-          doc(db, "TimeOut", "TimeOutUsers", "users", auth?.currentUser?.email),
-          {
-            postNumber: 1,
-            postTimer: 0,
-          }
-        );
+
+        const timeOutDoc = {
+          postNumber: 1,
+          postTimer: 0,
+        }
+        createTimeOutDoc(auth?.currentUser?.uid,timeOutDoc)
+
       } else {
-        await updateDoc(
-          doc(db, "TimeOut", "TimeOutUsers", "users", auth?.currentUser?.email),
-          {
-            postNumber: increment(1),
-            postTimer: postNumber === 2 ? serverTimestamp() : 0,
-          }
-        );
+
+        const updatetimeoutdoc = {
+          postNumber: increment(1),
+          postTimer: postNumber === 2 ? serverTimestamp() : 0,
+        }
+        UpdateTimeOutDoc(auth?.currentUser?.uid, updatetimeoutdoc)
       }
       toast.success("Prayer Posted!", {
         style: { background: "#04111d", color: "#fff" },

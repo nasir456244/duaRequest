@@ -18,6 +18,7 @@ import Comment from "./component/Comment";
 import { RiSendPlane2Fill } from "react-icons/ri";
 import { getAuth } from 'firebase/auth'
 import { PrayerRequestContext } from "../../context/PrayerRequest";
+import { addComment } from "../../lib/db";
 
 const styles = {
   modalContainer: `overflow-hidden max-w-screen h-screen flex flex-col px-[8px] py-[20px]`,
@@ -59,20 +60,23 @@ const CommentPage = () => {
     return () => unsub();
   }, []);
 
-  const sendComment = async (e) => {
+  const sendComment = (e) => {
     e.preventDefault();
     if (!auth?.currentUser) return;
     if(!chat) return;
     const commentToSend = chat;
     setChat("");
 
-    await addDoc(collection(db, "Prayers", queryId, "comments"), {
+    const newComment = {
       address: auth?.currentUser?.email,
       comment: commentToSend?.slice(0, 250),
       createdAt: serverTimestamp(),
       image: auth?.currentUser?.photoURL,
       name: auth?.currentUser?.displayName,
-    });
+      uid: auth?.currentUser?.uid
+    }
+    addComment(queryId, newComment)
+
   };
 
   useEffect(() => {
