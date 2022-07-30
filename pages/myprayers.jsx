@@ -25,7 +25,7 @@ const MyPrayer = () => {
             query(collection(db, "Prayers"), orderBy("createdAt", "desc")),
             (snapshot) => { setPrayers(snapshot?.docs?.filter((data) => 
               data?._document?.data?.value?.mapValue?.fields?.
-              address?.stringValue == user.email));
+              address?.stringValue == user?.email));
               setIsMyPrayerLoading(false)
             }
           ),

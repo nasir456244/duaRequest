@@ -20,6 +20,7 @@ import { PrayerRequestContext } from "@/context/PrayerRequest";
 const styles = {
   listContainer: ` tracking-2 hover:shadow-2xl flex flex-col p-[4px] bg-[#e4e6e8] rounded-2xl break-words overflow-hidden max-w-full h-fit `,
 };
+
 const Prayer = ({ id, prayer, timestamp, name, image }) => {
   const [likes, setLikes] = useState([]);
   const [hasliked, setHasLiked] = useState(false);
@@ -77,12 +78,12 @@ const Prayer = ({ id, prayer, timestamp, name, image }) => {
     setComment("");
 
     const newComment = {
-      address: auth?.currentUser?.email,
-      name: auth?.currentUser?.displayName,
+      address: user?.email,
+      name: user?.name,
       comment: commentToSend?.slice(0, 250),
       createdAt: serverTimestamp(),
-      image: auth?.currentUser?.photoURL,
-      uid: auth?.currentUser?.uid
+      image: user?.image,
+      uid: user?.uid
 
     }
     addComment(id, newComment)
