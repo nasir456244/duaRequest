@@ -28,7 +28,6 @@ export const PrayerRequestProvider = ( { children } ) => {
         }
     }
 
-    console.log(user)
 
 
     const SignInWithGoogle = () => {

@@ -8,7 +8,6 @@ import {
   query,
   onSnapshot,
   orderBy,
-  addDoc,
   doc,
   collection,
   serverTimestamp,
@@ -16,9 +15,10 @@ import {
 } from "firebase/firestore";
 import Comment from "./component/Comment";
 import { RiSendPlane2Fill } from "react-icons/ri";
-import { getAuth } from 'firebase/auth'
 import { PrayerRequestContext } from "../../context/PrayerRequest";
 import { addComment } from "../../lib/db";
+
+
 
 const styles = {
   modalContainer: `overflow-hidden max-w-screen h-screen flex flex-col px-[8px] py-[20px]`,
@@ -33,11 +33,9 @@ const CommentPage = () => {
   const [commentsLoading, setCommentsLoding] = useState(true);
   const [chat, setChat] = useState("");
   const router = useRouter();
-  const refreshData = () => router.replace(`/comment/${id}`);
   const [comments, setComments] = useState([]);
   const [queryId, setqueryId] = useState("");
-  const auth = getAuth()
-  const { isDeleteModalOpen,setIsDeleteModalOpen, deleteDua, setDeleteDua} = useContext(PrayerRequestContext)
+  const { isDeleteModalOpen, user, setIsDeleteModalOpen, deleteDua, setDeleteDua} = useContext(PrayerRequestContext)
 
 
 
@@ -62,18 +60,18 @@ const CommentPage = () => {
 
   const sendComment = (e) => {
     e.preventDefault();
-    if (!auth?.currentUser) return;
+    if (!user) return;
     if(!chat) return;
     const commentToSend = chat;
     setChat("");
 
     const newComment = {
-      address: auth?.currentUser?.email,
+      address: user.email,
       comment: commentToSend?.slice(0, 250),
       createdAt: serverTimestamp(),
-      image: auth?.currentUser?.photoURL,
-      name: auth?.currentUser?.displayName,
-      uid: auth?.currentUser?.uid
+      image: user.image,
+      name: user.name,
+      uid: user.uid
     }
     addComment(queryId, newComment)
 
@@ -122,14 +120,14 @@ const CommentPage = () => {
         <input
           type="text"
           required
-          disabled={!auth?.currentUser}
+          disabled={!user}
           value={chat}
           className={styles.input}
           onChange={(e) => setChat(e.target?.value)}
           minLength={1}
           maxLength={250}
           placeholder={`${
-            !auth?.currentUser ? "login to comment" : "add a comment..."
+            !user ? "login to comment" : "add a comment..."
           }`}
         />
         <button

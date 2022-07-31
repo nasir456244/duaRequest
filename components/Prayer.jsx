@@ -78,12 +78,12 @@ const Prayer = ({ id, prayer, timestamp, name, image }) => {
     setComment("");
 
     const newComment = {
-      address: user?.email,
-      name: user?.name,
+      address: user.email,
+      name: user.name,
       comment: commentToSend?.slice(0, 250),
       createdAt: serverTimestamp(),
-      image: user?.image,
-      uid: user?.uid
+      image: user.image,
+      uid: user.uid
 
     }
     addComment(id, newComment)
