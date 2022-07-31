@@ -77,7 +77,7 @@ const Comment = ({ address, comment, createdAt, name, image,id, deleteDua, setDe
           </div>
           <p
             className={`${styles.comment}${
-              address == user.email ? "text-[#fff]" : "text-black"
+              address == user?.email ? "text-[#fff]" : "text-black"
             }`}
           >
             {comment}
