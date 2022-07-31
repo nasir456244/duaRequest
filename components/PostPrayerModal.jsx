@@ -71,12 +71,12 @@ const Modal = () => {
       setModalOpen(false);
 
       const newPrayer = {
-        address: user.email,
+        address: user?.email,
         prayer: prayerToPost?.slice(0, 250),
         createdAt: serverTimestamp(),
-        image: user.image,
-        name: user.name,
-        uid: user.uid
+        image: user?.image,
+        name: user?.name,
+        uid: user?.uid
       }
 
       createPrayer(newPrayer)

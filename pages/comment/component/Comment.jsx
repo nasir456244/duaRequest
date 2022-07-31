@@ -28,7 +28,7 @@ const Comment = ({ address, comment, createdAt, name, image,id, deleteDua, setDe
     () => {
       const queryId = window.location.pathname.split("/")[2];
       getDoc(doc(db, `Prayers/${queryId}`)).then((res) => 
-      setOwner(res?.data()?.address == user.email))
+      setOwner(res?.data()?.address == user?.email))
   },[]
   );
 
@@ -53,20 +53,20 @@ const Comment = ({ address, comment, createdAt, name, image,id, deleteDua, setDe
     <div>
       <div
         className={`${
-          address == user.email
+          address == user?.email
             ? "flex justify-end py-3 items-center w-full "
             : "flex items-center justify-start py-3 w-full"
         }`}
       >
         <div
           className={`${styles.commentBody} ${
-            address == user.email && "bg-[#10c850]"
+            address == user?.email && "bg-[#10c850]"
           }`}
         >
           <div className={styles.address}>
             <p
               className={`${
-                address == user.mail
+                address == user?.mail
                   ? "text-[#434544]"
                   : "text-[#484949]"
               }`}
@@ -85,7 +85,7 @@ const Comment = ({ address, comment, createdAt, name, image,id, deleteDua, setDe
           <div className={styles.time}>
             <p
               className={`${
-                address == user.email
+                address == user?.email
                   ? "text-[#434544]"
                   : "text-[#484949]"
               }`}
@@ -96,7 +96,7 @@ const Comment = ({ address, comment, createdAt, name, image,id, deleteDua, setDe
         </div>
         <div
           className={`flex mt-[55px]  order-first ${
-            address == user.email ? "order-last ml-2" : "mr-2"
+            address == user?.email ? "order-last ml-2" : "mr-2"
           }`}
         >
           <img src={image} className=" rounded-[50%] w-[40px] h-[40px]" />

@@ -66,12 +66,12 @@ const CommentPage = () => {
     setChat("");
 
     const newComment = {
-      address: user.email,
+      address: user?.email,
       comment: commentToSend?.slice(0, 250),
       createdAt: serverTimestamp(),
-      image: user.image,
-      name: user.name,
-      uid: user.uid
+      image: user?.image,
+      name: user?.name,
+      uid: user?.uid
     }
     addComment(queryId, newComment)
 
