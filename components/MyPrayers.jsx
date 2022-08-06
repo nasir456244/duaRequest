@@ -55,7 +55,6 @@ const MyPrayers = ({ name, createdAt, image, prayer, id, setIsDeleteModalOpen,se
         </p>
         <TimeAgo datetime={createdAt} />
       </div>
-
       
     </div>
   )

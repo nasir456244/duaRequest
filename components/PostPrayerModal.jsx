@@ -135,7 +135,7 @@ const Modal = () => {
           {!isTimeGone && postTimer && 
           <div className="flex h-full relative top-[60px] w-full flex-col justify-center items-center">
             <div className="flex items-center justify-center z-50 flex-col p-5 text-xl">
-              Time Left: <Countdown date={postTimer} renderer={renderer} />
+              Time Left to request prayer: <Countdown date={postTimer} renderer={renderer} />
             </div>
             <img className="object-contain relative bottom-[80px] h-80 w-80" src="https://miro.medium.com/max/1400/0*4Gzjgh9Y7Gu8KEtZ.gif"  />
           </div>

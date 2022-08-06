@@ -20,26 +20,25 @@ const MyPrayer = () => {
     const { isDeleteModalOpen, user, setIsDeleteModalOpen, deleteDua, setDeleteDua} = useContext(PrayerRequestContext)
 
 
-    const { data, error } = useSWR(user ? ['/api/MyPrayers', user.token] : null , fetcher)
+    // const { data, error } = useSWR(user ? ['/api/MyPrayers', user.token] : null , fetcher)
 
-    console.log(error)
-    // console.log(data?.map((item) => item.createdAt))
+    // console.log(error)
+    // // console.log(data?.map((item) => item.createdAt))
 
 
-    // useEffect(
-    //     () =>
-    //       onSnapshot(
-    //         query(collection(db, "Prayers"), where('uid', '==', user?.uid), orderBy("createdAt", "desc")),
-    //         (snapshot) => { setPrayers(snapshot?.docs)
-    //           // ?.filter((data) => 
-    //           // data?._document?.data?.value?.mapValue?.fields?.
-    //           // address?.stringValue == user.email
-    //           // ));
-    //           setIsMyPrayerLoading(false)
-    //         }
-    //       ),
-    //     []
-    //   );
+    useEffect(
+        () =>
+          onSnapshot(
+            query(collection(db, "Prayers"), orderBy("createdAt", "desc")),
+            (snapshot) => { setPrayers(snapshot?.docs?.filter((data) => 
+              data?._document?.data?.value?.mapValue?.fields?.
+              address?.stringValue == user?.email
+              ));
+              setIsMyPrayerLoading(false)
+            }
+          ),
+        []
+      );
 
   return (
     <>
@@ -52,19 +51,19 @@ const MyPrayer = () => {
       
         <h2>My Prayers </h2>
         <div className={styles.container}>
-          {/* {!data ? 
+          {isMyPrayerLoading ? 
             <PrayerSkeleton />
         
             :
       
             <div className={styles?.listMainContainer}>
 
-                {data?.map((item) => (
+                {prayers?.map((item) => (
                   <MyPrayers key={item?.id}
-                  name={item?.name}
-                  prayer={item?.prayer}
-                  createdAt={item?.createdAt}
-                  image={item?.image}
+                  name={item?.data()?.name}
+                  prayer={item?.data()?.prayer}
+                  createdAt={item?.data()?.createdAt?.toDate()}
+                  image={item?.data()?.image}
                   id={item?.id}
                   setIsDeleteModalOpen={setIsDeleteModalOpen}
                   deleteDua={deleteDua}
@@ -73,7 +72,7 @@ const MyPrayer = () => {
                   />
                   ))}
             </div>
-          } */}
+          }
 
         </div>
      

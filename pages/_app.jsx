@@ -5,7 +5,7 @@ import Script from 'next/script'
 import { useRouter } from 'next/router'
 import * as gtag from '../lib/gtag'
 
-function MyApp({ Component, pageProps, session }) {
+function MyApp({ Component, pageProps }) {
   const router = useRouter()
 
   useEffect(() => {
