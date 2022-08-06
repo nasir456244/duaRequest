@@ -10,10 +10,10 @@ const Login = () => {
 
     return (
 
-        <div className='w-screen h-screen overflow-hidden'>
+        <div className='min-w-screen min-h-screen overflow-hidden'>
             <Navbar />
 
-        <div className='text-[#fff] w-screen h-screen  flex flex-col items-center justify-center'>
+        <div className='text-[#fff] w-screen h-screen flex flex-col items-center justify-center '>
             {user ?
                 <div className='flex flex-col items-center'>
                     <p>You are logged in</p>
@@ -23,7 +23,7 @@ const Login = () => {
                 <>
 
 
-                    <div className="flex flex-col  justify-center mb-[180px] py-4 w-[420px] h-[344px] bg-white text-gray-800 rounded-2xl">
+                    <div className="flex flex-col  justify-center mb-[180px] py-4 sm:w-[370px] w-[420px] h-[344px] bg-white text-gray-800 rounded-2xl">
                         <div className="flex justify-center p-3 mb-5 w-full">
                             <p className="flex font-bold text-[24px] ">Login into your account</p>
                         </div>
