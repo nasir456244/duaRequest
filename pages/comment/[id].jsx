@@ -24,7 +24,7 @@ import { PrayerRequestContext } from "../../context/PrayerRequest";
 import { addComment } from "../../lib/db";
 
 const styles = {
-  mainContainer: ` flex justify-center sm:px-3`,
+  mainContainer: ` flex justify-center sm:px-3 sm:pb-3`,
   modalContainer: `flex  flex-col overflow-auto bg-white w-[580px] sm:max-h-[730px] h-[780px] overflow-hidden `,
   title: `text-[20px] text-black font-bold	leading-7 flex justify-center`,
   body: ` h-screen  overflow-auto mt-[15px] mb-[5px] p-[10px] rounded-xl `,
