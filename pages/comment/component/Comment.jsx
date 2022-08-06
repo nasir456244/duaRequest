@@ -1,24 +1,22 @@
 import React, { useRef, useEffect, useState, useContext } from "react";
 import TimeAgo from "timeago-react";
-import { doc, getDoc } from "firebase/firestore";
+import { getAuth } from 'firebase/auth'
+import { collection, deleteDoc, doc, getDoc, query, onSnapshot, orderBy, where } from "firebase/firestore";
 import { db } from "../../../lib/firebaseConfig";
-import { AiFillDelete } from 'react-icons/ai'
+import { MdDelete } from 'react-icons/md'
+import { PrayerRequestContext } from "../../../context/PrayerRequest";
 import { DeleteComment } from "../../../lib/db";
-import { PrayerRequestContext } from "@/context/PrayerRequest";
-
-
 const styles = {
-  commentBody: `bg-[#e8e8e8] w-contain p-3 rounded-2xl break-words max-w-[50%] min-w-[200px] overflow-hidden`,
-  address: `text-[17px] w-full flex items-center justify-between `,
-  time: `flex justify-end text-[14px] `,
-  comment: `text-[22px] py-[2px] `,
+  commentBody: `tracking-2 flex flex-col w-full mt-[12px] overflow-hidden p-[4px] bg-[#ffffff] rounded-2xl break-words h-fit`,
+  address: `flex items-center text-[14px] font-semibold text-[#000000] not-italic `,
+  time: `flex justify-end w-full text-[14px]`,
+  comment: `font-medium text-[12px] color-black `,
 };
 
-const Comment = ({ address, comment, createdAt, name, image,id, deleteDua, setDeleteDua, setIsDeleteModalOpen }) => {
+const Comment = ({ address, comment, createdAt, name, image, id, deleteDua, setDeleteDua, setIsDeleteModalOpen }) => {
   const btnRef = useRef(null);
   const [owner, setOwner] = useState()
   const { user } = useContext(PrayerRequestContext)
-
 
   useEffect(() => btnRef?.current?.scrollIntoView(), []);
 
@@ -51,57 +49,54 @@ const Comment = ({ address, comment, createdAt, name, image,id, deleteDua, setDe
 
   return (
     <div>
-      <div
-        className={`${
-          address == user?.email
-            ? "flex justify-end py-3 items-center w-full "
-            : "flex items-center justify-start py-3 w-full"
-        }`}
-      >
+      <div className="flex flex-row m-1">
         <div
-          className={`${styles.commentBody} ${
-            address == user?.email && "bg-[#10c850]"
-          }`}
-        >
-          <div className={styles.address}>
-            <p
-              className={`${
-                address == user?.mail
-                  ? "text-[#434544]"
-                  : "text-[#484949]"
+          className={`${address == user?.email
+            ? "flex   w-full border border-l-[3px] m-1 rounded-md border-l-[#0ABEEE]	"
+            : "flex w-full border border-l-[3px] m-1 rounded-md border-l-[#112EA0]"
+            }`}>
+          <div
+            className={`flex flex-col  content-centers items-center p-1  ${address == user?.email ? "" : ""
               }`}
-            >
-              {name}
-            </p>
-            {owner && <AiFillDelete size={16} onClick={() => deleteComment(id)} className='text-[#f00] cursor-pointer '/>}
-          </div>
-          <p
-            className={`${styles.comment}${
-              address == user?.email ? "text-[#fff]" : "text-black"
-            }`}
           >
-            {comment}
-          </p>
-          <div className={styles.time}>
-            <p
-              className={`${
-                address == user?.email
-                  ? "text-[#434544]"
-                  : "text-[#484949]"
-              }`}
-            >
-              <TimeAgo datetime={createdAt?.toDate()} />
-            </p>
+            <img src={image} className="  rounded-[50%] w-[40px] h-[40px]  m-2" />
+           <MdDelete size={25} onClick={() => deleteComment(id)} className='text-[#f00] cursor-pointer' />
           </div>
+          
+          <div
+            className={`${styles.commentBody} ${address == user?.email && "bg-[#ffffff] "
+              }`}
+          >
+            <div className={styles.address}>
+              <p
+                className={`${address == user?.email
+                  ? "text-[#000000]"
+                  : "text-[#000000]"
+                  } w-full`}
+              >
+                {address == user?.email ? <p>You</p> : name}
+              </p>
+              <div className={styles.time}>
+                <p
+                  className={`${address == user?.email
+                    ? "text-[#000000]"
+                    : "text-[#000000]"
+                    } font-medium text-[12px]`}
+                >
+                  <TimeAgo datetime={createdAt?.toDate()} />
+                </p>
+              </div>
+            </div>
+            <p
+              className={`${styles.comment}${address == user?.email ? "text-[#8C8C8C]" : "text-[#8C8C8C]"
+                }`}
+            >
+              {comment}
+            </p>
+
+          </div>
+          <div ref={btnRef} />
         </div>
-        <div
-          className={`flex mt-[55px]  order-first ${
-            address == user?.email ? "order-last ml-2" : "mr-2"
-          }`}
-        >
-          <img src={image} className=" rounded-[50%] w-[40px] h-[40px]" />
-        </div>
-        <div ref={btnRef} />
       </div>
     </div>
   );

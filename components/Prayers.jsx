@@ -5,8 +5,8 @@ import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
 import Prayer from "./Prayer";
 
 const styles = {
-  container: `w-full flex justify-center p-[12px] text-[#27425d] flex overflow-x-hidden`,
-  listMainContainer: `grid mb-[65px] grid-cols-1 p-2 gap-[12px] max-w-full sm:max-w-[700px] max-h-full`,
+  container: `w-full flex justify-center p-[12px] text-[srgb(192, 51, 51)] flex overflow-x-hidden`,
+  listMainContainer: `grid mb-[65px] grid-cols-1 p-2 gap-[12px] max-w-[630px] sm:max-w-[700px] max-h-full`,
 };
 
 const Prayers = () => {
@@ -42,8 +42,6 @@ const Prayers = () => {
               address={prayer.data().address}
               prayer={prayer.data().prayer}
               timestamp={prayer.data().createdAt?.toDate()}
-
-              
             />
           ))}
         </div>

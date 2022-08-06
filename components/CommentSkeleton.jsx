@@ -1,9 +1,5 @@
 import React from 'react'
 
-
-
-
-
 const styles = {
     body: `max-w-screen h-screen p-[20px]  overflow-auto mb-[25px]  py-[20px] border-2 rounded-xl`,
     commentBody: `bg-white animate-pulse  w-contain p-2 rounded-2xl break-words sm:w-[250px] w-[180px] overflow-hidden`,
