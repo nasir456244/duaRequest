@@ -18,8 +18,8 @@ import Countdown from "react-countdown";
 import { createPrayer, createTimeOutDoc, UpdateTimeOutDoc } from "../lib/db";
 
 const styles = {
-  modalBackground: `w-screen z-50 h-screen fixed sm:p-1 flex justify-center items-center overflow-hidden `,
-  modalContainer: `overflow-hidden sm:w-full w-[440px] max-h-[600px] transitio-all rounded-[12px] bg-[#fff] shadow-2xl flex flex-col p-[25px]`,
+  modalBackground: `w-screen z-50 sm:p-2 h-screen fixed sm:p-1 flex justify-center items-center overflow-hidden `,
+  modalContainer: `overflow-hidden sm:w-full w-[460px] max-h-[600px] transitio-all rounded-[12px] bg-[#fff] shadow-2xl flex flex-col p-[25px]`,
   title: `inline-block text-center mt-[10px] mb-[40px] text-2xl`,
   input: `w-full h-full p-2 z-50 text-xl resize-none break-all border-2 rounded-lg`,
   footer: `flex justify-around pt-6 `,
@@ -34,12 +34,11 @@ const Modal = () => {
   const [postNumber, setpostNumber] = useState(0);
   const [postTimer, setpostTimer] = useState(0);
   const [isTimeGone, setisTimeGone] = useState(true);
-  const auth = getAuth()
 
 
   useEffect(() => {
     onSnapshot(
-      doc(db, "TimeOut", "TimeOutUsers", "users", auth?.currentUser?.email),
+      doc(db, "TimeOut", "TimeOutUsers", "users", user?.email),
       (snapshot) => {
         const postNumber = snapshot?.data()?.postNumber || 0;
         const postTimer = snapshot?.data()?.postTimer;

@@ -107,11 +107,10 @@ const Prayer = ({ address, id, prayer, timestamp, name, image }) => {
             <div className="flex overflow-hidden justify-start px-2 items-center h-12  ">
               {user && hasliked ? (
                 <BsFillSuitHeartFill
-                  className={` flex cursor-pointer text-[#0ABEEE] ${!user && "cursor-not-allowed"
+                  className={` flex cursor-pointer text-[25px] sm:text-[40px] text-[#0ABEEE] ${!user && "cursor-not-allowed"
                     }`}
                   disabled={!user}
                   onClick={likepost}
-                  size={22}
                 />
               ) : (
                 <BsFillSuitHeartFill
@@ -119,9 +118,8 @@ const Prayer = ({ address, id, prayer, timestamp, name, image }) => {
                   onClick={likepost}
                   className={`${!user
                     ? "cursor-not-allowed "
-                    : "hover:scale-125 cursor-pointer text-[#ADADAD] transition-all duration-150 ease-out cursor-pointer"
+                    : "hover:scale-125 text-[25px] sm:text-[40px] cursor-pointer text-[#ADADAD] transition-all duration-150 ease-out cursor-pointer"
                     } mt-[2px]`}
-                  size={22}
                 />
               )}
               {user && hasliked ? (
@@ -133,8 +131,7 @@ const Prayer = ({ address, id, prayer, timestamp, name, image }) => {
               <FaCommentAlt
                 src={image}
                 atl="comment"
-                size={22}
-                className="cursor-pointer mx-2 mt-[2px] text-[#ADADAD]"
+                className="cursor-pointer mx-2 mt-[2px] text-[25px] sm:text-[40px] text-[#ADADAD]"
                 onClick={() => {
                   router.push(`/comment/${id}`);
                 }}
@@ -143,8 +140,8 @@ const Prayer = ({ address, id, prayer, timestamp, name, image }) => {
                   router.push(`/comment/${id}`);
                 }} className=" mt-[2px] cursor-pointer text-[#8C8C8C] sm:hidden">Comments</p>
             </div>
-            <div className="flex w-[333px] relative top-1 overflow-hidden justify-between items-center bg-[#F2F2F2] p-3 h-[38px] rounded-md">
-              <FaSmileWink className="text-[#8C8C8C]" size={30} />
+            <div className="flex w-[333px] relative  top-1 overflow-hidden justify-between items-center bg-[#F2F2F2] p-3 h-[38px] rounded-md">
+              <FaSmileWink className="text-[#8C8C8C] text-[25px] sm:text-[40px] bg-red-200" />
               <input
                 disabled={!user}
                 required
@@ -164,7 +161,7 @@ const Prayer = ({ address, id, prayer, timestamp, name, image }) => {
                 size={25}
                 disabled={!comment?.trim()}
                 onClick={sendComment}
-                className={`${!comment || !auth?.currentUser
+                className={`${!comment || !user
                   ? "flex text-[#8C8C8C]"
                   : "flex text-[#112EA0] cursor-pointer transition-all ease-out duration-300 hover:scale-105"
                   }  rotate-90  `}
