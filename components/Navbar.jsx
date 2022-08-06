@@ -6,7 +6,7 @@ import { useRouter } from "next/router";
 import { PrayerRequestContext } from "../context/PrayerRequest";
 
 const styles = {
-  container: `w-full h-[100px] flex justify-around items-center overflow-hidden`,
+  container: `w-full h-[100px] flex sm:pt-9 justify-around items-center overflow-hidden`,
   logo: `text-[1.8rem] text-[#fff]`,
   list: `md:flex hidden items-center justify-center xs:fixed xs:bottom-[20px]  lg:static`,
   listItem: `p-3 list-none hover:border-b-2 cursor-pointer text-[16px] font-medium text-[#fff]`,
