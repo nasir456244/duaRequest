@@ -1,22 +1,30 @@
 import Link from 'next/link'
 import React from 'react'
+import Image from 'next/image'
+import Nofound from "../public/404.png"
+import Navbar from '../components/Navbar'
 
 const styles = {
-    container: `w-screen h-screen flex justify-center items-center select-none `,
-    body: ` flex flex-col justify-around items-center h-[500px] `,
-    goBack: `bg-[#ffe01a] p-7 rounded-2xl hover:shadow-2xl text-[2rem]`
+    container: `flex justify-center items-center select-none mt-20 `,
+    body: ` flex flex-col  items-center`,
+    goBack: `flex justify-center items-center bg-[#ffffff] w-[140px] h-[45px] rounded-md text-[#112EA0] font-semibold hover:shadow-2xl text-[17px]`
 
 }
 
 const PageNotFound = () => {
   return (
+    <div>
+       <Navbar />
     <div className={styles.container}>
         <div className={styles.body}>
-            <p className='text-[10rem] text-[#fff] animate-bounce shadow-2xl p-3'>404</p>
-            <p className='text-[1.4rem]'>Oops the page your looking for not found</p>
+            <div>
+              <Image src={Nofound} alt="404" />
+            </div>
+            <p className='absolute mt-60 font-medium text-[20px] text-white'>Oops! This page is not available right now. try again later </p>
             <Link href={'/'}><a className={styles.goBack}>Go back</a></Link>
             
         </div>
+    </div>
     </div>
   )
 }
