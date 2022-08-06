@@ -103,8 +103,8 @@ const Prayer = ({ address, id, prayer, timestamp, name, image }) => {
             <TimeAgo datetime={timestamp} className="font-medium text-xs pr-[4px]" />
           </div>
           <p className="font-medium text-[#8C8C8C] pr-[4px] " >{prayer}</p>
-          <div class="flex  mt-4 rounded-lg ">
-            <div class="flex overflow-hidden justify-start px-2 items-center h-12  ">
+          <div className="flex  mt-4 rounded-lg ">
+            <div className="flex overflow-hidden justify-start px-2 items-center h-12  ">
               {user && hasliked ? (
                 <BsFillSuitHeartFill
                   className={` flex cursor-pointer text-[#0ABEEE] ${!user && "cursor-not-allowed"
@@ -143,7 +143,7 @@ const Prayer = ({ address, id, prayer, timestamp, name, image }) => {
                   router.push(`/comment/${id}`);
                 }} className=" mt-[2px] cursor-pointer text-[#8C8C8C] sm:hidden">Comments</p>
             </div>
-            <div class="flex w-[333px] relative top-1 overflow-hidden justify-between items-center bg-[#F2F2F2] p-3 h-[38px] rounded-md">
+            <div className="flex w-[333px] relative top-1 overflow-hidden justify-between items-center bg-[#F2F2F2] p-3 h-[38px] rounded-md">
               <FaSmileWink className="text-[#8C8C8C]" size={30} />
               <input
                 disabled={!user}
