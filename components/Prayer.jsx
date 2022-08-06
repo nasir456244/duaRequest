@@ -17,8 +17,8 @@ import {
 } from "firebase/firestore";
 import { HiPaperAirplane } from "react-icons/hi";
 import { useRouter } from "next/router";
-import { PrayerRequestContext } from "../context/PrayerRequest";
-import { dislikePrayer, likePrayer } from "../lib/db";
+import { PrayerRequestContext } from "@/context/PrayerRequest";
+import { addComment, dislikePrayer, likePrayer } from "@/lib/db";
 
 const styles = {
   listContainer: `hover:shadow-2xl flex flex-col bg-[#ffffff] rounded-2xl break-words overflow-hidden h-fit `,

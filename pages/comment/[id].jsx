@@ -25,7 +25,7 @@ import { addComment } from "../../lib/db";
 
 const styles = {
   mainContainer: ` flex justify-center sm:px-3`,
-  modalContainer: `flex  flex-col overflow-auto bg-white w-[580px] h-[780px] overflow-hidden `,
+  modalContainer: `flex  flex-col overflow-auto bg-white w-[580px] sm:max-h-[730px] h-[780px] overflow-hidden `,
   title: `text-[20px] text-black font-bold	leading-7 flex justify-center`,
   body: ` h-screen  overflow-auto mt-[15px] mb-[5px] p-[10px] rounded-xl `,
   input: `w-full  p-2 text-xl resize-none break-all bg-[#F2F2F2] outline-0 text-[#000000] mr-2 rounded-[12px] overflow-hidden`,
