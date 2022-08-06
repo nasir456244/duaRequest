@@ -107,7 +107,7 @@ const Prayer = ({ address, id, prayer, timestamp, name, image }) => {
             <div className="flex overflow-hidden justify-start px-2 items-center h-12  ">
               {user && hasliked ? (
                 <BsFillSuitHeartFill
-                  className={` flex cursor-pointer text-[25px] sm:mr-1  sm:text-[40px] text-[#0ABEEE] ${!user && "cursor-not-allowed "
+                  className={` flex cursor-pointer text-[25px] sm:mr-1  sm:text-[43px] text-[#0ABEEE] ${!user && "cursor-not-allowed "
                     }`}
                   disabled={!user}
                   onClick={likepost}
@@ -118,7 +118,7 @@ const Prayer = ({ address, id, prayer, timestamp, name, image }) => {
                   onClick={likepost}
                   className={`${!user
                     ? "cursor-not-allowed text-[25px] sm:mr-1 text-[#ADADAD] sm:text-[40px] "
-                    : "hover:scale-125 text-[25px] sm:mr-1 sm:text-[40px] cursor-pointer text-[#ADADAD] transition-all duration-150 ease-out cursor-pointer"
+                    : "hover:scale-125 text-[25px] sm:mr-1 sm:text-[43px] cursor-pointer text-[#ADADAD] transition-all duration-150 ease-out cursor-pointer"
                     } mt-[2px]`}
                 />
               )}
@@ -141,7 +141,7 @@ const Prayer = ({ address, id, prayer, timestamp, name, image }) => {
                 }} className=" mt-[2px] cursor-pointer text-[#8C8C8C] sm:hidden">Comments</p>
             </div>
             <div className="flex w-[333px] relative  top-1 overflow-hidden justify-between items-center bg-[#F2F2F2] p-3 h-[38px] rounded-md">
-              <FaSmileWink className="text-[#8C8C8C] text-[25px] sm:text-[40px]" />
+              <FaSmileWink className="text-[#8C8C8C] text-[25px] sm:text-[42px]" />
               <input
                 disabled={!user}
                 required
