@@ -97,6 +97,11 @@ const Navbar = () => {
             className="text-white cursor-pointer transition-all duration-500 hover:scale-110 flex absolute left-[10px] top-[10px]"
           />
           <div className={styles.OpenMenuContainer}>
+          <li className={styles.listItem}>
+              <Link className={styles.item} href="/">
+                <a>Home</a>
+              </Link>
+            </li>
             <li className={styles.listItem}>
               <Link className={styles.item} href="/myprayers">
                 <a>My Prayers</a>

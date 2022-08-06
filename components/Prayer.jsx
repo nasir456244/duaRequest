@@ -4,15 +4,11 @@ import { BsFillSuitHeartFill } from "react-icons/bs";
 import { FaCommentAlt, FaSmileWink } from "react-icons/fa";
 import { db } from "../lib/firebaseConfig";
 import {
-  addDoc,
   collection,
-  deleteDoc,
-  doc,
   onSnapshot,
   orderBy,
   query,
   serverTimestamp,
-  setDoc,
   limitToLast,
 } from "firebase/firestore";
 import { HiPaperAirplane } from "react-icons/hi";
@@ -195,13 +191,13 @@ const Prayer = ({ address, id, prayer, timestamp, name, image }) => {
             />
           <div className="flex-1 flex-row w-64 ml-2">
             <p className="font-semibold text-[14px] text-[#000000] not-italic">{comment?.data()?.name}</p>
-            <p className="text-[14px] text-[#8C8C8C] text-ellipsis whitespace-nowrap overflow-hidden w-full">
+            <p className="text-[14px] text-[#8C8C8C] sm:w-[180px] bg-yellow-200 text-ellipsis whitespace-nowrap overflow-hidden w-full">
               {comment?.data()?.comment}
             </p>
           </div>
 
-          <div className="flex">
-            <p className="font-medium flex justify-end text-xs leading-4	drop-shadow-3xl">
+          <div className="flex w-max h-max overflow-hidden">
+            <p className="font-medium bg-red-200 w-max h-max flex justify-end text-xs leading-4	drop-shadow-3xl">
               <TimeAgo datetime={comment?.data()?.createdAt?.toDate()} />
             </p>
           </div>

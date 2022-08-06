@@ -5,14 +5,10 @@ import { PrayerRequestContext } from "../context/PrayerRequest";
 import toast from "react-hot-toast";
 import { db } from "../lib/firebaseConfig";
 import {
-  addDoc,
-  collection,
   doc,
   increment,
   onSnapshot,
   serverTimestamp,
-  setDoc,
-  updateDoc,
 } from "firebase/firestore";
 import Countdown from "react-countdown";
 import { createPrayer, createTimeOutDoc, UpdateTimeOutDoc } from "../lib/db";
@@ -38,7 +34,7 @@ const Modal = () => {
 
   useEffect(() => {
     onSnapshot(
-      doc(db, "TimeOut", "TimeOutUsers", "users", user?.email),
+      doc(db, "TimeOut", "TimeOutUsers", "users", user?.uid),
       (snapshot) => {
         const postNumber = snapshot?.data()?.postNumber || 0;
         const postTimer = snapshot?.data()?.postTimer;
