@@ -195,7 +195,7 @@ const Prayer = ({ address, id, prayer, timestamp, name, image }) => {
             />
           <div className="flex-1 flex-row w-64 ml-2">
             <p className="font-semibold text-[#000000] not-italic">{comment?.data()?.name}</p>
-            <p className="text-[14px] text-ellipsis whitespace-nowrap overflow-hidden w-full">
+            <p className="text-[14px] text-[#8C8C8C] text-ellipsis whitespace-nowrap overflow-hidden w-full">
               {comment?.data()?.comment}
             </p>
           </div>
