@@ -103,7 +103,7 @@ const Prayer = ({ address, id, prayer, timestamp, name, image }) => {
             <div className="flex overflow-hidden justify-start px-2 items-center h-12  ">
               {user && hasliked ? (
                 <BsFillSuitHeartFill
-                  className={` flex cursor-pointer text-[25px] sm:mr-1  sm:text-[55px] text-[#0ABEEE] ${!user && "cursor-not-allowed "
+                  className={` flex cursor-pointer text-[25px] sm:mr-1  sm:text-[45px] text-[#0ABEEE] ${!user && "cursor-not-allowed "
                     }`}
                   disabled={!user}
                   onClick={likepost}
@@ -114,7 +114,7 @@ const Prayer = ({ address, id, prayer, timestamp, name, image }) => {
                   onClick={likepost}
                   className={`${!user
                     ? "cursor-not-allowed text-[25px] sm:mr-1 text-[#ADADAD] sm:text-[35px] "
-                    : "hover:scale-125 text-[25px] sm:mr-1 sm:text-[55px] cursor-pointer text-[#ADADAD] transition-all duration-150 ease-out cursor-pointer"
+                    : "hover:scale-125 text-[25px] sm:mr-1 sm:text-[45px] cursor-pointer text-[#ADADAD] transition-all duration-150 ease-out cursor-pointer"
                     } mt-[2px]`}
                 />
               )}
