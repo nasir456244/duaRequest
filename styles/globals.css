@@ -3,11 +3,11 @@ body {
   padding: 0;
   margin: 0;
   font-family: 'Manrope', sans-serif;
-    background-image: url(../public/background.png);
+    background-image: url(../public/background.webp);
+    background-position: left;
     background-size: cover;
     background-repeat: no-repeat;
     background-attachment: fixed;
-  
     /* background: linear-gradient(107.3deg, #112EA0 0%, #0ABEEE 131.96%); */
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#c455ff",endColorstr="#0d024d",GradientType=1);
     user-select: none;

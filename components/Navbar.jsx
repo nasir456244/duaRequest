@@ -6,7 +6,7 @@ import { useRouter } from "next/router";
 import { PrayerRequestContext } from "../context/PrayerRequest";
 
 const styles = {
-  container: `w-full h-[100px] flex justify-around items-center overflow-hidden`,
+  container: `w-full h-[100px] flex justify-around items-center p-[12px] overflow-hidden`,
   logo: `text-[1.8rem] text-[#fff]`,
   list: `md:flex hidden items-center justify-center xs:fixed xs:bottom-[20px]  lg:static`,
   listItem: `p-3 list-none hover:border-b-2 cursor-pointer text-[16px] font-medium text-[#fff]`,
@@ -25,7 +25,7 @@ const Navbar = () => {
 
 
 
-  
+
 
 
   return (
@@ -36,30 +36,30 @@ const Navbar = () => {
         </Link>
       </div>
       <div className={styles.list}>
-      <li className={ router.pathname == "/" ? styles.activeItem : styles.listItem}>
+        <li className={router.pathname == "/" ? styles.activeItem : styles.listItem}>
           <Link className={styles.item} href="/">
             <a>Home</a>
           </Link>
         </li>
-        <li className={ router.pathname == "/myprayers" ? styles.activeItem : styles.listItem}>
+        <li className={router.pathname == "/myprayers" ? styles.activeItem : styles.listItem}>
           <Link className={styles.item} href="/myprayers">
             <a>My Prayers</a>
           </Link>
         </li>
-        <li className={ router.pathname == "/about" ? styles.activeItem : styles.listItem}>
+        <li className={router.pathname == "/about" ? styles.activeItem : styles.listItem}>
           <Link className={styles.item} href="/about">
             <a>About</a>
           </Link>
         </li>
-        <li className={ router.pathname == "/report" ? styles.activeItem : styles.listItem}>
+        <li className={router.pathname == "/report" ? styles.activeItem : styles.listItem}>
           <Link className={styles.item} href="/report">
             <a>Report</a>
           </Link>
         </li>
       </div>
 
-      {user && 
-        <div className="flex items-center justify-center text-[#fff]">
+      {user &&
+        <div className="flex items-center justify-center w-[100px] text-[#fff]">
           <img
             onClick={logout}
             className="cursor-pointer rounded-[50%] w-[50px] h-[50px]"
@@ -79,13 +79,15 @@ const Navbar = () => {
       }
 
       <div className={styles.menuContainer}>
-        <RiMenu2Line
-          onClick={() => {
-            !isMenuOpen && setIsMenuOpen(true);
-          }}
-          size={30}
-          className="cursor-pointer transition-all duration-500 hover:scale-110"
-        />
+        <div className="flex justify-end  w-[100px]  ">
+          <RiMenu2Line
+            onClick={() => {
+              !isMenuOpen && setIsMenuOpen(true);
+            }}
+            size={30}
+            className="cursor-pointertransition-all duration-500 hover:scale-110"
+          />
+        </div>
       </div>
       {isMenuOpen && (
         <div className={styles.ListMenuContainer}>
@@ -97,7 +99,7 @@ const Navbar = () => {
             className="text-white cursor-pointer transition-all duration-500 hover:scale-110 flex absolute left-[10px] top-[10px]"
           />
           <div className={styles.OpenMenuContainer}>
-          <li className={styles.listItem}>
+            <li className={styles.listItem}>
               <Link className={styles.item} href="/">
                 <a>Home</a>
               </Link>

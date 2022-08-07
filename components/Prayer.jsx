@@ -99,11 +99,11 @@ const Prayer = ({ address, id, prayer, timestamp, name, image }) => {
             <TimeAgo datetime={timestamp} className="font-medium text-xs pr-[4px]" />
           </div>
           <p className="font-medium text-[#8C8C8C] pr-[4px] " >{prayer}</p>
-          <div className="flex  mt-4 rounded-lg ">
+          <div className="flex mt-4 rounded-lg ">
             <div className="flex overflow-hidden justify-start px-2 items-center h-12  ">
               {user && hasliked ? (
                 <BsFillSuitHeartFill
-                  className={` flex cursor-pointer text-[25px] sm:mr-1  sm:text-[43px] text-[#0ABEEE] ${!user && "cursor-not-allowed "
+                  className={` flex cursor-pointer text-[25px] sm:mr-1  sm:text-[35px] text-[#0ABEEE] ${!user && "cursor-not-allowed "
                     }`}
                   disabled={!user}
                   onClick={likepost}
@@ -113,8 +113,8 @@ const Prayer = ({ address, id, prayer, timestamp, name, image }) => {
                   disabled={!user}
                   onClick={likepost}
                   className={`${!user
-                    ? "cursor-not-allowed text-[25px] sm:mr-1 text-[#ADADAD] sm:text-[40px] "
-                    : "hover:scale-125 text-[25px] sm:mr-1 sm:text-[43px] cursor-pointer text-[#ADADAD] transition-all duration-150 ease-out cursor-pointer"
+                    ? "cursor-not-allowed text-[25px] sm:mr-1 text-[#ADADAD] sm:text-[35px] "
+                    : "hover:scale-125 text-[25px] sm:mr-1 sm:text-[35px] cursor-pointer text-[#ADADAD] transition-all duration-150 ease-out cursor-pointer"
                     } mt-[2px]`}
                 />
               )}
@@ -127,7 +127,7 @@ const Prayer = ({ address, id, prayer, timestamp, name, image }) => {
               <FaCommentAlt
                 src={image}
                 atl="comment"
-                className="cursor-pointer mx-2 mt-[2px] text-[25px] sm:text-[40px] text-[#ADADAD]"
+                className="cursor-pointer mx-2 mt-[2px] text-[25px] sm:text-[35px] text-[#ADADAD]"
                 onClick={() => {
                   router.push(`/comment/${id}`);
                 }}
