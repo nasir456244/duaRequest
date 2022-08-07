@@ -11,7 +11,6 @@ const styles = {
   list: `md:flex hidden items-center justify-center xs:fixed xs:bottom-[20px]  lg:static`,
   listItem: `p-3 list-none hover:border-b-2 cursor-pointer text-[16px] font-medium text-[#fff]`,
   activeItem: `p-3 list-none border-[#0ABEEE] border-b-2 cursor-pointer text-[16px] font-medium text-[#0ABEEE]`,
-  disconnectWallet: `text-xl text-[#fff] bg-[#6b50c1] p-[5px] rounded-2xl h-[50px] hover:bg-[#f50018]`,
   menuContainer: `md:hidden flex text-white`,
   ListMenuContainer: `min-w-[30vw] min-h-[100vh] top-[0] items-center right-[0] flex fixed overflow-hidden z-40 bg-gradient-to-tr from-violet-700 via-cyan-600 to-green-300`,
   OpenMenuContainer: ` w-full h-full flex flex-col items-center justify-center`,
@@ -62,7 +61,7 @@ const Navbar = () => {
         <div className="flex items-center justify-center w-[100px] text-[#fff]">
           <img
             onClick={logout}
-            className="cursor-pointer rounded-[50%] w-[50px] h-[50px]"
+            className="cursor-pointer rounded-[50%] sm:ml-12 w-[50px] h-[50px]"
             src={
               user?.image
             }
@@ -72,7 +71,7 @@ const Navbar = () => {
       {!user &&
         <button
           onClick={() => router.push("/login")}
-          className="text-[#112EA0] bg-[#FFFFFF] w-[110px] py-2 px-5 rounded-[7px]"
+          className="text-[#112EA0] bg-[#FFFFFF] relative left-7  w-[110px] py-2 px-5 rounded-[7px]"
         >
           Login
         </button>
