@@ -127,7 +127,7 @@ const Prayer = ({ address, id, prayer, timestamp, name, image }) => {
               <FaCommentAlt
                 src={image}
                 atl="comment"
-                className="cursor-pointer mx-2 mt-[2px] text-[25px] sm:text-[30px] text-[#ADADAD]"
+                className="cursor-pointer mx-2 mt-[2px] text-[25px] sm:text-[33px] text-[#ADADAD]"
                 onClick={() => {
                   router.push(`/comment/${id}`);
                 }}
