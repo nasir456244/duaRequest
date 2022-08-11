@@ -1,97 +1,88 @@
 import { createContext, useEffect, useState } from 'react'
-import { useRouter } from 'next/router';
-import { getAuth, GoogleAuthProvider, signInWithPopup, signOut } from 'firebase/auth'
+import { useRouter } from 'next/router'
+import {
+  getAuth,
+  GoogleAuthProvider,
+  signInWithPopup,
+  signOut
+} from 'firebase/auth'
 import { createUser } from '@/lib/db'
 export const PrayerRequestContext = createContext()
 
-export const PrayerRequestProvider = ( { children } ) => {
-    const [modalOpen, setModalOpen] = useState(false)
-    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
-    const [deleteDua, setDeleteDua] = useState()
-    const router = useRouter()
-    const auth = getAuth()
-    const googleProvider = new GoogleAuthProvider()
-    const [user, setUser] = useState(null)
+export const PrayerRequestProvider = ({ children }) => {
+  const [modalOpen, setModalOpen] = useState(false)
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
+  const [deleteDua, setDeleteDua] = useState(false)
+  const router = useRouter()
+  const auth = getAuth()
+  const googleProvider = new GoogleAuthProvider()
+  const [user, setUser] = useState(null)
 
-
-
-    const handleUser = async (rawUser) => {
-        if(rawUser) {
-            const user = await formatUser(rawUser)
-            const { token, ...userWithoutToken } = user;
-            createUser(user?.uid, userWithoutToken)
-            setUser(user)
-            return user
-        } else {
-            setUser(false)
-            return false
-        }
+  const handleUser = async rawUser => {
+    if (rawUser) {
+      const user = await formatUser(rawUser)
+      const { token, ...userWithoutToken } = user
+      createUser(user?.uid, userWithoutToken)
+      setUser(user)
+      return user
+    } else {
+      setUser(false)
+      return false
     }
+  }
 
+  const SignInWithGoogle = () => {
+    signInWithPopup(auth, googleProvider)
+      .then(response => {
+        alert('You logged in')
+        handleUser(response.user)
+        router.push('/')
+      })
+      .catch(error => {
+        console.error(error)
+      })
+  }
 
+  const logout = () => {
+    signOut(auth).then(() => {
+      router.push('/login')
+      sessionStorage.clear()
+      handleUser(false)
+    })
+  }
 
-    const SignInWithGoogle = () => {
-        signInWithPopup(auth, googleProvider)
-         .then((response) => {
-             alert('You logged in')
-             handleUser(response.user)
-             router.push('/')
-           })
-           .catch((error) => {
-            console.error(error)
-           })
+  const formatUser = async user => {
+    const token = await user?.getIdToken()
+    return {
+      uid: user?.uid,
+      name: user?.displayName,
+      email: user?.email,
+      image: user?.photoURL,
+      token
     }
+  }
 
-    const logout = () => {
-        signOut(auth).then(() => {
-          router.push('/login')
-          sessionStorage.clear();
-          handleUser(false)
-        })
-      }
+  useEffect(() => {
+    const unsubscribe = auth.onIdTokenChanged(handleUser)
 
+    return () => unsubscribe()
+  }, [])
 
-    const formatUser = async (user) => {
-        const token = await user?.getIdToken()
-        return {
-            uid: user?.uid,
-            name: user?.displayName,
-            email: user?.email,
-            image: user?.photoURL,
-            token
-        }
-    }
-
- 
-   
-    useEffect(() => {
-        const unsubscribe =  auth.onIdTokenChanged(handleUser);
-    
-        return () => unsubscribe();
-      }, []);
-
-    
-
-
-        
-    return (
-        <PrayerRequestContext.Provider
-            value={{
-              modalOpen,
-              setModalOpen,
-              isDeleteModalOpen,
-              setIsDeleteModalOpen,
-              deleteDua,
-              setDeleteDua,
-              user,
-              SignInWithGoogle,
-              logout                     
-            }}>
-
-                {children}
-             
-            </PrayerRequestContext.Provider>
-    )
-
-
+  return (
+    <PrayerRequestContext.Provider
+      value={{
+        modalOpen,
+        setModalOpen,
+        isDeleteModalOpen,
+        setIsDeleteModalOpen,
+        deleteDua,
+        setDeleteDua,
+        user,
+        SignInWithGoogle,
+        logout
+      }}
+    >
+      {children}
+    </PrayerRequestContext.Provider>
+  )
 }

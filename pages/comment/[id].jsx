@@ -1,17 +1,16 @@
 import React, { useState, useEffect, useContext } from "react";
 import CommentSkeleton from "../../components/CommentSkeleton";
 import { useRouter } from "next/router";
-import { AiOutlineClose } from "react-icons/ai";
+// import { AiOutlineClose } from "react-icons/ai";
 import { BsFillArrowLeftCircleFill } from "react-icons/bs";
 import { FaSmileWink } from "react-icons/fa";
 import { db } from "../../lib/firebaseConfig";
 import DeleteModal from "../../components/DeleteModal";
-import Navbar from "../../components/Navbar"
+import Navbar from "../../components/Navbar";
 import {
   query,
   onSnapshot,
   orderBy,
-  addDoc,
   doc,
   collection,
   serverTimestamp,
@@ -19,13 +18,13 @@ import {
 } from "firebase/firestore";
 import Comment from "./component/Comment";
 import { HiPaperAirplane } from "react-icons/hi";
-import { getAuth } from 'firebase/auth'
+import { getAuth } from "firebase/auth";
 import { PrayerRequestContext } from "../../context/PrayerRequest";
 import { addComment } from "../../lib/db";
 
 const styles = {
   mainContainer: ` flex justify-center sm:px-3 sm:pb-3`,
-  modalContainer: `flex  flex-col overflow-auto bg-white w-[580px] sm:max-h-[730px] h-[780px] overflow-hidden `,
+  modalContainer: `flex flex-col overflow-auto bg-white h-screen w-[580px]  lg:h-[780px] overflow-hidden `,
   title: `text-[20px] text-black font-bold	leading-7 flex justify-center`,
   body: ` h-screen  overflow-auto mt-[15px] mb-[5px] p-[10px] rounded-xl `,
   input: `w-full  p-2 text-xl resize-none break-all bg-[#F2F2F2] outline-0 text-[#000000] mr-2 rounded-[12px] overflow-hidden`,
@@ -39,11 +38,14 @@ const CommentPage = () => {
   const router = useRouter();
   const [comments, setComments] = useState([]);
   const [queryId, setqueryId] = useState("");
-  const auth = getAuth()
-  const { isDeleteModalOpen, user, setIsDeleteModalOpen, deleteDua, setDeleteDua} = useContext(PrayerRequestContext)
-
-
-
+  const auth = getAuth();
+  const {
+    isDeleteModalOpen,
+    user,
+    setIsDeleteModalOpen,
+    deleteDua,
+    setDeleteDua,
+  } = useContext(PrayerRequestContext);
 
   useEffect(() => {
     const queryId = window.location.pathname.split("/")[2];
@@ -66,7 +68,7 @@ const CommentPage = () => {
   const sendComment = (e) => {
     e.preventDefault();
     if (!user) return;
-    if(!chat) return;
+    if (!chat) return;
     const commentToSend = chat;
     setChat("");
 
@@ -76,10 +78,9 @@ const CommentPage = () => {
       createdAt: serverTimestamp(),
       image: user?.image,
       name: user?.name,
-      uid: user?.uid
-    }
-    addComment(queryId, newComment)
-
+      uid: user?.uid,
+    };
+    addComment(queryId, newComment);
   };
 
   useEffect(() => {
@@ -101,12 +102,18 @@ const CommentPage = () => {
               onClick={() => router?.replace("/")}
               className="flex flex-row justify-center content-center items-center cursor-pointer  text-black  "
             >
-               <p className="font-semibold text-sm px-2">go back to prayers</p> 
+              <p className="font-semibold text-sm px-2">go back to prayers</p>
               <BsFillArrowLeftCircleFill className="items-center" size={22} />
             </div>
           </div>
-          {isDeleteModalOpen && <DeleteModal setDeleteDua={setDeleteDua} setIsDeleteModalOpen={setIsDeleteModalOpen} />}
-
+          <div className="relative">
+            {isDeleteModalOpen && (
+              <DeleteModal
+                setDeleteDua={setDeleteDua}
+                setIsDeleteModalOpen={setIsDeleteModalOpen}
+              />
+            )}
+          </div>
           {commentsLoading ? (
             <CommentSkeleton />
           ) : (
@@ -120,40 +127,39 @@ const CommentPage = () => {
                   comment={comment?.data()?.comment}
                   createdAt={comment?.data()?.createdAt}
                   id={comment?.id}
-                  deleteDua={deleteDua}
-                  setDeleteDua={setDeleteDua}
-                  setIsDeleteModalOpen={setIsDeleteModalOpen}
                 />
               ))}
             </div>
           )}
           <div className={styles.footer}>
             <div className="flex bg-[#F2F2F2] rounded-xl w-full items-center ">
-              <FaSmileWink className="  text-[#8C8C8C] m-2 " size={25}  />
-            <input
-              type="text"
-              required
-              disabled={!user}
-              value={chat}
-              className={styles.input}
-              onChange={(e) => setChat(e.target?.value)}
-              minLength={1}
-              maxLength={250}
-              placeholder={`${!user ? "Login to comment" : "Write a comment..."
+              <FaSmileWink className="  text-[#8C8C8C] m-2 " size={25} />
+              <input
+                type="text"
+                required
+                disabled={!user}
+                value={chat}
+                className={styles.input}
+                onChange={(e) => setChat(e.target?.value)}
+                minLength={1}
+                maxLength={250}
+                placeholder={`${
+                  !user ? "Login to comment" : "Write a comment..."
                 }`}
-            />
+              />
               <button
                 onClick={sendComment}
                 disabled={!chat?.trim()}
                 type="submit"
-                className={`${styles.postButton} ${!chat
-                  ? "bg-[#F2F2F2] cursor-not-allowed rotate-90"
-                  : "bg-[#F2F2F2] cursor-pointer hover:shadow-2xl text-xl transition-all duration-300 hover:scale-105 rotate-90"
-                  }`}
+                className={`${styles.postButton} ${
+                  !chat
+                    ? "bg-[#F2F2F2] cursor-not-allowed rotate-90"
+                    : "bg-[#F2F2F2] cursor-pointer hover:shadow-2xl text-xl transition-all duration-300 hover:scale-105 rotate-90"
+                }`}
               >
                 <HiPaperAirplane className="text-[#112EA0]" size={22} />
               </button>
-              </div>
+            </div>
           </div>
         </div>
       </div>

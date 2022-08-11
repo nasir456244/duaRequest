@@ -42,7 +42,7 @@ function MyApp({ Component, pageProps }) {
           <Script
             id="Adsense-id"
             data-ad-client={process.env.GOOGLE_ADSENSE}
-            async="true"
+            async={true}
             strategy="beforeInteractive"
             src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"
           />

@@ -17,7 +17,7 @@ import { PrayerRequestContext } from "@/context/PrayerRequest";
 import { addComment, dislikePrayer, likePrayer } from "@/lib/db";
 
 const styles = {
-  listContainer: `hover:shadow-2xl flex flex-col bg-[#ffffff] rounded-2xl break-words overflow-hidden h-fit `,
+  listContainer: `hover:shadow-2xl my-[6px] flex flex-col bg-[#ffffff] rounded-2xl break-words overflow-hidden h-fit`,
 };
 const Prayer = ({ address, id, prayer, timestamp, name, image }) => {
   const [likes, setLikes] = useState([]);
