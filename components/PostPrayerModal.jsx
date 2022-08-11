@@ -186,8 +186,7 @@ const PostPrayerModal = () => {
                     disabled={!isTimeGone || !prayer.trim()}
                     className={`${
                       styles.post
-                    } ${`disabled:cursor-not-allowed disabled:bg-[#9d9d9d] disabled:text-white
-        bg-[#0bbe20] transition-all duration-300  hover:scale-105`}`}
+                    } ${`disabled:cursor-not-allowed disabled:bg-[#9d9d9d] disabled:text-white bg-[#0bbe20] `}`}
                   >
                     Post
                   </button>
