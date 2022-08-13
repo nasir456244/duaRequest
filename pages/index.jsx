@@ -1,9 +1,8 @@
-import React, { useContext } from "react";
+import React from "react";
 import Navbar from "../components/Navbar";
 import { Toaster } from "react-hot-toast";
 import Prayers from "../components/Prayers";
 import PostPrayerModal from "../components/PostPrayerModal";
-import { PrayerRequestContext } from "../context/PrayerRequest";
 import Head from "next/head";
 
 const styles = {
@@ -15,7 +14,6 @@ const styles = {
 };
 
 const Home = () => {
-  const { user } = useContext(PrayerRequestContext);
 
   return (
     <div className={styles.container}>

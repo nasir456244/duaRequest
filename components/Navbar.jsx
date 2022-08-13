@@ -19,7 +19,7 @@ const styles = {
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const router = useRouter();
-  const { user, logout } = useContext(PrayerRequestContext)
+  const { user } = useContext(PrayerRequestContext)
 
 
 
@@ -60,7 +60,7 @@ const Navbar = () => {
       {user &&
         <div className="flex items-center justify-center w-[100px] text-[#fff]">
           <img
-            onClick={logout}
+            onClick={() => router.push('/dashboard')}
             className="cursor-pointer rounded-[50%] sm:ml-12 w-[50px] h-[50px]"
             src={
               user?.image

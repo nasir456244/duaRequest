@@ -21,7 +21,7 @@ export const PrayerRequestProvider = ({ children }) => {
   const handleUser = async rawUser => {
     if (rawUser) {
       const user = await formatUser(rawUser)
-      const { token, ...userWithoutToken } = user
+      const { token, stripeRole, ...userWithoutToken } = user
       createUser(user?.uid, userWithoutToken)
       setUser(user)
       return user
@@ -32,6 +32,7 @@ export const PrayerRequestProvider = ({ children }) => {
   }
 
   const SignInWithGoogle = () => {
+    if(user) return
     signInWithPopup(auth, googleProvider)
       .then(response => {
         alert('You logged in')
@@ -44,11 +45,19 @@ export const PrayerRequestProvider = ({ children }) => {
   }
 
   const logout = () => {
+    if(!user) return
     signOut(auth).then(() => {
       router.push('/login')
       sessionStorage.clear()
       handleUser(false)
     })
+  }
+
+  const getStripeRole = async () => {
+    await auth?.currentUser?.getIdToken(true)
+    const decodedToken = await auth?.currentUser?.getIdTokenResult()
+
+    return decodedToken?.claims?.stripeRole || 'free';
   }
 
   const formatUser = async user => {
@@ -58,7 +67,8 @@ export const PrayerRequestProvider = ({ children }) => {
       name: user?.displayName,
       email: user?.email,
       image: user?.photoURL,
-      token
+      token,
+      stripeRole: await getStripeRole()
     }
   }
 
