@@ -20,7 +20,7 @@ const styles = {
   text-[#fff] bg-[#000] py-2 px-4`,
 }
 
-const dashboard = () => {
+const Dashboard = () => {
   const { user, logout } = useContext(PrayerRequestContext)
   const [loading, setLoading] = useState(false)
   const isPaidAccount = user?.stripeRole !== 'free'
@@ -103,4 +103,4 @@ const dashboard = () => {
   )
 }
 
-export default dashboard
+export default Dashboard
