@@ -38,14 +38,9 @@ const CommentPage = () => {
   const router = useRouter();
   const [comments, setComments] = useState([]);
   const [queryId, setqueryId] = useState("");
-  const auth = getAuth();
-  const {
-    isDeleteModalOpen,
-    user,
-    setIsDeleteModalOpen,
-    deleteDua,
-    setDeleteDua,
-  } = useContext(PrayerRequestContext);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
+  const [deleteDua, setDeleteDua] = useState(false)
+  const { user } = useContext(PrayerRequestContext);
 
   useEffect(() => {
     const queryId = window.location.pathname.split("/")[2];

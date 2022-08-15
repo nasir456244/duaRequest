@@ -32,9 +32,10 @@ const PostPrayerModal = () => {
   const [postTimer, setpostTimer] = useState(0);
   const [isTimeGone, setisTimeGone] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
+  const isPaidAccount = user?.stripeRole !== 'free'
 
   useEffect(() => {
-    user &&
+    user && !isPaidAccount &&
       onSnapshot(
         doc(db, "TimeOut", "TimeOutUsers", "users", user?.uid),
         (snapshot) => {
@@ -73,7 +74,7 @@ const PostPrayerModal = () => {
 
       const newPrayer = {
         address: user?.email,
-        prayer: prayerToPost?.slice(0, 250),
+        prayer: prayerToPost?.slice(0, !isPaidAccount ? 250 : 1500),
         createdAt: serverTimestamp(),
         image: user?.image,
         name: user?.name,
@@ -82,22 +83,29 @@ const PostPrayerModal = () => {
 
       createPrayer(newPrayer);
 
-      if (postNumber === 0) {
-        const timeOutDoc = {
-          postNumber: 1,
-          postTimer: 0,
-        };
-        createTimeOutDoc(user.uid, timeOutDoc);
-      } else {
-        const updatetimeoutdoc = {
-          postNumber: increment(1),
-          postTimer: postNumber === 2 ? serverTimestamp() : 0,
-        };
-        UpdateTimeOutDoc(user.uid, updatetimeoutdoc);
+      if(isPaidAccount) return
+
+      else {
+
+      
+
+        if (postNumber === 0) {
+          const timeOutDoc = {
+            postNumber: 1,
+            postTimer: 0,
+          };
+          createTimeOutDoc(user.uid, timeOutDoc);
+        } else {
+          const updatetimeoutdoc = {
+            postNumber: increment(1),
+            postTimer: postNumber === 2 ? serverTimestamp() : 0,
+          };
+          UpdateTimeOutDoc(user.uid, updatetimeoutdoc);
+        }
+        toast.success("Prayer Posted!", {
+          style: { background: "#04111d", color: "#fff" },
+        });
       }
-      toast.success("Prayer Posted!", {
-        style: { background: "#04111d", color: "#fff" },
-      });
     } catch (error) {
       console.log(error);
       toast.error(error.message, {
@@ -164,12 +172,14 @@ const PostPrayerModal = () => {
                       setPrayer(e.target.value);
                     }}
                     minLength={50}
-                    maxLength={250}
+                    maxLength={!isPaidAccount ? 250 : 1500}
                     placeholder="Your prayer..."
                   />
-                  <p className="flex w-full justify-end pr-3">
-                    Post Count: {postNumber}
-                  </p>
+                  {!isPaidAccount &&
+                    <p className="flex w-full justify-end pr-3">
+                      Post Count: {postNumber}
+                    </p>
+                  }
                 </div>
                 <div className={styles.footer}>
                   <button

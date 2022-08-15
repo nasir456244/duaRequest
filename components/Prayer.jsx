@@ -39,18 +39,18 @@ const Prayer = ({ address, id, prayer, timestamp, name, image }) => {
   useEffect(
     () =>
       setHasLiked(
-        likes?.findIndex((like) => like?.id === user.uid) !== -1
+        likes?.findIndex((like) => like?.id === user?.uid) !== -1
       ),
-    [likes]
+    [likes, user]
   );
 
   const likepost = () => {
     if (!user) return;
 
     if (hasliked) {
-      dislikePrayer(id, user.uid)
+      dislikePrayer(id, user?.uid)
     } else {
-      likePrayer(id, user.uid)
+      likePrayer(id, user?.uid)
     }
     return;
   };

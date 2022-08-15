@@ -10,9 +10,6 @@ import { createUser } from '@/lib/db'
 export const PrayerRequestContext = createContext()
 
 export const PrayerRequestProvider = ({ children }) => {
-  const [modalOpen, setModalOpen] = useState(false)
-  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
-  const [deleteDua, setDeleteDua] = useState(false)
   const router = useRouter()
   const auth = getAuth()
   const googleProvider = new GoogleAuthProvider()
@@ -81,12 +78,6 @@ export const PrayerRequestProvider = ({ children }) => {
   return (
     <PrayerRequestContext.Provider
       value={{
-        modalOpen,
-        setModalOpen,
-        isDeleteModalOpen,
-        setIsDeleteModalOpen,
-        deleteDua,
-        setDeleteDua,
         user,
         SignInWithGoogle,
         logout

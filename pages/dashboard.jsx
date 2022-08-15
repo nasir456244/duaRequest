@@ -2,9 +2,9 @@ import React, { useContext, useState } from 'react'
 import Navbar from '@/components/Navbar'
 import { PrayerRequestContext } from '@/context/PrayerRequest'
 import { createCheckoutSession, goToBillingPortal } from '@/lib/checkout'
-
 import Image from 'next/image'
 import { MoonLoader } from 'react-spinners';
+import Link from 'next/link'
 
 
 
@@ -25,66 +25,80 @@ const dashboard = () => {
   const [loading, setLoading] = useState(false)
   const isPaidAccount = user?.stripeRole !== 'free'
 
-  console.log(isPaidAccount)
 
 
   return (
     <div className={styles.container}>
         <Navbar />
         <div className={styles.body} >
-          <div className={styles.content}>
-            <div className={styles.user}>
-             {user?.image &&  <Image className='rounded-[50%]' src={user?.image} width={100} height={100} alt='profile' /> }
-             <h3 className=' mt-3 font-semibold text-[16px] text-[#fff] not-italic'>{user?.name}</h3>
-             <p className='font-medium text-[#DDD] mb-5'>{user?.email}</p>
+          {user ? 
+              <div className={styles.content}>
+                <div className={styles.user}>
+                {user?.image &&  <Image className='rounded-[50%]' src={user?.image} width={100} height={100} alt='profile' /> }
+                <h3 className=' mt-3 font-semibold text-[16px] text-[#fff] not-italic'>{user?.name}</h3>
+                <p className='font-medium text-[#DDD] mb-5'>{user?.email}</p>
 
-            </div>
-            <div className={styles.setting}>
-              <div className={styles.top}> 
-                <p className='text-[#718096] font-semibold text-[14px] not-italic'>SETTINGS</p>
-                <p className='bg-[#ceedff] text-[13px] not-italic px-1 font-semibold text-[#153e75] uppercase'>{isPaidAccount ? 'Premium' : 'free'}</p>
-              </div>
+                </div>
+                <div className={styles.setting}>
+                  <div className={styles.top}> 
+                    <p className='text-[#718096] font-semibold text-[14px] not-italic'>SETTINGS</p>
+                    <p className='bg-[#ceedff] text-[13px] not-italic px-1 font-semibold text-[#153e75] uppercase'>{isPaidAccount ? 'Premium' : 'free'}</p>
+                  </div>
 
-              <div className={styles.middle}>
+                  <div className={styles.middle}>
 
-                <p className='font-medium p-5'>Prayer Request uses Stripe to update, change, or cancel your subscription. You can also update card information and billing addresses through the secure portal.</p>
-              </div>
+                    <p className='font-medium p-5'>Prayer Request uses Stripe to update, change, or cancel your subscription. You can also update card information and billing addresses through the secure portal.</p>
+                  </div>
 
-              <div className={styles.buttons}>
-                <button onClick={logout} className=' hover:bg-[#EDF2F7] font-medium text-[15px] mr-1 rounded-[5px] py-2 px-4'> { user ? 'Log Out' : 'Log in'}</button>
-                {isPaidAccount ? 
-                <button 
-                onClick={() => {setLoading(true); goToBillingPortal()}}  
-                  className={`${styles.stripeButton} ${loading && 'flex justify-center w-[150px] h-[40px] bg-[#2d3748] cursor-auto'} `}>
-                  {loading ? <MoonLoader color='#fff' loading={loading} size={20} /> :   'Manage Billing' }
+                  <div className={styles.buttons}>
+                    <button onClick={logout} className=' hover:bg-[#EDF2F7] font-medium text-[15px] mr-1 rounded-[5px] py-[9px] px-4'> Log Out</button>
+                    {isPaidAccount ? 
+                    <button 
+                    onClick={() => {setLoading(true); goToBillingPortal()}}  
+                      className={`${styles.stripeButton} ${loading && 'flex justify-center w-[150px] h-[40px] bg-[#2d3748] cursor-auto'} `}>
+                      {loading ? <MoonLoader color='#fff' loading={loading} size={20} /> :   'Manage Billing' }
+                      
+                    </button>
+
+                    :
+
+                    <button 
+                    onClick={() => { setLoading(true); createCheckoutSession(user?.uid) }}  
+                      className={`${styles.stripeButton} ${loading && 'flex justify-center w-[150px] h-[40px] bg-[#2d3748] cursor-auto'} `}>
+                      {loading ? <MoonLoader color='#fff' loading={loading} size={20} /> :   'Buy Premium' }
+                      
+                    </button>
                   
-                </button>
+                  }
+                  </div>
 
-                :
-
-                <button 
-                onClick={() => { setLoading(true); createCheckoutSession(user?.uid) }}  
-                  className={`${styles.stripeButton} ${loading && 'flex justify-center w-[150px] h-[40px] bg-[#2d3748] cursor-auto'} `}>
-                  {loading ? <MoonLoader color='#fff' loading={loading} size={20} /> :   'Buy Premium' }
-                  
-                </button>
+                </div>
               
-              }
+              
               </div>
 
-            </div>
-          
-          
-          
-          </div>
+            :
+              <div className={styles.setting}>
+                <div className={styles.top}> 
+                  <p className='text-[#718096] font-semibold text-[14px] not-italic'>SETTINGS</p>
+                  <p className='bg-[#ceedff] text-[13px] not-italic px-1 font-semibold text-[#153e75] uppercase'></p>
+                </div>
 
+                <div className={styles.middle}>
 
+                  <p className='font-medium p-5'>Prayer Request uses Stripe to update, change, or cancel your subscription. You can also update card information and billing addresses through the secure portal.</p>
+                </div>
 
+                <div className={styles.buttons}>
+                  <Link href='/login'> 
+                    <a className='bg-[#EDF2F7] font-medium text-[15px] mr-1 rounded-[5px] py-[9px] px-4'>Log in</a>
+                  </Link>
+                </div>
 
+              </div>
 
+          }
         </div>
-
-        
     </div>
   )
 }
