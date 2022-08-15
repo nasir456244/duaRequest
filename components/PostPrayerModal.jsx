@@ -13,6 +13,8 @@ import {
 import Countdown from "react-countdown";
 import { createPrayer, createTimeOutDoc, UpdateTimeOutDoc } from "../lib/db";
 import { FaRegEdit } from "react-icons/fa";
+import loader from '@/public/loader.gif'
+import Image from "next/image";
 
 const styles = {
   modalBackground: `w-screen z-50 sm:p-3 h-screen fixed sm:p-1 flex justify-center items-center overflow-hidden `,
@@ -56,7 +58,7 @@ const PostPrayerModal = () => {
             : setpostTimer(0);
         }
       );
-  }, [user]);
+  }, [user, isPaidAccount]);
 
   //Post Prayer
   const postPrayer = () => {
@@ -156,10 +158,12 @@ const PostPrayerModal = () => {
                   Time Left to request prayer:{" "}
                   <Countdown date={postTimer} renderer={renderer} />
                 </div>
-                <img
-                  className="object-contain relative bottom-[80px] h-80 w-80"
-                  src="https://miro.medium.com/max/1400/0*4Gzjgh9Y7Gu8KEtZ.gif"
-                />
+                {loader && 
+                  <Image
+                    className="object-contain relative bottom-[80px] h-80 w-80"
+                    src={loader}
+                  />
+                }
               </div>
             )}
             {isTimeGone && (

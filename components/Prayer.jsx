@@ -15,6 +15,7 @@ import { HiPaperAirplane } from "react-icons/hi";
 import { useRouter } from "next/router";
 import { PrayerRequestContext } from "@/context/PrayerRequest";
 import { addComment, dislikePrayer, likePrayer } from "@/lib/db";
+import Image from "next/image";
 
 const styles = {
   listContainer: `hover:shadow-2xl my-[6px] flex flex-col bg-[#ffffff] rounded-2xl break-words overflow-hidden h-fit`,
@@ -92,7 +93,9 @@ const Prayer = ({ address, id, prayer, timestamp, name, image }) => {
   return (
     <div className={styles.listContainer}>
       <div className="flex  justify-center p-4 mx-4">
+    
         <img className="flex rounded-[50%] w-[42px] h-[42px]" src={image} />
+        
         <div className="flex flex-col w-full ml-2 ">
           <div className="flex justify-between items-center ">
             <p className="font-semibold text-[14px] text-[#000000] not-italic ">{name}</p>
@@ -184,11 +187,15 @@ const Prayer = ({ address, id, prayer, timestamp, name, image }) => {
           key={comment?.id}
           className="flex p-4 pt-4 max-h-full  overflow-hidden max-w-full"
           >
-          <img
-            src={`${comment?.data()?.image}`}
-            alt="profile"
-            className="rounded-[50%] w-[37px] h-[37px] ml-1"
-            />
+          {comment?.data()?.image &&
+            <Image
+              src={`${comment?.data()?.image}`}
+              alt="profile"
+              className="rounded-[50%] ml-1"
+              height={35}
+              width={37}
+              />
+          }
           <div className="flex-1 flex-row w-64 ml-2">
             <p className="font-semibold text-[14px] text-[#000000] not-italic">{comment?.data()?.name}</p>
             <p className="text-[14px] text-[#8C8C8C] sm:w-[180px] text-ellipsis whitespace-nowrap overflow-hidden w-full">

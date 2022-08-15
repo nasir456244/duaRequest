@@ -28,9 +28,9 @@ const Comment = ({ address, comment, createdAt, name, image, id }) => {
   useEffect(() => {
     const queryId = window.location.pathname.split("/")[2];
     getDoc(doc(db, `Prayers/${queryId}`)).then((res) =>
-      setOwner(res?.data()?.address == user?.email)
+      setOwner(res?.data()?.uid == user?.uid)
     );
-  }, []);
+  }, [user?.uid]);
 
   const deleteComment = (id) => {
     if (!user) return;

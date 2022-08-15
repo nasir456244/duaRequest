@@ -1,8 +1,10 @@
 import React, { useContext } from 'react'
-import { PrayerRequestContext } from '../context/PrayerRequest'
+import { PrayerRequestContext } from '@/context/PrayerRequest'
 import { useRouter } from 'next/router'
-import { FaEye, FaFacebook, FaApple } from "react-icons/fa";
+import { FaFacebook, FaApple } from "react-icons/fa";
+import Google from '@/public/Google.svg'
 import Navbar from '../components/Navbar';
+import Image from 'next/image';
 const Login = () => {
 
     const { user, SignInWithGoogle } = useContext(PrayerRequestContext)
@@ -29,7 +31,7 @@ const Login = () => {
                         </div>
                         <div className='flex rounded-md cursor-pointer mx-6 flex-row items-center  justify-center p-1 m-3 h-[45px] bg-[#112EA0] hover:bg-blue-600 rounded-[6px] hover:shadow-2xl' >
                             <div className=' p-2 flex justify-center items-center h-full mx-3 rounded-full bg-[#fff]'>
-                                <img className='h-full w-full' src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" />
+                                {Google && <Image className='h-full w-full' src={Google} alt='profile' /> }
                             </div>
                             <button onClick={SignInWithGoogle} className='font-medium text-sm uppercase text-white '><b>Sign in with Google</b></button>
                         </div>

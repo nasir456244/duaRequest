@@ -6,6 +6,8 @@ import { ImBin2 } from "react-icons/im";
 import { PrayerRequestContext } from "../context/PrayerRequest";
 import { DeletePrayer } from "../lib/db";
 import DeleteModal from "../components/DeleteModal";
+
+
 const styles = {
   listContainer: ` tracking-2 hover:shadow-2xl flex flex-col max-w-[544px] p-[4px] bg-[#ffffff] rounded-2xl break-words overflow-hidden max-w-full h-fit `,
 };
@@ -45,7 +47,7 @@ const MyPrayers = ({ address, name, createdAt, image, prayer, id }) => {
 
       <div className={styles.listContainer}>
         <div className="flex  justify-center p-4 ">
-          <img className="flex rounded-[50%] w-[42px] h-[42px]" src={image} />
+          <img layout="fixed" className="flex rounded-[50%] w-[42px] h-[42px] " src={image} /> }
           <div className="flex flex-col w-full ml-2 ">
             <div className="flex justify-between items-center ">
               <p className="font-semibold text-[14px] text-[#000000] not-italic ">
