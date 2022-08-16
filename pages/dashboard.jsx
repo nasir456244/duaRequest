@@ -13,7 +13,7 @@ const styles = {
   body: ` flex items-center w-full justify-center h-[85vh] shadow-2xl `,
   content: `flex flex-col w-full h-full items-center justify-center mb-16 `,
   user: ` w-full flex items-center justify-center flex-col h-max`,
-  setting: `max-w-[600px] bg-[#fff] h-max pb-4 shadow-2xl rounded-[4px] `,
+  setting: `max-w-[600px] bg-[#fff] sm:mb-[40px] md:mb-[100px] h-max pb-4 shadow-2xl rounded-[4px] `,
   top: `w-full bg-[#F7FAFC] border-b-2 border-[#E2E8F0] flex items-center justify-between p-5 shadow-2xl rounded-[4px]`,
   buttons: `w-full flex items-center justify-end pr-5`,
   stripeButton : `font-semibold text-[16px] hover:bg-[#2d3748] w-max h-max ml-1 rounded-[5px] 

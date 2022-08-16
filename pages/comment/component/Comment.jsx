@@ -27,14 +27,13 @@ const Comment = ({ address, comment, createdAt, name, image, id }) => {
   const [hasliked, setHasLiked] = useState(false);
   const [dislikes, setDislikes] = useState([]);
   const [hasdisliked, setHasDisLiked] = useState(false);
-  const queryId = window.location.pathname.split("/")[2];
-
+  const [PrayerId, setPrayerId] = useState(window.location.pathname.split("/")[2])
   useEffect(() => btnRef?.current?.scrollIntoView(), []);
 
 
   useEffect(
-    () =>
-      onSnapshot(collection(db, 'Prayers', queryId, 'comments', id, 'likes'), (snapshot) =>
+    () => 
+      onSnapshot(collection(db, 'Prayers', PrayerId, 'comments', id, 'likes'), (snapshot) =>
         setLikes(snapshot.docs)
       ),
     [id]
@@ -51,7 +50,7 @@ const Comment = ({ address, comment, createdAt, name, image, id }) => {
 
   useEffect(
     () =>
-      onSnapshot(collection(db, 'Prayers', queryId, 'comments', id, 'dislikes'), (snapshot) =>
+      onSnapshot(collection(db, 'Prayers', PrayerId, 'comments', id, 'dislikes'), (snapshot) =>
         setDislikes(snapshot.docs)
       ),
     [id]
@@ -68,33 +67,30 @@ const Comment = ({ address, comment, createdAt, name, image, id }) => {
   // console.log(id)
 
   useEffect(() => {
-    const queryId = window.location.pathname.split("/")[2];
-    getDoc(doc(db, `Prayers/${queryId}`)).then((res) =>
+    getDoc(doc(db, `Prayers/${PrayerId}`)).then((res) =>
       setOwner(res?.data()?.uid == user?.uid)
     );
   }, [user?.uid]);
 
   const likecomment = () => {
     if (!user) return;
-
-    const queryId = window.location.pathname.split("/")[2];
+    if(!isPaidAccount) return
     if (hasliked) return
     if(hasdisliked) {
-      removeDisLike(queryId, id, user?.uid)
+      removeDisLike(PrayerId, id, user?.uid)
     }
-    likeComment(queryId, id, user?.uid)
+    likeComment(PrayerId, id, user?.uid)
     return;
   };
 
   const dislikecomment = () => {
     if (!user) return;
-
-    const queryId = window.location.pathname.split("/")[2];
+    if(!isPaidAccount) return
     if (hasdisliked) return
     if(hasliked) {
-      removeLike(queryId, id, user?.uid)
+      removeLike(PrayerId, id, user?.uid)
     }
-    dislikeComment(queryId, id, user?.uid)
+    dislikeComment(PrayerId, id, user?.uid)
     return;
   };
 
@@ -107,8 +103,7 @@ const Comment = ({ address, comment, createdAt, name, image, id }) => {
     return;
   };
   const deleteConfirmation = (event) => {
-    const queryId = window.location.pathname.split("/")[2];
-    event && DeleteComment(queryId, deleteCommentID);
+    event && DeleteComment(PrayerId, deleteCommentID);
   };
 
   return (
@@ -146,12 +141,12 @@ const Comment = ({ address, comment, createdAt, name, image, id }) => {
                 />
                 )}
             <div className={styles.buttons}>
-                <AiFillLike onClick={likecomment} className={`${user && hasliked ? 'text-[#0ABEEE]' : 'hover:scale-125 transition-all duration-150 ease-out text-[#ADADAD]'}  relative bottom-[3px] cursor-pointer `} size={25} /> {likes?.length > 0 && 
+                <AiFillLike onClick={likecomment} className={`${user && isPaidAccount && hasliked ? 'text-[#0ABEEE]' : 'hover:scale-125 transition-all duration-150 ease-out text-[#ADADAD]'}  relative bottom-[3px] cursor-pointer `} size={25} /> {likes?.length > 0 && 
                   <p className="text-[13px] font-semibold bg-opacity-100 ml-1">
                     {likes?.length > 0 ? Intl.NumberFormat("en", { notation: "compact" }).format(likes?.length) : '0' }
                   </p>
                     }
-                <AiFillLike onClick={dislikecomment} size={25} className={`${user && !hasliked && hasdisliked ? 'text-[#0ABEEE]' : 'text-[#ADADAD]'}  cursor-pointer rotate-180 relative top-[1px] left-[10px] mr-3 `} /> <p className="text-[13px] font-semibold bg-opacity-100 ml-1">
+                <AiFillLike onClick={dislikecomment} size={25} className={`${user && isPaidAccount && hasdisliked ? 'text-[#0ABEEE]' : 'text-[#ADADAD]'}  cursor-pointer rotate-180 relative top-[1px] left-[10px] mr-3 `} /> <p className="text-[13px] font-semibold bg-opacity-100 ml-1">
                     {dislikes?.length > 0 ? Intl.NumberFormat("en", { notation: "compact" }).format(dislikes?.length) : '0' } 
                   </p>
                 
@@ -164,13 +159,13 @@ const Comment = ({ address, comment, createdAt, name, image, id }) => {
             }`}
           >
             <div className={styles.address}>
-              <p
+              <div
                 className={`${
                   address == user?.email ? "text-[#000000]" : "text-[#000000]"
                 } w-full`}
               >
                 {address == user?.email ? <p>You</p> : name}
-              </p>
+              </div>
               <div className={styles.time}>
                 <p
                   className={`${
