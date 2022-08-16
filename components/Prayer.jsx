@@ -116,7 +116,7 @@ const Prayer = ({ address, id, prayer, timestamp, name, image }) => {
                   disabled={!user}
                   onClick={likepost}
                   className={`${!user
-                    ? "cursor-not-allowed text-[25px] sm:mr-1 text-[#ADADAD] sm:text-[35px] "
+                    ? "cursor-not-allowed text-[25px] sm:mr-1 text-[#ADADAD] sm:text-[45px] "
                     : "hover:scale-125 text-[25px] sm:mr-1 sm:text-[45px] cursor-pointer text-[#ADADAD] transition-all duration-150 ease-out cursor-pointer"
                     } mt-[2px]`}
                 />
@@ -130,7 +130,7 @@ const Prayer = ({ address, id, prayer, timestamp, name, image }) => {
               <FaCommentAlt
                 src={image}
                 atl="comment"
-                className="cursor-pointer mx-2 mt-[2px] text-[25px] sm:text-[35px] text-[#ADADAD]"
+                className="cursor-pointer mx-2 mt-[2px] text-[22px] sm:text-[35px] text-[#ADADAD]"
                 onClick={() => {
                   router.push(`/comment/${id}`);
                 }}
@@ -187,15 +187,12 @@ const Prayer = ({ address, id, prayer, timestamp, name, image }) => {
           key={comment?.id}
           className="flex p-4 pt-4 max-h-full  overflow-hidden max-w-full"
           >
-          {comment?.data()?.image &&
-            <Image
-              src={`${comment?.data()?.image}`}
-              alt="profile"
-              className="rounded-[50%] ml-1"
-              height={35}
-              width={37}
-              />
-          }
+          <img
+            src={`${comment?.data()?.image}`}
+            alt="profile"
+            className="rounded-[50%] ml-1 h-[40px] w-[40px]"  
+            />
+          
           <div className="flex-1 flex-row w-64 ml-2">
             <p className="font-semibold text-[14px] text-[#000000] not-italic">{comment?.data()?.name}</p>
             <p className="text-[14px] text-[#8C8C8C] sm:w-[180px] text-ellipsis whitespace-nowrap overflow-hidden w-full">

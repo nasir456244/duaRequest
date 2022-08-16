@@ -1,17 +1,19 @@
 import React, { useRef, useEffect, useState, useContext } from "react";
 import TimeAgo from "timeago-react";
-import { doc, getDoc } from "firebase/firestore";
+import { collection, doc, getDoc, onSnapshot } from "firebase/firestore";
 import { db } from "../../../lib/firebaseConfig";
 import { MdDelete } from "react-icons/md";
 import { PrayerRequestContext } from "../../../context/PrayerRequest";
-import { DeleteComment } from "../../../lib/db";
+import { DeleteComment, dislikeComment, likeComment, removeDisLike, removeLike } from "../../../lib/db";
 import DeleteModal from "../../../components/DeleteModal";
+import { AiFillLike } from 'react-icons/ai'
 
 const styles = {
   commentBody: `tracking-2 flex flex-col w-full mt-[12px] overflow-hidden p-[4px] bg-[#ffffff] rounded-2xl break-words h-fit`,
   address: `flex items-center text-[14px] font-semibold text-[#000000] not-italic `,
-  time: `flex justify-end w-full text-[14px]`,
-  comment: `font-medium text-[12px] color-black `,
+  time: `flex justify-end w-full text-[14px] `,
+  comment: `font-medium text-[12px] color-black mb-8 `,
+  buttons: `flex absolute right-[30px] bottom-[10px] z-50  `
 };
 
 const Comment = ({ address, comment, createdAt, name, image, id }) => {
@@ -20,8 +22,48 @@ const Comment = ({ address, comment, createdAt, name, image, id }) => {
   const [owner, setOwner] = useState();
   const [deleteCommentID, setDeleteCommentID] = useState("");
   const { user } = useContext(PrayerRequestContext);
+  const isPaidAccount = user?.stripeRole !== 'free'
+  const [likes, setLikes] = useState([]);
+  const [hasliked, setHasLiked] = useState(false);
+  const [dislikes, setDislikes] = useState([]);
+  const [hasdisliked, setHasDisLiked] = useState(false);
+  const queryId = window.location.pathname.split("/")[2];
 
   useEffect(() => btnRef?.current?.scrollIntoView(), []);
+
+
+  useEffect(
+    () =>
+      onSnapshot(collection(db, 'Prayers', queryId, 'comments', id, 'likes'), (snapshot) =>
+        setLikes(snapshot.docs)
+      ),
+    [id]
+  );
+
+  useEffect(
+    () =>
+      setHasLiked(
+        likes?.findIndex((like) => like?.id === user?.uid) !== -1
+      ),
+    [likes, user]
+  );
+
+
+  useEffect(
+    () =>
+      onSnapshot(collection(db, 'Prayers', queryId, 'comments', id, 'dislikes'), (snapshot) =>
+        setDislikes(snapshot.docs)
+      ),
+    [id]
+  );
+
+  useEffect(
+    () =>
+      setHasDisLiked(
+        dislikes?.findIndex((like) => like?.id === user?.uid) !== -1
+      ),
+    [dislikes, user]
+  );
 
   // console.log(id)
 
@@ -32,11 +74,36 @@ const Comment = ({ address, comment, createdAt, name, image, id }) => {
     );
   }, [user?.uid]);
 
+  const likecomment = () => {
+    if (!user) return;
+
+    const queryId = window.location.pathname.split("/")[2];
+    if (hasliked) return
+    if(hasdisliked) {
+      removeDisLike(queryId, id, user?.uid)
+    }
+    likeComment(queryId, id, user?.uid)
+    return;
+  };
+
+  const dislikecomment = () => {
+    if (!user) return;
+
+    const queryId = window.location.pathname.split("/")[2];
+    if (hasdisliked) return
+    if(hasliked) {
+      removeLike(queryId, id, user?.uid)
+    }
+    dislikeComment(queryId, id, user?.uid)
+    return;
+  };
+
   const deleteComment = (id) => {
     if (!user) return;
-    if (!owner) return;
-    setIsDeleteModalOpen(true);
-    setDeleteCommentID(id);
+    if (owner && isPaidAccount) {
+      setIsDeleteModalOpen(true);
+      setDeleteCommentID(id);
+    }
     return;
   };
   const deleteConfirmation = (event) => {
@@ -60,22 +127,37 @@ const Comment = ({ address, comment, createdAt, name, image, id }) => {
               : "flex w-full border border-l-[3px] m-1 rounded-md border-l-[#112EA0]"
           }`}
         >
-          <div
-            className={`flex flex-col  content-centers items-center p-1  ${
-              address == user?.email ? "" : ""
-            }`}
-          >
-            <img
-              src={image}
-              className="  rounded-[50%] w-[40px] h-[40px]  m-2"
-            />
-            {owner && (
-              <MdDelete
+
+            <div
+              className={`flex flex-col  content-centers items-center p-1 ${
+                address == user?.email ? "" : ""
+              }`}
+              >
+              <img
+                src={image}
+                className="  rounded-[50%] w-[40px] h-[40px]  m-2"
+                />
+
+              {owner && isPaidAccount && (
+                <MdDelete
                 size={25}
                 onClick={() => deleteComment(id)}
                 className="text-[#f00] cursor-pointer"
-              />
-            )}
+                />
+                )}
+            <div className={styles.buttons}>
+                <AiFillLike onClick={likecomment} className={`${user && hasliked ? 'text-[#0ABEEE]' : 'hover:scale-125 transition-all duration-150 ease-out text-[#ADADAD]'}  relative bottom-[3px] cursor-pointer `} size={25} /> {likes?.length > 0 && 
+                  <p className="text-[13px] font-semibold bg-opacity-100 ml-1">
+                    {likes?.length > 0 &&
+                      Intl.NumberFormat("en", { notation: "compact" }).format(likes?.length) }
+                  </p>
+                    }
+                <AiFillLike onClick={dislikecomment} size={25} className={`${user && !hasliked && hasdisliked ? 'text-[#0ABEEE]' : 'text-[#ADADAD]'}  cursor-pointer rotate-180 relative top-[1px] left-[10px] mr-3 `} /> <p className="text-[13px] font-semibold bg-opacity-100 ml-1">
+                    {dislikes?.length > 0 &&
+                      Intl.NumberFormat("en", { notation: "compact" }).format(dislikes?.length) }
+                  </p>
+                
+            </div>
           </div>
 
           <div

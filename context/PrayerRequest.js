@@ -32,7 +32,6 @@ export const PrayerRequestProvider = ({ children }) => {
     if(user) return
     signInWithPopup(auth, googleProvider)
       .then(response => {
-        alert('You logged in')
         handleUser(response.user)
         router.push('/')
       })
@@ -45,7 +44,6 @@ export const PrayerRequestProvider = ({ children }) => {
     if(!user) return
     signOut(auth).then(() => {
       router.push('/login')
-      sessionStorage.clear()
       handleUser(false)
     })
   }

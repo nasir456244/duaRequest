@@ -29,11 +29,11 @@ const Login = () => {
                         <div className="flex justify-center p-3 mb-5 w-full">
                             <p className="flex font-bold text-[24px] ">Login into your account</p>
                         </div>
-                        <div className='flex rounded-md cursor-pointer mx-6 flex-row items-center  justify-center p-1 m-3 h-[45px] bg-[#112EA0] hover:bg-blue-600 rounded-[6px] hover:shadow-2xl' >
+                        <div onClick={SignInWithGoogle} className='flex rounded-md cursor-pointer mx-6 flex-row items-center  justify-center p-1 m-3 h-[45px] bg-[#112EA0] hover:bg-blue-600 rounded-[6px] hover:shadow-2xl' >
                             <div className=' p-2 flex justify-center items-center h-full mx-3 rounded-full bg-[#fff]'>
                                 {Google && <Image className='h-full w-full' src={Google} alt='profile' /> }
                             </div>
-                            <button onClick={SignInWithGoogle} className='font-medium text-sm uppercase text-white '><b>Sign in with Google</b></button>
+                            <button className='font-medium text-sm uppercase text-white '><b>Sign in with Google</b></button>
                         </div>
 
                         <form className='justify-center items-center p-4'>
