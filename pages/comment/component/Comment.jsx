@@ -27,7 +27,6 @@ const Comment = ({ address, comment, createdAt, name, image, id }) => {
   const [hasliked, setHasLiked] = useState(false);
   const [dislikes, setDislikes] = useState([]);
   const [hasdisliked, setHasDisLiked] = useState(false);
-  const PrayerId = window.location.pathname.split("/")[2]
   useEffect(() => btnRef?.current?.scrollIntoView(), []);
 
 
@@ -82,6 +81,7 @@ const Comment = ({ address, comment, createdAt, name, image, id }) => {
   }, [user?.uid]);
 
   const likecomment = () => {
+    const PrayerId = window.location.pathname.split("/")[2]
     if (!user) return;
     if(!isPaidAccount) return
     if (hasliked) return
@@ -93,6 +93,8 @@ const Comment = ({ address, comment, createdAt, name, image, id }) => {
   };
 
   const dislikecomment = () => {
+    const PrayerId = window.location.pathname.split("/")[2]
+
     if (!user) return;
     if(!isPaidAccount) return
     if (hasdisliked) return
@@ -112,6 +114,8 @@ const Comment = ({ address, comment, createdAt, name, image, id }) => {
     return;
   };
   const deleteConfirmation = (event) => {
+    const PrayerId = window.location.pathname.split("/")[2]
+
     event && DeleteComment(PrayerId, deleteCommentID);
   };
 
