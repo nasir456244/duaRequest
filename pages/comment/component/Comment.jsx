@@ -154,7 +154,7 @@ const Comment = ({ address, comment, createdAt, name, image, id }) => {
                 />
                 )}
             <div className={styles.buttons}>
-                <AiFillLike onClick={likecomment} className={`${user && isPaidAccount && hasliked ? 'text-[#0ABEEE]' : 'hover:scale-125 transition-all duration-150 ease-out text-[#ADADAD]'}  relative bottom-[3px] cursor-pointer `} size={25} /> {likes?.length > 0 && 
+                <AiFillLike onClick={likecomment} className={`${user && isPaidAccount && hasliked && 'text-[#0ABEEE]'} ${user && 'hover:scale-125 transition-all duration-150 ease-out'}  text-[#ADADAD] relative bottom-[3px] cursor-pointer `} size={25} /> {likes?.length > 0 && 
                   <p className="text-[13px] font-semibold bg-opacity-100 ml-1">
                     {likes?.length > 0 ? Intl.NumberFormat("en", { notation: "compact" }).format(likes?.length) : '0' }
                   </p>
