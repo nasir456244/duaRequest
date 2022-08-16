@@ -27,15 +27,19 @@ const Comment = ({ address, comment, createdAt, name, image, id }) => {
   const [hasliked, setHasLiked] = useState(false);
   const [dislikes, setDislikes] = useState([]);
   const [hasdisliked, setHasDisLiked] = useState(false);
-  const [PrayerId, setPrayerId] = useState(window.location.pathname.split("/")[2])
+  const PrayerId = window.location.pathname.split("/")[2]
   useEffect(() => btnRef?.current?.scrollIntoView(), []);
 
 
   useEffect(
-    () => 
-      onSnapshot(collection(db, 'Prayers', PrayerId, 'comments', id, 'likes'), (snapshot) =>
-        setLikes(snapshot.docs)
-      ),
+    () => {
+      const PrayerId = window.location.pathname.split("/")[2]
+
+      const unsub = onSnapshot(collection(db, 'Prayers', PrayerId, 'comments', id, 'likes'), (snapshot) =>
+      setLikes(snapshot.docs)
+      )
+      return () => unsub();
+    },
     [id]
   );
 
@@ -49,10 +53,14 @@ const Comment = ({ address, comment, createdAt, name, image, id }) => {
 
 
   useEffect(
-    () =>
-      onSnapshot(collection(db, 'Prayers', PrayerId, 'comments', id, 'dislikes'), (snapshot) =>
-        setDislikes(snapshot.docs)
-      ),
+    () => {
+      const PrayerId = window.location.pathname.split("/")[2]
+
+      const unsub = onSnapshot(collection(db, 'Prayers', PrayerId, 'comments', id, 'dislikes'), (snapshot) =>
+      setDislikes(snapshot.docs)
+      )
+      return () => unsub();
+    },
     [id]
   );
 
