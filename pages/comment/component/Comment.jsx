@@ -75,6 +75,7 @@ const Comment = ({ address, comment, createdAt, name, image, id }) => {
   // console.log(id)
 
   useEffect(() => {
+    const PrayerId = window.location.pathname.split("/")[2]
     getDoc(doc(db, `Prayers/${PrayerId}`)).then((res) =>
       setOwner(res?.data()?.uid == user?.uid)
     );
