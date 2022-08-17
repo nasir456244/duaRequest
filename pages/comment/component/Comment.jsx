@@ -13,7 +13,7 @@ const styles = {
   address: `flex items-center text-[14px] font-semibold text-[#000000] not-italic `,
   time: `flex justify-end w-full text-[14px] `,
   comment: `font-medium text-[12px] color-black mb-8 `,
-  buttons: `flex absolute right-[30px] bottom-[10px] z-50  `
+  buttons: `flex absolute right-[30px] bottom-[10px]   `
 };
 
 const Comment = ({ address, comment, createdAt, name, image, id }) => {
@@ -35,7 +35,7 @@ const Comment = ({ address, comment, createdAt, name, image, id }) => {
       const PrayerId = window.location.pathname.split("/")[2]
 
       const unsub = onSnapshot(collection(db, 'Prayers', PrayerId, 'comments', id, 'likes'), (snapshot) =>
-      setLikes(snapshot.docs)
+      setLikes(snapshot?.docs)
       )
       return () => unsub();
     },
@@ -138,7 +138,7 @@ const Comment = ({ address, comment, createdAt, name, image, id }) => {
 
             <div
               className={`flex flex-col  content-centers items-center p-1 ${
-                address == user?.email ? "" : ""
+                address == user?.email && ""
               }`}
               >
               <img
@@ -154,11 +154,11 @@ const Comment = ({ address, comment, createdAt, name, image, id }) => {
                 />
                 )}
             <div className={styles.buttons}>
-                <AiFillLike onClick={likecomment} className={`${user && isPaidAccount && hasliked ? 'text-[#0ABEEE]' : 'text-[#ADADAD]'} ${user && 'hover:scale-125 transition-all duration-150 ease-out'} relative bottom-[3px] cursor-pointer `} size={25} />
+                <AiFillLike onClick={likecomment} className={`${user && isPaidAccount && hasliked ? 'text-[#0ABEEE]' : 'text-[#ADADAD]'} ${user && !hasliked && ' md:hover:scale-125 md:transition-all md:duration-150 md:ease-out cursor-pointer'} relative bottom-[3px]  `} size={25} />
                   <p className="text-[13px] font-semibold bg-opacity-100 ml-1">
                     {likes?.length > 0 ? Intl.NumberFormat("en", { notation: "compact" }).format(likes?.length) : '0' }
                   </p>
-                <AiFillLike onClick={dislikecomment} size={25} className={`${user && isPaidAccount && hasdisliked ? 'text-[#0ABEEE]' : 'text-[#ADADAD]'}  cursor-pointer rotate-180 relative top-[1px] left-[10px] mr-3 `} /> <p className="text-[13px] font-semibold bg-opacity-100 ml-1">
+                <AiFillLike onClick={dislikecomment} size={25} className={`${user && isPaidAccount && hasdisliked ? 'text-[#0ABEEE]' : 'text-[#ADADAD] cursor-pointer'}  rotate-180 relative top-[1px] left-[10px] mr-3 `} /> <p className="text-[13px] font-semibold bg-opacity-100 ml-1">
                     {dislikes?.length > 0 ? Intl.NumberFormat("en", { notation: "compact" }).format(dislikes?.length) : '0' } 
                   </p>
                 

@@ -43,8 +43,8 @@ const MyPrayer = () => {
       const q = query(...queryParams);
       const data = await getDocs(q);
       setPrayers([...prayers, ...data?.docs]);
-      setIsPrayerLoading(false);
       setLastKey(data?.docs?.length && data?.docs[data?.docs?.length - 1]);
+      setIsPrayerLoading(false);
     }
   };
 
@@ -58,8 +58,8 @@ const MyPrayer = () => {
     const q = queryParams && query(...queryParams);
     const data = q && await getDocs(q);
     data?.docs && setPrayers([...prayers, ...data?.docs]);
-    setIsPrayerLoading(false);
     setLastKey(data?.docs[data?.docs?.length - 1]);
+    setIsPrayerLoading(false);
   };
 
   useEffect( () => {
@@ -75,7 +75,6 @@ const MyPrayer = () => {
     <>
       <Navbar />
 
-      <h2>My Prayers </h2>
       <div className={styles.container}>
         {isPrayerLoading ? (
           <PrayerSkeleton />
