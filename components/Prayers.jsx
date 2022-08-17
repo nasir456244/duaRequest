@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import PrayerSkeleton from "./PrayerSkeleton";
 import { db } from "../lib/firebaseConfig";
 import {
@@ -23,6 +23,7 @@ const Prayers = () => {
   const [prayers, setPrayers] = useState([]);
   const [lastKey, setLastKey] = useState("");
   const [isPrayerLoading, setIsPrayerLoading] = useState(true);
+
   const fetchMoreData = async () => {
     const queryParams = [
       collection(db, "Prayers"),

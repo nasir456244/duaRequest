@@ -9,7 +9,7 @@ import DeleteModal from "../components/DeleteModal";
 
 
 const styles = {
-  listContainer: ` tracking-2 hover:shadow-2xl flex flex-col max-w-[544px] p-[4px] bg-[#ffffff] rounded-2xl break-words overflow-hidden max-w-full h-fit `,
+  listContainer: ` tracking-2 hover:shadow-2xl my-[6px] flex flex-col max-w-[544px] p-[4px] bg-[#ffffff] rounded-2xl break-words overflow-hidden max-w-full h-fit `,
 };
 
 const MyPrayers = ({ address, name, createdAt, image, prayer, id }) => {
