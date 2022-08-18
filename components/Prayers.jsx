@@ -34,9 +34,9 @@ const Prayers = () => {
       queryParams.push(startAfter(lastKey));
       const q = query(...queryParams);
       const data = await getDocs(q);
-      setPrayers([...prayers, ...data.docs]);
+      setPrayers([...prayers, ...data?.docs]);
       setIsPrayerLoading(false);
-      setLastKey(data.docs.length && data.docs[data.docs.length - 1]);
+      setLastKey(data?.docs?.length && data?.docs[data?.docs?.length - 1]);
     }
   };
 
@@ -48,14 +48,14 @@ const Prayers = () => {
     ];
     const q = query(...queryParams);
     const data = await getDocs(q);
-    setPrayers([...prayers, ...data.docs]);
+    setPrayers([...prayers, ...data?.docs]);
     setIsPrayerLoading(false);
-    setLastKey(data.docs[data.docs.length - 1]);
+    setLastKey(data?.docs[data?.docs?.length - 1]);
   };
 
   useEffect( () => {
     const unsub = onSnapshot(query(collection(db, "Prayers")), (snapshot) => {
-      setTotalSize(snapshot.size);
+      setTotalSize(snapshot?.size);
       FetchPrayers();
     });
     return () => unsub();
@@ -72,17 +72,17 @@ const Prayers = () => {
         <div className={styles.listMainContainer}>
           <InfiniteScroll
             loadMore={fetchMoreData}
-            hasMore={prayers.length <= totalSize}
+            hasMore={prayers?.length <= totalSize}
           >
             {prayers?.map((prayer, index) => (
               <Prayer
                 image={prayer?.data()?.image}
                 name={prayer?.data()?.name}
-                id={prayer.id}
-                key={prayer.id + "" + index}
-                address={prayer.data().address}
-                prayer={prayer.data().prayer}
-                timestamp={prayer.data().createdAt?.toDate()}
+                id={prayer?.id}
+                key={prayer?.id + "" + index}
+                address={prayer?.data()?.address}
+                prayer={prayer?.data()?.prayer}
+                timestamp={prayer?.data()?.createdAt?.toDate()}
               />
             ))}
           </InfiniteScroll>

@@ -31,7 +31,7 @@ const Prayer = ({ address, id, prayer, timestamp, name, image }) => {
   useEffect(
     () =>
       onSnapshot(collection(db, "Prayers", id, "likes"), (snapshot) =>
-        setLikes(snapshot.docs)
+        setLikes(snapshot?.docs)
       ),
     [id]
   );

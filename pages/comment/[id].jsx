@@ -24,7 +24,7 @@ import { addComment } from "../../lib/db";
 
 const styles = {
   mainContainer: ` flex justify-center sm:px-3 sm:pb-3 `,
-  modalContainer: `flex flex-col overflow-auto bg-white max-h-[85vh] w-[580px]  lg:max-h-[865px] overflow-hidden `,
+  modalContainer: `flex flex-col overflow-auto bg-white sm:max-h-[85vh] w-[580px] md:max-h-[850px] overflow-hidden `,
   title: `text-[20px] text-black font-bold	leading-7 flex justify-center`,
   body: ` h-screen  overflow-auto mt-[15px] mb-[5px] p-[10px] rounded-xl `,
   input: `w-full  p-2 text-xl resize-none break-all bg-[#F2F2F2] outline-0 text-[#000000] mr-2 rounded-[12px] overflow-hidden`,
@@ -152,7 +152,7 @@ const CommentPage = () => {
                     : "bg-[#F2F2F2] cursor-pointer hover:shadow-2xl text-xl transition-all duration-300 hover:scale-105 rotate-90"
                 }`}
               >
-                <HiPaperAirplane className="text-[#112EA0]" size={22} />
+                <HiPaperAirplane className={` ${!user || !chat ? 'text-[#8C8C8C]' : 'text-[#112EA0]'}`} size={22} />
               </button>
             </div>
           </div>
