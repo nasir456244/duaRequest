@@ -107,7 +107,7 @@ const CommentPage = () => {
         setCommentsLoding(false);
         setTotalSize(totalSize + data?.docs.length)
         setLastKey(data?.docs?.length && data?.docs[data?.docs?.length - 1]);
-      },500)
+      },800)
     }
   };
 

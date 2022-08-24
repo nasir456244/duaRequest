@@ -46,7 +46,7 @@ const MyPrayer = () => {
         setLastKey(data?.docs[data?.docs?.length - 1]);
         setIsPrayerLoading(false);
         setTotalSize(totalSize + sortedDocs.length)
-      },500)
+      },800)
     }
   };
 
