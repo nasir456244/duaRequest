@@ -7,10 +7,6 @@ import Head from "next/head";
 
 const styles = {
   container: `max-h-full max-w-full flex flex-col overflow-x-hidden select-none`,
-  empty: "hidden",
-  show: `flex`,
-  buyRPCContainer: `bg-[#044895e0] z-50 fixed bottom-[40px] left-[40px] flex justify-center items-center text-white rounded-2xl `,
-  BuyRPCButton: `text-[1.2rem] bg-[#1a0a83e0] flex items-center p-[15px] rounded-2xl h-[50px] hover:bg-[#08a645e0] hover:text-[#fff]`,
 };
 
 const Home = () => {
@@ -22,7 +18,7 @@ const Home = () => {
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
         <meta charSet="utf-8" />
       </Head>
-      <Toaster position="top-center" reverseOrder={false} />
+      <Toaster position="bottom-center" reverseOrder={false} />
       <Navbar />
 
       {<PostPrayerModal />}

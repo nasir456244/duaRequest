@@ -1,5 +1,6 @@
 import { createContext, useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
+import toast from "react-hot-toast";
 import {
   getAuth,
   GoogleAuthProvider,
@@ -32,25 +33,38 @@ export const PrayerRequestProvider = ({ children }) => {
 
   const SignInWithGoogle = () => {
     if(user) return
+    const loading = toast.loading('loading');
     signInWithPopup(auth, googleProvider)
       .then(response => {
         handleUser(response.user)
+        toast.dismiss(loading)
+        toast.success('success')
         router.push('/')
       })
       .catch(error => {
-        console.error(error)
+        toast.error(error.message, {
+          style: { background: "#04111d", color: "#fff" },
+        });
       })
   }
 
   const SignInWithFacebook = () => {
-    if(user) return
+    if(user) return;
+    const loading = toast.loading('loading');
+    toast.loading('loading',{
+      duration: 5000
+    })
     signInWithPopup(auth, facebookProvider)
       .then(response => {
         handleUser(response.user)
+        toast.dismiss(loading)
+        toast.success('success')
         router.push('/')
       })
       .catch(error => {
-        console.error(error)
+        toast.error(error.message, {
+          style: { background: "#04111d", color: "#fff" },
+        });
       })
   }
 

@@ -1,10 +1,12 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import { PrayerRequestContext } from '@/context/PrayerRequest'
 import { useRouter } from 'next/router'
 import { FaFacebook, FaApple } from "react-icons/fa";
 import Google from '@/public/Google.svg'
 import Navbar from '../components/Navbar';
 import Image from 'next/image';
+import { Toaster } from "react-hot-toast";
+
 const Login = () => {
 
     const { user, SignInWithGoogle, SignInWithFacebook } = useContext(PrayerRequestContext)
@@ -12,8 +14,9 @@ const Login = () => {
 
     return (
 
-        <div className='min-w-screen min-h-screen overflow-hidden'>
+        <div className='max-w-screen max-h-screen overflow-hidden'>
             <Navbar />
+            <Toaster position="bottom-center" reverseOrder={false} />
 
         <div className='text-[#fff] w-screen h-screen flex flex-col items-center justify-center '>
             {user ?
@@ -29,7 +32,7 @@ const Login = () => {
                         <div className="flex justify-center p-3 mb-5 w-full">
                             <p className="flex font-bold text-[24px] ">Login into your account</p>
                         </div>
-                        <div onClick={SignInWithGoogle} className='flex rounded-md cursor-pointer mx-6 flex-row items-center  justify-center p-1 m-3 h-[45px] bg-[#112EA0] hover:bg-blue-600 rounded-[6px] hover:shadow-2xl' >
+                        <div onClick={ SignInWithGoogle } className='flex rounded-md cursor-pointer mx-6 flex-row items-center  justify-center p-1 m-3 h-[45px] bg-[#112EA0] hover:bg-blue-600 rounded-[6px] hover:shadow-2xl' >
                             <div className=' p-2 flex justify-center items-center h-full mx-3 rounded-full bg-[#fff]'>
                                 {Google && <Image className='h-full w-full' src={Google} alt='profile' /> }
                             </div>
