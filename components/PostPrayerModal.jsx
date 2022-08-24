@@ -15,6 +15,7 @@ import { createPrayer, createTimeOutDoc, UpdateTimeOutDoc } from "../lib/db";
 import { FaRegEdit } from "react-icons/fa";
 import loader from '@/public/loader.gif'
 import Image from "next/image";
+import useStateValue from "hooks/useStateValue";
 
 const styles = {
   modalBackground: `w-screen z-50 sm:p-3 h-screen fixed sm:p-1 flex justify-center items-center overflow-hidden `,
@@ -34,18 +35,24 @@ const PostPrayerModal = () => {
   const [postTimer, setpostTimer] = useState(0);
   const [isTimeGone, setisTimeGone] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
-  const isPaidAccount = user?.stripeRole !== 'free'
+  const { changeState, setChangeState } = useStateValue()
+  const isPaidAccount = user?.stripeRole !== "free"
 
   useEffect(() => {
     user && !isPaidAccount &&
       onSnapshot(
         doc(db, "TimeOut", "TimeOutUsers", "users", user?.uid),
-        (snapshot) => {
+        async (snapshot) => {
           const postNumber = snapshot?.data()?.postNumber || 0;
           const postTimer = snapshot?.data()?.postTimer;
+          const worldTime = await (await fetch("http://worldclockapi.com/api/json/utc/now")).json()
+          const UTCTime = new Date(worldTime?.currentDateTime)
+          const isDatePassed = () => UTCTime > new Date(postTimer.seconds * 1000 + 24 * 60 * 60 * 1000)
+          // console.log(isDatePassed, UTCTime.toUTCString(), postTimer?.toDate().toUTCString())
+          // Change condition later only for testing
+
           const isTimeGone = postTimer
-            ? Date.now() >
-              new Date(postTimer.seconds * 1000 + 24 * 60 * 60 * 1000)
+            ? isDatePassed()
               ? true
               : false
             : true;
@@ -85,11 +92,14 @@ const PostPrayerModal = () => {
 
       createPrayer(newPrayer);
 
-      if(isPaidAccount) return
+      if (isPaidAccount) {
+        setChangeState({ ...changeState, prayer: !changeState.prayer })
+        return
+      }
 
       else {
 
-      
+
 
         if (postNumber === 0) {
           const timeOutDoc = {
@@ -108,6 +118,7 @@ const PostPrayerModal = () => {
           style: { background: "#04111d", color: "#fff" },
         });
       }
+      setChangeState({ ...changeState, prayer: !changeState.prayer })
     } catch (error) {
       console.log(error);
       toast.error(error.message, {
@@ -158,7 +169,7 @@ const PostPrayerModal = () => {
                   Time Left to request prayer:{" "}
                   <Countdown date={postTimer} renderer={renderer} />
                 </div>
-                {loader && 
+                {loader &&
                   <Image
                     className="object-contain relative bottom-[80px] h-80 w-80"
                     src={loader}
@@ -198,9 +209,8 @@ const PostPrayerModal = () => {
                   <button
                     type="submit"
                     disabled={!isTimeGone || !prayer.trim()}
-                    className={`${
-                      styles.post
-                    } ${`disabled:cursor-not-allowed disabled:bg-[#9d9d9d] disabled:text-white bg-[#0bbe20] `}`}
+                    className={`${styles.post
+                      } ${`disabled:cursor-not-allowed disabled:bg-[#9d9d9d] disabled:text-white bg-[#0bbe20] `}`}
                   >
                     Post
                   </button>

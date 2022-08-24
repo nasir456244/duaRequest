@@ -14,7 +14,7 @@ import {
 import { HiPaperAirplane } from "react-icons/hi";
 import { useRouter } from "next/router";
 import { PrayerRequestContext } from "@/context/PrayerRequest";
-import { addComment, dislikePrayer, likePrayer } from "@/lib/db";
+import { addComment, likePrayer } from "@/lib/db";
 
 const styles = {
   listContainer: `hover:shadow-2xl my-[6px] flex flex-col bg-[#ffffff] rounded-2xl break-words overflow-hidden h-fit`,
@@ -46,12 +46,7 @@ const Prayer = ({ address, id, prayer, timestamp, name, image }) => {
 
   const likepost = () => {
     if (!user) return;
-
-    if (hasliked) {
-      dislikePrayer(id, user?.uid)
-    } else {
-      likePrayer(id, user?.uid)
-    }
+    if (!hasliked)  likePrayer(id, user?.uid);
     return;
   };
 
@@ -105,7 +100,7 @@ const Prayer = ({ address, id, prayer, timestamp, name, image }) => {
             <div className="flex overflow-hidden justify-start px-2 items-center h-12  ">
               {user && hasliked ? (
                 <BsFillSuitHeartFill
-                  className={` flex cursor-pointer text-[25px] sm:mr-1  sm:text-[45px] text-[#0ABEEE] ${!user && "cursor-not-allowed "
+                  className={` flex text-[25px] sm:mr-1  sm:text-[45px] text-[#0ABEEE] ${!user && "cursor-not-allowed "
                     }`}
                   disabled={!user}
                   onClick={likepost}
@@ -121,7 +116,7 @@ const Prayer = ({ address, id, prayer, timestamp, name, image }) => {
                 />
               )}
               {user && hasliked ? (
-                <p  className="mt-[2px] mx-[8px] text-[#0ABEEE] sm:hidden">Prayed</p>
+                <p  className="mt-[2px] mx-[8px] text-[#0ABEEE] sm:hidden">Pray</p>
               ) : (
                 <p className="mt-[2px]  mx-[8px] text-[#8C8C8C] sm:hidden">Pray</p>
               )}
@@ -170,12 +165,16 @@ const Prayer = ({ address, id, prayer, timestamp, name, image }) => {
           </div>
         </div>
       </div>
-      {likes?.length > 0 && 
+      {likes?.length > 0 ? 
         <p className="text-[13px] font-semibold pl-5 pb-3 pt-3 bg-opacity-100 bg-[#f1f1f1] w-full">
           {likes?.length > 0 &&
             Intl.NumberFormat("en", { notation: "compact" }).format(
               likes?.length
               ) + " Prayers"}
+        </p>
+        :
+        <p className="text-[13px] font-semibold pl-5 pb-3 pt-3 bg-opacity-100 bg-[#f1f1f1] w-full">
+          0 Prayers
         </p>
       }
 

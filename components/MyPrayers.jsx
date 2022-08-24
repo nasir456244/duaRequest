@@ -18,13 +18,13 @@ const MyPrayers = ({ address, name, createdAt, image, prayer, id }) => {
   const [deletePrayerID, setDeletePrayerID] = useState("");
 
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  useEffect(
-    () =>
-      onSnapshot(collection(db, "Prayers", id, "likes"), (snapshot) =>
-        setLikes(snapshot.docs)
-      ),
-    [id]
-  );
+  // useEffect(
+  //   () =>
+  //     onSnapshot(collection(db, "Prayers", id, "likes"), (snapshot) =>
+  //       setLikes(snapshot.docs)
+  //     ),
+  //   [id]
+  // );
 
   const deletePrayer = (id) => {
     if (!user) return;
@@ -47,7 +47,7 @@ const MyPrayers = ({ address, name, createdAt, image, prayer, id }) => {
 
       <div className={styles.listContainer}>
         <div className="flex  justify-center p-4 ">
-          <img layout="fixed" className="flex rounded-[50%] w-[42px] h-[42px] " src={image} /> 
+          <img layout="fixed" className="flex rounded-[50%] w-[42px] h-[42px] " src={image} />
           <div className="flex flex-col w-full ml-2 ">
             <div className="flex justify-between items-center ">
               <p className="font-semibold text-[14px] text-[#000000] not-italic ">

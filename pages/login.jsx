@@ -7,7 +7,7 @@ import Navbar from '../components/Navbar';
 import Image from 'next/image';
 const Login = () => {
 
-    const { user, SignInWithGoogle } = useContext(PrayerRequestContext)
+    const { user, SignInWithGoogle, SignInWithFacebook } = useContext(PrayerRequestContext)
     const router = useRouter()
 
     return (
@@ -43,7 +43,7 @@ const Login = () => {
                                 <p className="text-center font-semibold mb-0">Or</p>
                             </div>
                             <div className="flex flex-row items-center justify-around my-4 px-16">
-                                <div className='flex w-[80px] h-[50px] hover:shadow-2xl cursor-pointer rounded-xl border justify-center items-center '>
+                                <div onClick={SignInWithFacebook} className='flex w-[80px] h-[50px] hover:shadow-2xl cursor-pointer rounded-xl border justify-center items-center '>
                                     <button
                                         type="button"
                                         

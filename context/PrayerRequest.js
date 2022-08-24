@@ -3,6 +3,7 @@ import { useRouter } from 'next/router'
 import {
   getAuth,
   GoogleAuthProvider,
+  FacebookAuthProvider,
   signInWithPopup,
   signOut
 } from 'firebase/auth'
@@ -12,7 +13,8 @@ export const PrayerRequestContext = createContext()
 export const PrayerRequestProvider = ({ children }) => {
   const router = useRouter()
   const auth = getAuth()
-  const googleProvider = new GoogleAuthProvider()
+  const googleProvider = new GoogleAuthProvider();
+  const facebookProvider = new FacebookAuthProvider();
   const [user, setUser] = useState(null)
 
   const handleUser = async rawUser => {
@@ -31,6 +33,18 @@ export const PrayerRequestProvider = ({ children }) => {
   const SignInWithGoogle = () => {
     if(user) return
     signInWithPopup(auth, googleProvider)
+      .then(response => {
+        handleUser(response.user)
+        router.push('/')
+      })
+      .catch(error => {
+        console.error(error)
+      })
+  }
+
+  const SignInWithFacebook = () => {
+    if(user) return
+    signInWithPopup(auth, facebookProvider)
       .then(response => {
         handleUser(response.user)
         router.push('/')
@@ -78,6 +92,7 @@ export const PrayerRequestProvider = ({ children }) => {
       value={{
         user,
         SignInWithGoogle,
+        SignInWithFacebook,
         logout
       }}
     >
