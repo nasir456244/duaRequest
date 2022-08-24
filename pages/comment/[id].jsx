@@ -98,13 +98,16 @@ const CommentPage = () => {
       limit(5),
     ];
     if (lastKey) {
+      
       queryParams.push(startAfter(lastKey));
       const q = query(...queryParams);
       const data = await getDocs(q);
-      setComments([...data?.docs.map(doc => ({ id: doc.id, ...doc.data() })).reverse(), ...comments]);
-      setCommentsLoding(false);
-      setTotalSize(totalSize + data?.docs.length)
-      setLastKey(data?.docs?.length && data?.docs[data?.docs?.length - 1]);
+      setTimeout( () => {
+        setComments([...data?.docs.map(doc => ({ id: doc.id, ...doc.data() })).reverse(), ...comments]);
+        setCommentsLoding(false);
+        setTotalSize(totalSize + data?.docs.length)
+        setLastKey(data?.docs?.length && data?.docs[data?.docs?.length - 1]);
+      },500)
     }
   };
 

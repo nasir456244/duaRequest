@@ -40,10 +40,13 @@ const MyPrayer = () => {
       const data = await getDocs(q);
       const prayerDocs = data.docs.map(doc => ({ id: doc.id, ...doc.data() }))
       const sortedDocs = _.filter(prayerDocs, (doc) => doc.uid === user.uid)
-      setPrayers([...prayers, ...sortedDocs]);
-      setLastKey(data?.docs[data?.docs?.length - 1]);
-      setIsPrayerLoading(false);
-      setTotalSize(totalSize + sortedDocs.length)
+      setTimeout(() => {
+
+        setPrayers([...prayers, ...sortedDocs]);
+        setLastKey(data?.docs[data?.docs?.length - 1]);
+        setIsPrayerLoading(false);
+        setTotalSize(totalSize + sortedDocs.length)
+      },500)
     }
   };
 

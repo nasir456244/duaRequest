@@ -63,10 +63,13 @@ const Prayers = () => {
       queryParams.push(startAfter(lastKey));
       const q = query(...queryParams);
       const data = await getDocs(q);
-      setPrayers([...prayers, ...data?.docs.map(doc => ({ id: doc.id, ...doc.data() }))]);
-      setIsPrayerLoading(false);
-      setLastKey(data?.docs?.length && data?.docs[data?.docs?.length - 1]);
-      setTotalSize(totalSize + data?.docs.length);
+      setTimeout( () => {
+
+        setPrayers([...prayers, ...data?.docs.map(doc => ({ id: doc.id, ...doc.data() }))]);
+        setIsPrayerLoading(false);
+        setLastKey(data?.docs?.length && data?.docs[data?.docs?.length - 1]);
+        setTotalSize(totalSize + data?.docs.length);
+      },500)
     }
   };
 
