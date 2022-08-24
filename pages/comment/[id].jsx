@@ -48,6 +48,8 @@ const CommentPage = () => {
   const { changeState, setChangeState } = useStateValue()
   const ref = useRef(true)
   const bottomRef = useRef(null)
+  const scroll = useRef(null)
+
 
   useEffect(() => {
     const firstRender = ref.current
@@ -124,17 +126,18 @@ const CommentPage = () => {
       uid: user?.uid,
     };
     addComment(queryId, newComment);
+    bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
     setChangeState({ ...changeState, comment: !changeState.comment })
   };
 
-  const deleteConfirmation = (event, id) => {
+  const deleteConfirmation = async (event, deleteCommentID) => {
     const PrayerId = window.location.pathname.split("/")[2]
 
-    event && DeleteComment(PrayerId, id);
-    const updatedComments = comments.filter(item => item.id !== id)
-    setComments(updatedComments)
-    setLastKey(updatedComments[updatedComments.length - 1])
-    setTotalSize(totalSize - 1)
+    if (event) {
+      await DeleteComment(PrayerId, deleteCommentID);
+      setComments(comments.filter(comment => comment.id !== deleteCommentID))
+    }
+    return
   };
 
   return (
@@ -198,11 +201,7 @@ const CommentPage = () => {
                 disabled={!user}
                 value={chat}
                 className={styles.input}
-                onChange={(e) => {
-
-                  setChat(e.target?.value)
-                  bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
-                }}
+                onChange={(e) => setChat(e.target?.value)}
                 minLength={1}
                 maxLength={250}
                 placeholder={`${!user ? "Login to comment" : "Write a comment..."

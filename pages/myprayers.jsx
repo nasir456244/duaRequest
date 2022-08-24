@@ -2,7 +2,6 @@ import {
   collection,
   orderBy,
   query,
-  where,
   limit,
   getDocs,
   startAfter,
@@ -15,6 +14,7 @@ import PrayerSkeleton from "../components/PrayerSkeleton";
 import { PrayerRequestContext } from "../context/PrayerRequest";
 import InfiniteScroll from "react-infinite-scroller";
 import _ from "lodash";
+import { DeletePrayer } from "@/lib/db";
 
 const styles = {
   container: `w-full flex justify-center p-[12px] text-[#27425d]  overflow-x-hidden`,
@@ -31,7 +31,6 @@ const MyPrayer = () => {
   const fetchMoreData = async () => {
     const queryParams = [
       collection(db, "Prayers"),
-      where("uid", "==", user.uid),
       orderBy("createdAt", "desc"),
       limit(5),
     ];
@@ -40,11 +39,11 @@ const MyPrayer = () => {
       const q = query(...queryParams);
       const data = await getDocs(q);
       const prayerDocs = data.docs.map(doc => ({ id: doc.id, ...doc.data() }))
-      // const sortedDocs = _.filter(prayerDocs, (doc) => doc.uid === user.uid)
-      setPrayers([...prayers, ...prayerDocs]);
+      const sortedDocs = _.filter(prayerDocs, (doc) => doc.uid === user.uid)
+      setPrayers([...prayers, ...sortedDocs]);
       setLastKey(data?.docs[data?.docs?.length - 1]);
       setIsPrayerLoading(false);
-      setTotalSize(totalSize + prayerDocs.length)
+      setTotalSize(totalSize + sortedDocs.length)
     }
   };
 
@@ -54,23 +53,30 @@ const MyPrayer = () => {
     const fetchPrayers = async () => {
       const queryParams = [
         collection(db, "Prayers"),
-        where("uid", "==", user.uid),
         orderBy("createdAt", "desc"), limit(5)
       ];
       const q = query(...queryParams);
       const data = await getDocs(q)
       const prayerDocs = data.docs.map(doc => ({ id: doc.id, ...doc.data() }))
-      // const sortedDocs = _.filter(prayerDocs, (doc) => doc.uid === user.uid)
-      setPrayers(prayerDocs);
+      const sortedDocs = _.filter(prayerDocs, (doc) => doc.uid === user.uid)
+      setPrayers(sortedDocs);
       setLastKey(data?.docs[data?.docs?.length - 1]);
       setIsPrayerLoading(false);
-      setTotalSize(prayerDocs.length)
+      setTotalSize(sortedDocs.length)
     };
     if (user?.uid) {
       fetchPrayers()
     }
 
   }, [user?.uid]);
+
+  const deleteConfirmation = async (event, deletePrayerID) => {
+    if (event) {
+      await DeletePrayer(deletePrayerID)
+      setPrayers(prayers.filter(prayer => prayer.id !== deletePrayerID))
+    }
+
+  };
 
   return (
     <>
@@ -87,6 +93,7 @@ const MyPrayer = () => {
             >
               {prayers?.map((prayer, index) => (
                 <MyPrayers
+                  deleteConfirmation={deleteConfirmation}
                   image={prayer?.image}
                   name={prayer?.name}
                   id={prayer?.id}

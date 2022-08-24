@@ -1,10 +1,10 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState, useContext, useRef } from "react";
 import TimeAgo from "timeago-react";
 import { collection, doc, getDoc, onSnapshot } from "firebase/firestore";
 import { db } from "../../../lib/firebaseConfig";
 import { MdDelete } from "react-icons/md";
 import { PrayerRequestContext } from "../../../context/PrayerRequest";
-import { DeleteComment, dislikeComment, likeComment, removeDisLike, removeLike } from "../../../lib/db";
+import { dislikeComment, likeComment, removeDisLike, removeLike } from "../../../lib/db";
 import DeleteModal from "../../../components/DeleteModal";
 import { AiFillLike } from 'react-icons/ai'
 
@@ -27,7 +27,6 @@ const Comment = ({ address, comment, createdAt, name, image, id,
   const [hasliked, setHasLiked] = useState(false);
   const [dislikes, setDislikes] = useState([]);
   const [hasdisliked, setHasDisLiked] = useState(false);
-
 
   useEffect(
     () => {

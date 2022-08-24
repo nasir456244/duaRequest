@@ -12,7 +12,7 @@ const styles = {
   listContainer: ` tracking-2 hover:shadow-2xl my-[6px] flex flex-col max-w-[544px] p-[4px] bg-[#ffffff] rounded-2xl break-words overflow-hidden max-w-full h-fit `,
 };
 
-const MyPrayers = ({ address, name, createdAt, image, prayer, id }) => {
+const MyPrayers = ({ address, name, createdAt, image, prayer, id, deleteConfirmation }) => {
   const [likes, setLikes] = useState();
   const { user } = useContext(PrayerRequestContext);
   const [deletePrayerID, setDeletePrayerID] = useState("");
@@ -32,15 +32,12 @@ const MyPrayers = ({ address, name, createdAt, image, prayer, id }) => {
     setDeletePrayerID(id);
     return;
   };
-  const deleteConfirmation = (event) => {
-    event && DeletePrayer(deletePrayerID);
-  };
 
   return (
     <div className="relative">
       {isDeleteModalOpen && (
         <DeleteModal
-          setDeleteDua={deleteConfirmation}
+          setDeleteDua={(e) => deleteConfirmation(e, id)}
           setIsDeleteModalOpen={setIsDeleteModalOpen}
         />
       )}

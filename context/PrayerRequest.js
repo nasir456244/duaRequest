@@ -33,15 +33,20 @@ export const PrayerRequestProvider = ({ children }) => {
 
   const SignInWithGoogle = () => {
     if(user) return
-    const loading = toast.loading('loading');
+    const loading = toast.loading('loading', {
+      style: { background: "#04111d", color: "#fff" },
+    });
     signInWithPopup(auth, googleProvider)
       .then(response => {
-        handleUser(response.user)
         toast.dismiss(loading)
-        toast.success('success')
-        router.push('/')
+        handleUser(response.user)
+        toast.success('success', {
+          style: { background: "#04111d", color: "#fff" },
+        })        
+        router.push('/dashboard')
       })
       .catch(error => {
+        toast.dismiss(loading)
         toast.error(error.message, {
           style: { background: "#04111d", color: "#fff" },
         });
@@ -51,17 +56,17 @@ export const PrayerRequestProvider = ({ children }) => {
   const SignInWithFacebook = () => {
     if(user) return;
     const loading = toast.loading('loading');
-    toast.loading('loading',{
-      duration: 5000
-    })
     signInWithPopup(auth, facebookProvider)
       .then(response => {
-        handleUser(response.user)
         toast.dismiss(loading)
-        toast.success('success')
-        router.push('/')
+        handleUser(response.user)
+        toast.success('success', {
+          style: { background: "#04111d", color: "#fff" },
+        })
+        router.push('/dashboard')
       })
       .catch(error => {
+        toast.dismiss(loading)
         toast.error(error.message, {
           style: { background: "#04111d", color: "#fff" },
         });

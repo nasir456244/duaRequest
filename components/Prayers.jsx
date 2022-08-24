@@ -3,7 +3,6 @@ import PrayerSkeleton from "./PrayerSkeleton";
 import { db } from "../lib/firebaseConfig";
 import {
   collection,
-  onSnapshot,
   orderBy,
   limit,
   query,
