@@ -48,7 +48,6 @@ const CommentPage = () => {
   const { changeState, setChangeState } = useStateValue()
   const ref = useRef(true)
   const bottomRef = useRef(null)
-  const scroll = useRef(null)
 
 
   useEffect(() => {
@@ -73,7 +72,7 @@ const CommentPage = () => {
         setComments([...comments, ...data.docs.map(doc => ({ id: doc.id, ...doc.data() }))]);
         setCommentsLoding(false);
         setTotalSize(totalSize + data?.docs.length)
-        bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
+        // bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
       })
   }, [changeState.comment]);
 
