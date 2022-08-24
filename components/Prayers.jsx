@@ -67,9 +67,9 @@ const Prayers = () => {
 
         setPrayers([...prayers, ...data?.docs.map(doc => ({ id: doc.id, ...doc.data() }))]);
         setIsPrayerLoading(false);
-      },800)
         setLastKey(data?.docs?.length && data?.docs[data?.docs?.length - 1]);
         setTotalSize(totalSize + data?.docs.length);
+      },800)
     }
   };
 
