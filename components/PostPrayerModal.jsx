@@ -21,7 +21,7 @@ const styles = {
   modalBackground: `w-screen z-50 sm:p-3 h-screen fixed sm:p-1 flex justify-center items-center overflow-hidden `,
   modalContainer: `overflow-hidden sm:w-full w-[460px] max-h-[600px] transitio-all rounded-[12px] bg-[#fff] shadow-2xl flex flex-col p-[25px]`,
   title: `inline-block text-center mt-[10px] mb-[40px] text-2xl`,
-  input: `w-full h-full pb-6 p-2 z-50 text-xl resize-none break-all border-2 rounded-lg`,
+  input: `w-full h-full p-2 z-50 text-xl resize-none break-all border-2 rounded-lg`,
   footer: `flex justify-around pt-6 `,
   cancel: `bg-[#ff0e0e] px-6 py-3 text-white text-xl rounded-lg hover:shadow-2xl transition-all duration-300  hover:scale-105`,
   post: ` px-9 py-3 hover:shadow-2xl text-xl rounded-lg `,
@@ -83,7 +83,7 @@ const PostPrayerModal = () => {
 
       const newPrayer = {
         address: user?.email,
-        prayer: prayerToPost?.slice(0, !isPaidAccount ? 250 : 1250),
+        prayer: prayerToPost?.slice(0, !isPaidAccount ? 250 : 965),
         createdAt: serverTimestamp(),
         image: user?.image,
         name: user?.name,
@@ -187,7 +187,7 @@ const PostPrayerModal = () => {
                       setPrayer(e.target.value);
                     }}
                     minLength={50}
-                    maxLength={!isPaidAccount ? 250 : 1250}
+                    maxLength={!isPaidAccount ? 250 : 965}
                     placeholder="Your prayer..."
                   />
                   {!isPaidAccount &&
@@ -196,7 +196,7 @@ const PostPrayerModal = () => {
                     </p>
                   }
                 </div>
-                <p className="font-medium w-full flex justify-end relative bottom-[60px] px-2 text-[#8C8C8C] w-full mb-[50px]"> {!isPaidAccount ? `${prayer?.length + '/250'}` : `${prayer?.length + '/1250'}`}</p>
+                <p className="font-medium w-full flex justify-end relative bottom-[8px] pr-2 text-[#8C8C8C] w-full"> {!isPaidAccount ? `${prayer?.length + '/250'}` : `${prayer?.length + '/965'}`}</p>
                 <div className={styles.footer}>
                   <button
                     className={styles.cancel}
