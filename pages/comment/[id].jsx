@@ -72,7 +72,7 @@ const CommentPage = () => {
         setComments([...comments, ...data.docs.map(doc => ({ id: doc.id, ...doc.data() }))]);
         setCommentsLoding(false);
         setTotalSize(totalSize + data?.docs.length)
-        // bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
+        bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
       })
   }, [changeState.comment]);
 
@@ -107,7 +107,7 @@ const CommentPage = () => {
         setCommentsLoding(false);
         setTotalSize(totalSize + data?.docs.length)
         setLastKey(data?.docs?.length && data?.docs[data?.docs?.length - 1]);
-      },300)
+      },100)
     }
   };
 
