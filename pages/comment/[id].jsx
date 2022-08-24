@@ -72,7 +72,7 @@ const CommentPage = () => {
         setComments([...comments, ...data.docs.map(doc => ({ id: doc.id, ...doc.data() }))]);
         setCommentsLoding(false);
         setTotalSize(totalSize + data?.docs.length)
-        // bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
+        bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
       })
   }, [changeState.comment]);
 
@@ -124,8 +124,7 @@ const CommentPage = () => {
       name: user?.name,
       uid: user?.uid,
     };
-    addComment(queryId, newComment);
-    bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
+    addComment(queryId, newComment).then(() => bottomRef.current?.scrollIntoView({ behavior: 'smooth' }))
     setChangeState({ ...changeState, comment: !changeState.comment })
   };
 
@@ -200,7 +199,9 @@ const CommentPage = () => {
                 disabled={!user}
                 value={chat}
                 className={styles.input}
-                onChange={(e) => setChat(e.target?.value)}
+                onChange={(e) => {
+                  bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
+                  setChat(e.target?.value) }}
                 minLength={1}
                 maxLength={250}
                 placeholder={`${!user ? "Login to comment" : "Write a comment..."
