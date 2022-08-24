@@ -105,9 +105,9 @@ const CommentPage = () => {
       setTimeout( () => {
         setComments([...data?.docs.map(doc => ({ id: doc.id, ...doc.data() })).reverse(), ...comments]);
         setCommentsLoding(false);
+      },800)
         setTotalSize(totalSize + data?.docs.length)
         setLastKey(data?.docs?.length && data?.docs[data?.docs?.length - 1]);
-      },800)
     }
   };
 

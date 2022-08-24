@@ -43,10 +43,10 @@ const MyPrayer = () => {
       setTimeout(() => {
 
         setPrayers([...prayers, ...sortedDocs]);
-        setLastKey(data?.docs[data?.docs?.length - 1]);
         setIsPrayerLoading(false);
-        setTotalSize(totalSize + sortedDocs.length)
       },800)
+        setLastKey(data?.docs[data?.docs?.length - 1]);
+        setTotalSize(totalSize + sortedDocs.length)
     }
   };
 
