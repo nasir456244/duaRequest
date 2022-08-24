@@ -72,7 +72,7 @@ const CommentPage = () => {
         setComments([...comments, ...data.docs.map(doc => ({ id: doc.id, ...doc.data() }))]);
         setCommentsLoding(false);
         setTotalSize(totalSize + data?.docs.length)
-        bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
+        // bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
       })
   }, [changeState.comment]);
 
@@ -102,12 +102,12 @@ const CommentPage = () => {
       queryParams.push(startAfter(lastKey));
       const q = query(...queryParams);
       const data = await getDocs(q);
-      setTimeout( () => {
+      // setTimeout( () => {
         setComments([...data?.docs.map(doc => ({ id: doc.id, ...doc.data() })).reverse(), ...comments]);
         setCommentsLoding(false);
         setTotalSize(totalSize + data?.docs.length)
         setLastKey(data?.docs?.length && data?.docs[data?.docs?.length - 1]);
-      },800)
+      // },800)
     }
   };
 
