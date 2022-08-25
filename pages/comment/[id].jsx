@@ -25,12 +25,12 @@ import InfiniteScroll from "react-infinite-scroller";
 import useStateValue from "hooks/useStateValue";
 
 const styles = {
-  mainContainer: ` flex justify-center sm:px-3 sm:pb-3 `,
-  modalContainer: `flex flex-col overflow-auto bg-white sm:max-h-[85vh] w-[580px] md:max-h-[850px] overflow-hidden `,
+  mainContainer: ` flex justify-center p-3 max-h-screen `,
+  modalContainer: `flex flex-col overflow-auto bg-white max-h-screen  w-[580px]  overflow-hidden `,
   title: `text-[20px] text-black font-bold	leading-7 flex justify-center`,
   body: `border overflow-auto mt-[15px] mb-[5px] p-[10px] rounded-xl h-[700px] `,
   input: `w-full  p-2 text-xl resize-none break-all bg-[#F2F2F2] outline-0 text-[#000000] mr-2 rounded-[12px] overflow-hidden`,
-  footer: `flex flex-row items-center justify-center content-center w-full p-4 shadow-black	shadow-4xl `,
+  footer: `flex flex-row items-center justify-center content-center w-full p-4  `,
   postButton: `rounded-[50%] p-2 flex items-center justify-center text-[#fff] `,
 };
 
@@ -68,7 +68,7 @@ const CommentPage = () => {
 
     getDocs(query(collection(db, "Prayers", queryId, "comments"),
       orderBy("createdAt", "desc"), limit(1))).then(data => {
-        if (data.docs[0].id === comments[comments.length - 1]?.id) return
+        if (data.docs[0]?.id === comments[comments.length - 1]?.id) return
         setComments([...comments, ...data.docs.map(doc => ({ id: doc.id, ...doc.data() }))]);
         setCommentsLoding(false);
         setTotalSize(totalSize + data?.docs.length)
@@ -108,7 +108,7 @@ const CommentPage = () => {
         setCommentsLoding(false);
         setTotalSize(totalSize + data?.docs.length)
         setLastKey(data?.docs?.length && data?.docs[data?.docs?.length - 1]);
-      },700)
+      },500)
     }
   };
 
