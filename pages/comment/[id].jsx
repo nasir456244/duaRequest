@@ -80,7 +80,7 @@ const CommentPage = () => {
     const queryParams = [
       collection(db, "Prayers", queryId, "comments"),
       orderBy("createdAt", "desc"),
-      limit(5),
+      limit(4),
     ];
     const q = query(...queryParams);
     const data = await getDocs(q);
@@ -95,7 +95,7 @@ const CommentPage = () => {
     const queryParams = [
       collection(db, "Prayers", queryId, "comments"),
       orderBy("createdAt", "desc"),
-      limit(5),
+      limit(4),
     ];
     if (lastKey) {
       
@@ -103,11 +103,12 @@ const CommentPage = () => {
       const q = query(...queryParams);
       const data = await getDocs(q);
       setTimeout( () => {
+
         setComments([...data?.docs.map(doc => ({ id: doc.id, ...doc.data() })).reverse(), ...comments]);
         setCommentsLoding(false);
         setTotalSize(totalSize + data?.docs.length)
         setLastKey(data?.docs?.length && data?.docs[data?.docs?.length - 1]);
-      },100)
+      },450)
     }
   };
 
@@ -176,6 +177,7 @@ const CommentPage = () => {
                 loadMore={fetchMoreData}
                 hasMore={comments?.length <= totalSize}
                 useWindow={false}
+                height={700}
               >
                 {comments?.map((comment, index) => (
                   <Comment
