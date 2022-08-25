@@ -82,12 +82,13 @@ const CommentPage = () => {
       orderBy("createdAt", "desc"),
       limit(5),
     ];
-    const q = query(...queryParams);
-    const data = await getDocs(q);
-    setComments([...data?.docs.map(doc => ({ id: doc.id, ...doc.data() }))].reverse());
-    setCommentsLoding(false);
-    setTotalSize(data?.docs.length)
-    setLastKey(data?.docs[data?.docs?.length - 1]);
+      const q = query(...queryParams);
+      const data = await getDocs(q);
+      setComments([...data?.docs.map(doc => ({ id: doc.id, ...doc.data() }))].reverse());
+      setCommentsLoding(false);
+      setTotalSize(data?.docs.length)
+      setLastKey(data?.docs[data?.docs?.length - 1]);
+
   };
 
 
@@ -107,7 +108,7 @@ const CommentPage = () => {
         setCommentsLoding(false);
         setTotalSize(totalSize + data?.docs.length)
         setLastKey(data?.docs?.length && data?.docs[data?.docs?.length - 1]);
-      },500)
+      },700)
     }
   };
 

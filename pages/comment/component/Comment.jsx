@@ -119,7 +119,7 @@ const Comment = ({ address, comment, createdAt, name, image, id,
           setIsDeleteModalOpen={setIsDeleteModalOpen}
         />
       )}
-      <div className="flex flex-row m-1">
+      <div className="flex flex-row m-1 ">
         <div
           className={`${address == user?.email
             ? "flex   w-full border border-l-[3px] m-1 rounded-md border-l-[#0ABEEE]	"
