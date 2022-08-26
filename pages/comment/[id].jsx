@@ -51,8 +51,8 @@ const CommentPage = () => {
   const bottomRef = useRef(null)
   const { register, handleSubmit, formState:{errors} } = useForm();
 
-  {user && 
     useEffect(() => {
+      if(!user) return;
       const firstRender = ref.current
       if (firstRender) {
         const queryId = window.location.pathname.split("/")[2]
@@ -77,7 +77,7 @@ const CommentPage = () => {
           bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
         })
     }, [changeState.comment]);
-  }
+  
   const fetchComments = async (queryId) => {
     if(!user) return;
     const queryParams = [

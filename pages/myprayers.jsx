@@ -52,8 +52,9 @@ const MyPrayer = () => {
   };
 
 
-  {user && 
+  
     useEffect(() => {
+      if(!user) return;
       const fetchPrayers = async () => {
         const queryParams = [
           collection(db, "Prayers"),
@@ -73,7 +74,7 @@ const MyPrayer = () => {
       }
 
     }, [user?.uid]);
-  }
+  
   const deleteConfirmation = async (event, deletePrayerID) => {
     if(!user) return;
     if (event) {

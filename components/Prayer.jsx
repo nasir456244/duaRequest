@@ -31,36 +31,35 @@ const Prayer = ({ address, id, prayer, timestamp, name, image }) => {
   const { register, handleSubmit, formState:{errors} } = useForm();
 
 
-  {user && 
     useEffect(
       () =>
-        onSnapshot(collection(db, "Prayers", id, "likes"), (snapshot) =>
+        {user && onSnapshot(collection(db, "Prayers", id, "likes"), (snapshot) =>
           setLikes(snapshot?.docs)
-        ),
+        )},
       [id]
     );
 
     useEffect(
       () =>
-        setHasLiked(
+        {user && setHasLiked(
           likes?.findIndex((like) => like?.id === user?.uid) !== -1
-        ),
+        )},
       [likes, user]
     );     
     
     useEffect(
       () =>
-        onSnapshot(
+        {user && onSnapshot(
           query(
             collection(db, "Prayers", id, "comments"),
             orderBy("createdAt", "asc"),
             limitToLast(3)
           ),
           (snapshot) => setComments(snapshot?.docs)
-        ),
+        )},
       []
     );
-  }
+  
 
   const likepost = () => {
     if (!user) return;

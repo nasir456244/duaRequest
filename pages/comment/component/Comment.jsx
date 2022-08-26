@@ -27,11 +27,11 @@ const Comment = ({ address, comment, createdAt, name, image, id,
   const [hasliked, setHasLiked] = useState(false);
   const [dislikes, setDislikes] = useState([]);
   const [hasdisliked, setHasDisLiked] = useState(false);
-  {user && 
+
     useEffect(
       () => {
+        if(!user) return;
         const PrayerId = window.location.pathname.split("/")[2]
-
         const unsub = onSnapshot(collection(db, 'Prayers', PrayerId, 'comments', id, 'likes'), (snapshot) =>
           setLikes(snapshot?.docs)
         )
@@ -42,17 +42,17 @@ const Comment = ({ address, comment, createdAt, name, image, id,
 
     useEffect(
       () =>
-        setHasLiked(
+        {user && setHasLiked(
           likes?.findIndex((like) => like?.id === user?.uid) !== -1
-        ),
+        )},
       [likes, user]
     );
 
 
     useEffect(
       () => {
+        if(!user) return;
         const PrayerId = window.location.pathname.split("/")[2]
-
         const unsub = onSnapshot(collection(db, 'Prayers', PrayerId, 'comments', id, 'dislikes'), (snapshot) =>
           setDislikes(snapshot.docs)
         )
@@ -70,12 +70,13 @@ const Comment = ({ address, comment, createdAt, name, image, id,
     );
 
     useEffect(() => {
+      if(!user) return;
       const PrayerId = window.location.pathname.split("/")[2]
       getDoc(doc(db, `Prayers/${PrayerId}`)).then((res) =>
         setOwner(res?.data()?.uid == user?.uid)
       );
     }, [user?.uid]);
-  }
+  
   const likecomment = () => {
     if (!user) return;
     if (!isPaidAccount) return
