@@ -34,19 +34,23 @@ const Navbar = () => {
             <a>Home</a>
           </Link>
         </li>
-        <li className={router.pathname == "/myprayers" ? styles.activeItem : styles.listItem}>
-          <Link className={styles.item} href="/myprayers">
-            <a>My Prayers</a>
-          </Link>
-        </li>
-        <li className={router.pathname == "/about" ? styles.activeItem : styles.listItem}>
-          <Link className={styles.item} href="/about">
-            <a>About</a>
-          </Link>
-        </li>
-        <li className={router.pathname == "/report" ? styles.activeItem : styles.listItem}>
-          <Link className={styles.item} href="/report">
-            <a>Report</a>
+        {user &&
+          <>
+            <li className={router.pathname == "/community" ? styles.activeItem : styles.listItem}>
+              <Link className={styles.item} href="/community">
+                <a>Community</a>
+              </Link>
+            </li>
+            <li className={router.pathname == "/myprayers" ? styles.activeItem : styles.listItem}>
+              <Link className={styles.item} href="/myprayers">
+                <a>My Prayers</a>
+              </Link>
+            </li>
+          </>
+        }
+        <li className={router.pathname == "/contact" ? styles.activeItem : styles.listItem}>
+          <Link className={styles.item} href="/contact">
+            <a>Contact</a>
           </Link>
         </li>
       </div>
@@ -100,19 +104,28 @@ const Navbar = () => {
                 <a>Home</a>
               </Link>
             </li>
-            <li className={styles.listItem}>
-              <Link className={styles.item} href="/myprayers">
-                <a>My Prayers</a>
-              </Link>
-            </li>
+            {user && 
+              <>
+                <li className={styles.listItem}>
+                  <Link className={styles.item} href="/community">
+                    <a>Community</a>
+                  </Link>
+                </li>
+                <li className={styles.listItem}>
+                  <Link className={styles.item} href="/myprayers">
+                    <a>My Prayers</a>
+                  </Link>
+                </li>
+              </>
+            }
             <li className={styles.listItem}>
               <Link className={styles.item} href="/about">
                 <a>About</a>
               </Link>
             </li>
             <li className={styles.listItem}>
-              <Link className={styles.item} href="/report">
-                <a>Report</a>
+              <Link className={styles.item} href="/contact">
+                <a>Contact</a>
               </Link>
             </li>
           </div>

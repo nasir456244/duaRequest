@@ -28,7 +28,7 @@ const styles = {
 };
 
 const PostPrayerModal = () => {
-  const { register, handleSubmit, formState:{errors} } = useForm();
+  const { register, handleSubmit, formState:{errors}, reset } = useForm();
   const { user } = useContext(PrayerRequestContext);
   const [prayer, setPrayer] = useState("");
   const [postNumber, setpostNumber] = useState(0);
@@ -76,11 +76,9 @@ const PostPrayerModal = () => {
         toast.error("You have reached max post number");
         return;
       }
-
       const prayerToPost = prayer;
       setPrayer("");
       setModalOpen(false);
-
       const newPrayer = {
         address: user?.email,
         prayer: prayerToPost?.slice(0, !isPaidAccount ? 250 : 965),
@@ -89,18 +87,12 @@ const PostPrayerModal = () => {
         name: user?.name,
         uid: user?.uid,
       };
-
       createPrayer(newPrayer);
-
       if (isPaidAccount) {
         setChangeState({ ...changeState, prayer: !changeState.prayer })
         return
       }
-
       else {
-
-
-
         if (postNumber === 0) {
           const timeOutDoc = {
             postNumber: 1,
@@ -153,6 +145,7 @@ const PostPrayerModal = () => {
             <div className={styles.titleCloseBtn}>
               <button
                 onClick={() => {
+                  setPrayer('')
                   setModalOpen(false);
                 }}
               >
@@ -181,7 +174,7 @@ const PostPrayerModal = () => {
               <form onSubmit={handleSubmit(postPrayer)}>
                 <div className={styles.body}>
                   <textarea
-                  {...register('prayerField', {required: true, minLength: 50 ,maxLength: !isPaidAccount ? 250:965})}
+                  {...register('prayer', {required: true, minLength: 50 ,maxLength: !isPaidAccount ? 250:965})}
                     className={styles.input}
                     rows={8}
                     onChange={(e) => {
@@ -199,13 +192,14 @@ const PostPrayerModal = () => {
                   }
                 </div>
                 <p className="font-medium w-full flex justify-end relative bottom-[8px] pr-2 text-[#8C8C8C] w-full"> {!isPaidAccount ? `${prayer?.length + '/250'}` : `${prayer?.length + '/965'}`}</p>
-                {errors?.prayerField && <span className="font-medium text-[#f00]">This is required</span>}
+                {errors?.prayer && <span className="font-medium text-[#f00]">This is required</span>}
                 <div className={styles.footer}>
                   <button
                     className={styles.cancel}
-                    type="submit"
+                    type="button"
                     onClick={() => {
-                      setPrayer('');
+                      reset({prayer: ''});
+                      setPrayer("");
                       setModalOpen(false);
                     }}
                   >
@@ -213,7 +207,7 @@ const PostPrayerModal = () => {
                   </button>
                   <button
                     type="submit"
-                    disabled={!isTimeGone || !prayer.trim()}
+                    disabled={!isTimeGone || !prayer.trim() || prayer.length < 50}
                     className={`${styles.post
                       } ${`disabled:cursor-not-allowed disabled:bg-[#9d9d9d] disabled:text-white bg-[#0bbe20] `}`}
                   >

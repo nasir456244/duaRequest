@@ -29,6 +29,7 @@ const MyPrayer = () => {
   const { user } = useContext(PrayerRequestContext);
 
   const fetchMoreData = async () => {
+    if(!user) return;
     const queryParams = [
       collection(db, "Prayers"),
       orderBy("createdAt", "desc"),
@@ -51,29 +52,30 @@ const MyPrayer = () => {
   };
 
 
+  {user && 
+    useEffect(() => {
+      const fetchPrayers = async () => {
+        const queryParams = [
+          collection(db, "Prayers"),
+          orderBy("createdAt", "desc"), limit(5)
+        ];
+        const q = query(...queryParams);
+        const data = await getDocs(q)
+        const prayerDocs = data.docs.map(doc => ({ id: doc.id, ...doc.data() }))
+        const sortedDocs = _.filter(prayerDocs, (doc) => doc.uid === user.uid)
+        setPrayers(sortedDocs);
+        setLastKey(data?.docs[data?.docs?.length - 1]);
+        setIsPrayerLoading(false);
+        setTotalSize(sortedDocs.length)
+      };
+      if (user?.uid) {
+        fetchPrayers()
+      }
 
-  useEffect(() => {
-    const fetchPrayers = async () => {
-      const queryParams = [
-        collection(db, "Prayers"),
-        orderBy("createdAt", "desc"), limit(5)
-      ];
-      const q = query(...queryParams);
-      const data = await getDocs(q)
-      const prayerDocs = data.docs.map(doc => ({ id: doc.id, ...doc.data() }))
-      const sortedDocs = _.filter(prayerDocs, (doc) => doc.uid === user.uid)
-      setPrayers(sortedDocs);
-      setLastKey(data?.docs[data?.docs?.length - 1]);
-      setIsPrayerLoading(false);
-      setTotalSize(sortedDocs.length)
-    };
-    if (user?.uid) {
-      fetchPrayers()
-    }
-
-  }, [user?.uid]);
-
+    }, [user?.uid]);
+  }
   const deleteConfirmation = async (event, deletePrayerID) => {
+    if(!user) return;
     if (event) {
       await DeletePrayer(deletePrayerID)
       setPrayers(prayers.filter(prayer => prayer.id !== deletePrayerID))
@@ -84,33 +86,34 @@ const MyPrayer = () => {
   return (
     <>
       <Navbar />
-
-      <div className={styles.container}>
-        {isPrayerLoading ? (
-          <PrayerSkeleton />
-        ) : (
-          <div className={styles?.listMainContainer}>
-            <InfiniteScroll
-              loadMore={fetchMoreData}
-              hasMore={prayers?.length <= totalSize}
-              threshold={10}
-            >
-              {prayers?.map((prayer, index) => (
-                <MyPrayers
-                  deleteConfirmation={deleteConfirmation}
-                  image={prayer?.image}
-                  name={prayer?.name}
-                  id={prayer?.id}
-                  key={prayer?.id + "" + index}
-                  address={prayer?.address}
-                  prayer={prayer?.prayer}
-                  createdAt={prayer?.createdAt?.toDate()}
-                />
-              ))}
-            </InfiniteScroll>
-          </div>
-        )}
-      </div>
+      {user && 
+        <div className={styles.container}>
+          {isPrayerLoading ? (
+            <PrayerSkeleton />
+          ) : (
+            <div className={styles?.listMainContainer}>
+              <InfiniteScroll
+                loadMore={fetchMoreData}
+                hasMore={prayers?.length <= totalSize}
+                threshold={10}
+              >
+                {prayers?.map((prayer, index) => (
+                  <MyPrayers
+                    deleteConfirmation={deleteConfirmation}
+                    image={prayer?.image}
+                    name={prayer?.name}
+                    id={prayer?.id}
+                    key={prayer?.id + "" + index}
+                    address={prayer?.address}
+                    prayer={prayer?.prayer}
+                    createdAt={prayer?.createdAt?.toDate()}
+                  />
+                ))}
+              </InfiniteScroll>
+            </div>
+          )}
+        </div>
+      }
     </>
   );
 };

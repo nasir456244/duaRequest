@@ -27,59 +27,59 @@ const Comment = ({ address, comment, createdAt, name, image, id,
   const [hasliked, setHasLiked] = useState(false);
   const [dislikes, setDislikes] = useState([]);
   const [hasdisliked, setHasDisLiked] = useState(false);
+  {user && 
+    useEffect(
+      () => {
+        const PrayerId = window.location.pathname.split("/")[2]
 
-  useEffect(
-    () => {
-      const PrayerId = window.location.pathname.split("/")[2]
-
-      const unsub = onSnapshot(collection(db, 'Prayers', PrayerId, 'comments', id, 'likes'), (snapshot) =>
-        setLikes(snapshot?.docs)
-      )
-      return () => unsub();
-    },
-    [id]
-  );
-
-  useEffect(
-    () =>
-      setHasLiked(
-        likes?.findIndex((like) => like?.id === user?.uid) !== -1
-      ),
-    [likes, user]
-  );
-
-
-  useEffect(
-    () => {
-      const PrayerId = window.location.pathname.split("/")[2]
-
-      const unsub = onSnapshot(collection(db, 'Prayers', PrayerId, 'comments', id, 'dislikes'), (snapshot) =>
-        setDislikes(snapshot.docs)
-      )
-      return () => unsub();
-    },
-    [id]
-  );
-
-  useEffect(
-    () =>
-      setHasDisLiked(
-        dislikes?.findIndex((like) => like?.id === user?.uid) !== -1
-      ),
-    [dislikes, user]
-  );
-
-  useEffect(() => {
-    const PrayerId = window.location.pathname.split("/")[2]
-    getDoc(doc(db, `Prayers/${PrayerId}`)).then((res) =>
-      setOwner(res?.data()?.uid == user?.uid)
+        const unsub = onSnapshot(collection(db, 'Prayers', PrayerId, 'comments', id, 'likes'), (snapshot) =>
+          setLikes(snapshot?.docs)
+        )
+        return () => unsub();
+      },
+      [id]
     );
-  }, [user?.uid]);
 
+    useEffect(
+      () =>
+        setHasLiked(
+          likes?.findIndex((like) => like?.id === user?.uid) !== -1
+        ),
+      [likes, user]
+    );
+
+
+    useEffect(
+      () => {
+        const PrayerId = window.location.pathname.split("/")[2]
+
+        const unsub = onSnapshot(collection(db, 'Prayers', PrayerId, 'comments', id, 'dislikes'), (snapshot) =>
+          setDislikes(snapshot.docs)
+        )
+        return () => unsub();
+      },
+      [id]
+    );
+
+    useEffect(
+      () =>
+        setHasDisLiked(
+          dislikes?.findIndex((like) => like?.id === user?.uid) !== -1
+        ),
+      [dislikes, user]
+    );
+
+    useEffect(() => {
+      const PrayerId = window.location.pathname.split("/")[2]
+      getDoc(doc(db, `Prayers/${PrayerId}`)).then((res) =>
+        setOwner(res?.data()?.uid == user?.uid)
+      );
+    }, [user?.uid]);
+  }
   const likecomment = () => {
-    const PrayerId = window.location.pathname.split("/")[2]
     if (!user) return;
     if (!isPaidAccount) return
+    const PrayerId = window.location.pathname.split("/")[2]
     if (hasliked) return
     if (hasdisliked) {
       removeDisLike(PrayerId, id, user?.uid)
@@ -89,10 +89,9 @@ const Comment = ({ address, comment, createdAt, name, image, id,
   };
 
   const dislikecomment = () => {
-    const PrayerId = window.location.pathname.split("/")[2]
-
     if (!user) return;
     if (!isPaidAccount) return
+    const PrayerId = window.location.pathname.split("/")[2]
     if (hasdisliked) return
     if (hasliked) {
       removeLike(PrayerId, id, user?.uid)
@@ -113,74 +112,78 @@ const Comment = ({ address, comment, createdAt, name, image, id,
 
   return (
     <div className="relative">
-      {isDeleteModalOpen && (
-        <DeleteModal
-          setDeleteDua={(e) => deleteConfirmation(e, id)}
-          setIsDeleteModalOpen={setIsDeleteModalOpen}
-        />
-      )}
-      <div className="flex flex-row m-1 ">
-        <div
-          className={`${address == user?.email
-            ? "flex   w-full border border-l-[3px] m-1 rounded-md border-l-[#0ABEEE]	"
-            : "flex w-full border border-l-[3px] m-1 rounded-md border-l-[#112EA0]"
-            }`}
-        >
-
-          <div
-            className={`flex flex-col  content-centers items-center p-1 ${address == user?.email && ""
-              }`}
-          >
-            <img
-              src={image}
-              className="  rounded-[50%] w-[40px] h-[40px]  m-2"
+      {user && 
+        <>
+          {isDeleteModalOpen && (
+            <DeleteModal
+              setDeleteDua={(e) => deleteConfirmation(e, id)}
+              setIsDeleteModalOpen={setIsDeleteModalOpen}
             />
+          )}
+          <div className="flex flex-row m-1 ">
+            <div
+              className={`${address == user?.email
+                ? "flex   w-full border border-l-[3px] m-1 rounded-md border-l-[#0ABEEE]	"
+                : "flex w-full border border-l-[3px] m-1 rounded-md border-l-[#112EA0]"
+                }`}
+            >
 
-            {owner && isPaidAccount && (
-              <MdDelete
-                size={25}
-                onClick={() => deleteComment(id)}
-                className="text-[#f00] cursor-pointer"
-              />
-            )}
-            <div className={styles.buttons}>
-              <AiFillLike onClick={likecomment} className={`${user && isPaidAccount && hasliked ? 'text-[#0ABEEE]' : 'text-[#ADADAD]'} ${user && !hasliked && ' md:hover:scale-125 md:transition-all md:duration-150 md:ease-out cursor-pointer'} relative bottom-[3px]  `} size={25} />
-              <p className="text-[13px] font-semibold bg-opacity-100 ml-1">
-                {likes?.length > 0 ? Intl.NumberFormat("en", { notation: "compact" }).format(likes?.length) : '0'}
-              </p>
-              <AiFillLike onClick={dislikecomment} size={25} className={`${user && isPaidAccount && hasdisliked ? 'text-[#0ABEEE]' : 'text-[#ADADAD] cursor-pointer'}  rotate-180 relative left-[10px] mr-3 `} /> <p className="text-[13px] font-semibold bg-opacity-100 ml-1">
-                {dislikes?.length > 0 ? Intl.NumberFormat("en", { notation: "compact" }).format(dislikes?.length) : '0'}
-              </p>
-
-            </div>
-          </div>
-
-          <div
-            className={`${styles.commentBody} ${address == user?.email && "bg-[#ffffff] "
-              }`}
-          >
-            <div className={styles.address}>
               <div
-                className='text-[#000] w-full'
+                className={`flex flex-col  content-centers items-center p-1 ${address == user?.email && ""
+                  }`}
               >
-                {address == user?.email ? <p>You</p> : name}
+                <img
+                  src={image}
+                  className="  rounded-[50%] w-[40px] h-[40px]  m-2"
+                />
+
+                {owner && isPaidAccount && (
+                  <MdDelete
+                    size={25}
+                    onClick={() => deleteComment(id)}
+                    className="text-[#f00] cursor-pointer"
+                  />
+                )}
+                <div className={styles.buttons}>
+                  <AiFillLike onClick={likecomment} className={`${user && isPaidAccount && hasliked ? 'text-[#0ABEEE]' : 'text-[#ADADAD]'} ${user && !hasliked && ' md:hover:scale-125 md:transition-all md:duration-150 md:ease-out cursor-pointer'} relative bottom-[3px]  `} size={25} />
+                  <p className="text-[13px] font-semibold bg-opacity-100 ml-1">
+                    {likes?.length > 0 ? Intl.NumberFormat("en", { notation: "compact" }).format(likes?.length) : '0'}
+                  </p>
+                  <AiFillLike onClick={dislikecomment} size={25} className={`${user && isPaidAccount && hasdisliked ? 'text-[#0ABEEE]' : 'text-[#ADADAD] cursor-pointer'}  rotate-180 relative left-[10px] mr-3 `} /> <p className="text-[13px] font-semibold bg-opacity-100 ml-1">
+                    {dislikes?.length > 0 ? Intl.NumberFormat("en", { notation: "compact" }).format(dislikes?.length) : '0'}
+                  </p>
+
+                </div>
               </div>
-              <div className={styles.time}>
+
+              <div
+                className={`${styles.commentBody} ${address == user?.email && "bg-[#ffffff] "
+                  }`}
+              >
+                <div className={styles.address}>
+                  <div
+                    className='text-[#000] w-full'
+                  >
+                    {address == user?.email ? <p>You</p> : name}
+                  </div>
+                  <div className={styles.time}>
+                    <p
+                      className='text-[#000] font-medium text-[13px]'
+                    >
+                      <TimeAgo datetime={createdAt?.toDate()} />
+                    </p>
+                  </div>
+                </div>
                 <p
-                  className='text-[#000] font-medium text-[13px]'
+                  className={styles.comment}
                 >
-                  <TimeAgo datetime={createdAt?.toDate()} />
+                  {comment}
                 </p>
               </div>
             </div>
-            <p
-              className={styles.comment}
-            >
-              {comment}
-            </p>
           </div>
-        </div>
-      </div>
+        </>
+      }
     </div>
   );
 };

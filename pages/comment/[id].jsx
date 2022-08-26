@@ -51,34 +51,35 @@ const CommentPage = () => {
   const bottomRef = useRef(null)
   const { register, handleSubmit, formState:{errors} } = useForm();
 
+  {user && 
+    useEffect(() => {
+      const firstRender = ref.current
+      if (firstRender) {
+        const queryId = window.location.pathname.split("/")[2]
+        ref.current = false
+        setCommentsLoding(true)
+        setqueryId(queryId)
+        getDoc(doc(db, `Prayers/${queryId}`))
+          .then((res) => {
+            if (!res.data()) return router.push("/404");
+            fetchComments(queryId)
+          })
+          .catch((error) => console.log(error));
+        return
+      }
 
-  useEffect(() => {
-    const firstRender = ref.current
-    if (firstRender) {
-      const queryId = window.location.pathname.split("/")[2]
-      ref.current = false
-      setCommentsLoding(true)
-      setqueryId(queryId)
-      getDoc(doc(db, `Prayers/${queryId}`))
-        .then((res) => {
-          if (!res.data()) return router.push("/404");
-          fetchComments(queryId)
+      getDocs(query(collection(db, "Prayers", queryId, "comments"),
+        orderBy("createdAt", "desc"), limit(1))).then(data => {
+          if (data.docs[0]?.id === comments[comments.length - 1]?.id) return
+          setComments([...comments, ...data.docs.map(doc => ({ id: doc.id, ...doc.data() }))]);
+          setCommentsLoding(false);
+          setTotalSize(totalSize + data?.docs.length)
+          bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
         })
-        .catch((error) => console.log(error));
-      return
-    }
-
-    getDocs(query(collection(db, "Prayers", queryId, "comments"),
-      orderBy("createdAt", "desc"), limit(1))).then(data => {
-        if (data.docs[0]?.id === comments[comments.length - 1]?.id) return
-        setComments([...comments, ...data.docs.map(doc => ({ id: doc.id, ...doc.data() }))]);
-        setCommentsLoding(false);
-        setTotalSize(totalSize + data?.docs.length)
-        bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
-      })
-  }, [changeState.comment]);
-
+    }, [changeState.comment]);
+  }
   const fetchComments = async (queryId) => {
+    if(!user) return;
     const queryParams = [
       collection(db, "Prayers", queryId, "comments"),
       orderBy("createdAt", "desc"),
@@ -94,6 +95,7 @@ const CommentPage = () => {
 
 
   const fetchMoreData = async () => {
+    if(!user) return;
     const queryParams = [
       collection(db, "Prayers", queryId, "comments"),
       orderBy("createdAt", "desc"),
@@ -133,6 +135,7 @@ const CommentPage = () => {
   };
 
   const deleteConfirmation = async (event, deleteCommentID) => {
+    if(!user) return;
     const PrayerId = window.location.pathname.split("/")[2]
 
     if (event) {
@@ -145,95 +148,97 @@ const CommentPage = () => {
   return (
     <div>
       <Navbar />
-      <div className={styles.mainContainer}>
-        <div className={styles.modalContainer}>
-          <div className="flex justify-between p-3 ml-[16px] ">
-            <div className={styles.title}>
-              <h1>Add a comment</h1>
-            </div>
-            <div
-              onClick={() => router?.replace("/")}
-              className="flex flex-row justify-center content-center items-center cursor-pointer  text-black  "
-            >
-              <p className="font-semibold text-sm px-2">go back to prayers</p>
-              <BsFillArrowLeftCircleFill className="items-center" size={22} />
-            </div>
-          </div>
-          <div className="relative">
-            {isDeleteModalOpen && (
-              <DeleteModal
-                setDeleteDua={setDeleteDua}
-                setIsDeleteModalOpen={setIsDeleteModalOpen}
-              />
-            )}
-          </div>
-          {commentsLoading ? (
-            <CommentSkeleton />
-          ) : (
-            <div
-              className={styles.body} >
-              <InfiniteScroll
-                isReverse={true}
-                loadMore={fetchMoreData}
-                hasMore={comments?.length <= totalSize}
-                useWindow={false}
-                threshold={10}
+      {user && 
+        <div className={styles.mainContainer}>
+          <div className={styles.modalContainer}>
+            <div className="flex justify-between p-3 ml-[16px] ">
+              <div className={styles.title}>
+                <h1>Add a comment</h1>
+              </div>
+              <div
+                onClick={() => router?.replace("/")}
+                className="flex flex-row justify-center content-center items-center cursor-pointer  text-black  "
               >
-                {comments?.map((comment, index) => (
-                  <Comment
-                    deleteConfirmation={deleteConfirmation}
-                    image={comment?.image}
-                    name={comment?.name}
-                    key={comment?.id + "" + index}
-                    address={comment?.address}
-                    comment={comment?.comment}
-                    createdAt={comment?.createdAt}
-                    id={comment?.id}
-                  />
-                ))}
-                <div ref={bottomRef} />
-              </InfiniteScroll>
-            </div>
-          )}
-          <form onSubmit={handleSubmit(sendComment)}>
-          {errors?.commentField && <span className="w-full flex items-center justify-center font-medium text-[#f00]">This is required</span>}
-            <div className={styles.footer}>
-              
-
-              <div className="flex bg-[#F2F2F2] rounded-xl w-full items-center ">
-                <FaSmileWink className="  text-[#8C8C8C] m-2 " size={25} />
-                <input
-                    {...register('commentField', {required: true, minLength: 3 ,maxLength: 250})}
-
-                  type="text"
-                  required
-                  disabled={!user}
-                  value={chat}
-                  className={styles.input}
-                  onChange={(e) => {
-                    bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
-                    setChat(e.target?.value) }}
-                  minLength={3}
-                  maxLength={250}
-                  placeholder={`${!user ? "Login to comment" : "Write a comment..."
-                    }`}
-                />
-                <button
-                  disabled={!chat?.trim()}
-                  type="submit"
-                  className={`${styles.postButton} ${!chat || !user || chat.length < 3
-                    ? "bg-[#F2F2F2] cursor-not-allowed rotate-90"
-                    : "bg-[#F2F2F2] cursor-pointer hover:shadow-2xl text-xl transition-all duration-300 hover:scale-105 rotate-90"
-                    }`}
-                >
-                  <HiPaperAirplane className={` ${!user || !chat || chat.length < 3 ? 'text-[#8C8C8C]' : 'text-[#112EA0]'}`} size={22} />
-                </button>
+                <p className="font-semibold text-sm px-2">go back to prayers</p>
+                <BsFillArrowLeftCircleFill className="items-center" size={22} />
               </div>
             </div>
+            <div className="relative">
+              {isDeleteModalOpen && (
+                <DeleteModal
+                  setDeleteDua={setDeleteDua}
+                  setIsDeleteModalOpen={setIsDeleteModalOpen}
+                />
+              )}
+            </div>
+            {commentsLoading ? (
+              <CommentSkeleton />
+            ) : (
+              <div
+                className={styles.body} >
+                <InfiniteScroll
+                  isReverse={true}
+                  loadMore={fetchMoreData}
+                  hasMore={comments?.length <= totalSize}
+                  useWindow={false}
+                  threshold={10}
+                >
+                  {comments?.map((comment, index) => (
+                    <Comment
+                      deleteConfirmation={deleteConfirmation}
+                      image={comment?.image}
+                      name={comment?.name}
+                      key={comment?.id + "" + index}
+                      address={comment?.address}
+                      comment={comment?.comment}
+                      createdAt={comment?.createdAt}
+                      id={comment?.id}
+                    />
+                  ))}
+                  <div ref={bottomRef} />
+                </InfiniteScroll>
+              </div>
+            )}
+            <form onSubmit={handleSubmit(sendComment)}>
+            {errors?.commentField && <span className="w-full flex items-center justify-center font-medium text-[#f00]">This is required</span>}
+              <div className={styles.footer}>
+                
 
-          </form>
+                <div className="flex bg-[#F2F2F2] rounded-xl w-full items-center ">
+                  <FaSmileWink className="  text-[#8C8C8C] m-2 " size={25} />
+                  <input
+                      {...register('commentField', {required: true, minLength: 3 ,maxLength: 250})}
+
+                    type="text"
+                    required
+                    disabled={!user}
+                    value={chat}
+                    className={styles.input}
+                    onChange={(e) => {
+                      bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
+                      setChat(e.target?.value) }}
+                    minLength={3}
+                    maxLength={250}
+                    placeholder={`${!user ? "Login to comment" : "Write a comment..."
+                      }`}
+                  />
+                  <button
+                    disabled={!chat?.trim()}
+                    type="submit"
+                    className={`${styles.postButton} ${!chat || !user || chat.length < 3
+                      ? "bg-[#F2F2F2] cursor-not-allowed rotate-90"
+                      : "bg-[#F2F2F2] cursor-pointer hover:shadow-2xl text-xl transition-all duration-300 hover:scale-105 rotate-90"
+                      }`}
+                  >
+                    <HiPaperAirplane className={` ${!user || !chat || chat.length < 3 ? 'text-[#8C8C8C]' : 'text-[#112EA0]'}`} size={22} />
+                  </button>
+                </div>
+              </div>
+
+            </form>
+          </div>
         </div>
-      </div>
+      }
     </div>
   );
 };

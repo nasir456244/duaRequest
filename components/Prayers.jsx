@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useContext } from "react";
 import PrayerSkeleton from "./PrayerSkeleton";
 import { db } from "../lib/firebaseConfig";
 import {
@@ -12,6 +12,7 @@ import {
 import Prayer from "./Prayer";
 import InfiniteScroll from "react-infinite-scroller";
 import useStateValue from "hooks/useStateValue";
+import { PrayerRequestContext } from "@/context/PrayerRequest";
 
 const styles = {
   container: `w-full flex justify-center p-[12px] text-[srgb(192, 51, 51)] flex overflow-x-hidden`,
@@ -25,8 +26,11 @@ const Prayers = () => {
   const [isPrayerLoading, setIsPrayerLoading] = useState(true);
   const ref = useRef(true)
   const { changeState } = useStateValue()
+  const { user } = useContext(PrayerRequestContext)
 
+  
   useEffect(() => {
+    if(!user) return;
     const firstRender = ref.current
     if (firstRender) {
       ref.current = false
@@ -35,7 +39,7 @@ const Prayers = () => {
     }
     getDocs(query(collection(db, "Prayers"),
       orderBy("createdAt", "desc"), limit(1))).then(data => {
-        if (data.docs[0].id === prayers[0].id) return
+        if (data.docs[0]?.id === prayers[0]?.id) return
         setPrayers([...data.docs.map(doc => ({ id: doc.id, ...doc.data() })), ...prayers]);
         setIsPrayerLoading(false);
         setTotalSize(totalSize + data?.docs.length);
@@ -44,16 +48,17 @@ const Prayers = () => {
   }, [changeState.prayer]);
 
   const fetchData = async () => {
+    if(!user) return;
     const data = await getDocs(query(collection(db, "Prayers"),
       orderBy("createdAt", "desc"), limit(5)))
     setPrayers(data.docs.map(doc => ({ id: doc.id, ...doc.data() })));
     setIsPrayerLoading(false);
     setLastKey(data?.docs[data?.docs?.length - 1]);
     setTotalSize(data?.docs.length);
-
   }
 
   const fetchMoreData = async () => {
+    if(!user) return;
     const queryParams = [
       collection(db, "Prayers"),
       orderBy("createdAt", "desc"),
@@ -77,35 +82,42 @@ const Prayers = () => {
 
 
 
-  return (
-    <div className={styles.container}>
-      {isPrayerLoading ? (
-        <>
-          <PrayerSkeleton />
-        </>
-      ) : (
-        <div className={styles.listMainContainer}>
-          <InfiniteScroll
-            loadMore={fetchMoreData}
-            hasMore={prayers?.length <= totalSize}
-            threshold={10}
-          >
-            {prayers?.map((prayer, index) => (
-              <Prayer
-                image={prayer?.image}
-                name={prayer?.name}
-                id={prayer?.id}
-                key={prayer?.id + "" + index}
-                address={prayer?.address}
-                prayer={prayer?.prayer}
-                timestamp={prayer?.createdAt?.toDate()}
-              />
-            ))}
-          </InfiniteScroll>
-        </div>
-      )}
-    </div>
-  );
+    return (
+      <div className={styles.container}>
+        {user &&
+          <>
+        
+            {isPrayerLoading ? (
+              <>
+                <PrayerSkeleton />
+              </>
+            ) : (
+              <div className={styles.listMainContainer}>
+                <InfiniteScroll
+                  loadMore={fetchMoreData}
+                  hasMore={prayers?.length <= totalSize}
+                  threshold={10}
+                >
+                  {prayers?.map((prayer, index) => (
+                    <Prayer
+                      image={prayer?.image}
+                      name={prayer?.name}
+                      id={prayer?.id}
+                      key={prayer?.id + "" + index}
+                      address={prayer?.address}
+                      prayer={prayer?.prayer}
+                      timestamp={prayer?.createdAt?.toDate()}
+                    />
+                  ))}
+                </InfiniteScroll>
+              </div>
+            )}
+          </>
+        }    
+      </div>
+    );
+        
+
 };
 
 export default Prayers;
