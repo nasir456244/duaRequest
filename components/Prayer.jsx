@@ -15,6 +15,7 @@ import { HiPaperAirplane } from "react-icons/hi";
 import { useRouter } from "next/router";
 import { PrayerRequestContext } from "@/context/PrayerRequest";
 import { addComment, likePrayer } from "@/lib/db";
+import { useForm } from "react-hook-form";
 
 const styles = {
   listContainer: `hover:shadow-2xl my-[6px] flex flex-col bg-[#ffffff] rounded-2xl break-words overflow-hidden h-fit`,
@@ -26,6 +27,8 @@ const Prayer = ({ address, id, prayer, timestamp, name, image }) => {
   const [comments, setComments] = useState([]);
   const router = useRouter();
   const { user } = useContext(PrayerRequestContext)
+  const { register, handleSubmit, formState:{errors} } = useForm();
+
 
 
   useEffect(
@@ -63,8 +66,7 @@ const Prayer = ({ address, id, prayer, timestamp, name, image }) => {
     []
   );
 
-  const sendComment = (e) => {
-    e.preventDefault();
+  const sendComment = () => {
     if (!user) return;
 
     const commentToSend = comment;
@@ -73,7 +75,7 @@ const Prayer = ({ address, id, prayer, timestamp, name, image }) => {
     const newComment = {
       address: user?.email,
       name: user?.name,
-      comment: commentToSend?.slice(0, 250),
+      comment: commentToSend?.slice(0, 60),
       createdAt: serverTimestamp(),
       image: user?.image,
       uid: user?.uid
@@ -133,35 +135,41 @@ const Prayer = ({ address, id, prayer, timestamp, name, image }) => {
                   router.push(`/comment/${id}`);
                 }} className=" mt-[2px] cursor-pointer text-[#8C8C8C] sm:hidden">Comments</p>
             </div>
-            <div className="flex w-[333px] relative  top-1 overflow-hidden justify-between items-center bg-[#F2F2F2] p-3 h-[38px] rounded-md">
-              <FaSmileWink className="text-[#8C8C8C] text-[25px] sm:text-[42px]" />
-              <input
-                disabled={!user}
-                required
-                maxLength={60}
-                minLength={1}
-                type="text"
-                value={comment}
-                onChange={(e) => {
-                  setComment(e.target?.value);
-                }}
-                placeholder={` ${user ? "Write a comment" : "Login to comment"
-                  }`}
-                className="w-[344px] bg-[#f2f2f2] border-nonfocus:ring-0 outline-none m-[15px] overflow-hidden	"
-              />
-              <button
-                type="submit"
-                size={25}
-                disabled={!comment?.trim()}
-                onClick={sendComment}
-                className={`${!comment || !user
-                  ? "flex text-[#8C8C8C]"
-                  : "flex text-[#112EA0] cursor-pointer transition-all ease-out duration-300 hover:scale-105"
+            <form onSubmit={handleSubmit(sendComment)}>
+              <div className="flex w-[333px] relative  top-1 overflow-hidden justify-between items-center bg-[#F2F2F2] p-3 h-[38px] rounded-md">
+                <FaSmileWink className="text-[#8C8C8C] text-[25px] sm:text-[42px]" />
+
+                <input
+                  {...register('commentField', {required: true, minLength: 3 ,maxLength: 60})}
+
+                  disabled={!user}
+                  required
+                  type="text"
+                  value={comment}
+                  minLength={3}
+                  maxLength={60}
+                  onChange={(e) => {
+                    setComment(e.target?.value);
+                  }}
+                  placeholder={` ${user ? "Write a comment" : "Login to comment"
+                    }`}
+                    className="w-[344px] bg-[#f2f2f2] border-nonfocus:ring-0 outline-none m-[15px] overflow-hidden	"
+                    />
+                <button
+                  type="submit"
+                  size={25}
+                  disabled={!comment?.trim()}
+                  // onClick={sendComment}
+                  className={`${!comment || comment?.length < 3 || !user
+                    ? "flex text-[#8C8C8C]"
+                    : "flex text-[#112EA0] cursor-pointer transition-all ease-out duration-300 hover:scale-105"
                   }  rotate-90  `}
-              >
-                <HiPaperAirplane size={25} />
-              </button>
-            </div>
+                  >
+                  <HiPaperAirplane size={25} />
+                </button>
+              </div>
+              {errors?.commentField && <span className="font-medium text-[#f00]">This is required</span>}
+            </form>
           </div>
         </div>
       </div>

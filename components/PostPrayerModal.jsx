@@ -28,7 +28,7 @@ const styles = {
 };
 
 const PostPrayerModal = () => {
-  const { register, handleSubmit } = useForm();
+  const { register, handleSubmit, formState:{errors} } = useForm();
   const { user } = useContext(PrayerRequestContext);
   const [prayer, setPrayer] = useState("");
   const [postNumber, setpostNumber] = useState(0);
@@ -181,12 +181,14 @@ const PostPrayerModal = () => {
               <form onSubmit={handleSubmit(postPrayer)}>
                 <div className={styles.body}>
                   <textarea
+                  {...register('prayerField', {required: true, minLength: 50 ,maxLength: !isPaidAccount ? 250:965})}
                     className={styles.input}
                     rows={8}
                     onChange={(e) => {
                       setPrayer(e.target.value);
                     }}
                     minLength={50}
+                    value={prayer}
                     maxLength={!isPaidAccount ? 250 : 965}
                     placeholder="Your prayer..."
                   />
@@ -197,11 +199,13 @@ const PostPrayerModal = () => {
                   }
                 </div>
                 <p className="font-medium w-full flex justify-end relative bottom-[8px] pr-2 text-[#8C8C8C] w-full"> {!isPaidAccount ? `${prayer?.length + '/250'}` : `${prayer?.length + '/965'}`}</p>
+                {errors?.prayerField && <span className="font-medium text-[#f00]">This is required</span>}
                 <div className={styles.footer}>
                   <button
                     className={styles.cancel}
                     type="submit"
                     onClick={() => {
+                      setPrayer('');
                       setModalOpen(false);
                     }}
                   >

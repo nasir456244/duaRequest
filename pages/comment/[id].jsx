@@ -23,6 +23,7 @@ import { PrayerRequestContext } from "../../context/PrayerRequest";
 import { addComment, DeleteComment } from "../../lib/db";
 import InfiniteScroll from "react-infinite-scroller";
 import useStateValue from "hooks/useStateValue";
+import { useForm } from "react-hook-form";
 
 const styles = {
   mainContainer: ` flex justify-center p-3 `,
@@ -48,6 +49,7 @@ const CommentPage = () => {
   const { changeState, setChangeState } = useStateValue()
   const ref = useRef(true)
   const bottomRef = useRef(null)
+  const { register, handleSubmit, formState:{errors} } = useForm();
 
 
   useEffect(() => {
@@ -113,7 +115,6 @@ const CommentPage = () => {
 
 
   const sendComment = (e) => {
-    e.preventDefault();
     if (!user) return;
     if (!chat) return;
     const commentToSend = chat;
@@ -194,36 +195,43 @@ const CommentPage = () => {
               </InfiniteScroll>
             </div>
           )}
-          <div className={styles.footer}>
-            <div className="flex bg-[#F2F2F2] rounded-xl w-full items-center ">
-              <FaSmileWink className="  text-[#8C8C8C] m-2 " size={25} />
-              <input
-                type="text"
-                required
-                disabled={!user}
-                value={chat}
-                className={styles.input}
-                onChange={(e) => {
-                  bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
-                  setChat(e.target?.value) }}
-                minLength={1}
-                maxLength={250}
-                placeholder={`${!user ? "Login to comment" : "Write a comment..."
-                  }`}
-              />
-              <button
-                onClick={sendComment}
-                disabled={!chat?.trim()}
-                type="submit"
-                className={`${styles.postButton} ${!chat
-                  ? "bg-[#F2F2F2] cursor-not-allowed rotate-90"
-                  : "bg-[#F2F2F2] cursor-pointer hover:shadow-2xl text-xl transition-all duration-300 hover:scale-105 rotate-90"
-                  }`}
-              >
-                <HiPaperAirplane className={` ${!user || !chat ? 'text-[#8C8C8C]' : 'text-[#112EA0]'}`} size={22} />
-              </button>
+          <form onSubmit={handleSubmit(sendComment)}>
+          {errors?.commentField && <span className="w-full flex items-center justify-center font-medium text-[#f00]">This is required</span>}
+            <div className={styles.footer}>
+              
+
+              <div className="flex bg-[#F2F2F2] rounded-xl w-full items-center ">
+                <FaSmileWink className="  text-[#8C8C8C] m-2 " size={25} />
+                <input
+                    {...register('commentField', {required: true, minLength: 3 ,maxLength: 250})}
+
+                  type="text"
+                  required
+                  disabled={!user}
+                  value={chat}
+                  className={styles.input}
+                  onChange={(e) => {
+                    bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
+                    setChat(e.target?.value) }}
+                  minLength={3}
+                  maxLength={250}
+                  placeholder={`${!user ? "Login to comment" : "Write a comment..."
+                    }`}
+                />
+                <button
+                  disabled={!chat?.trim()}
+                  type="submit"
+                  className={`${styles.postButton} ${!chat || !user || chat.length < 3
+                    ? "bg-[#F2F2F2] cursor-not-allowed rotate-90"
+                    : "bg-[#F2F2F2] cursor-pointer hover:shadow-2xl text-xl transition-all duration-300 hover:scale-105 rotate-90"
+                    }`}
+                >
+                  <HiPaperAirplane className={` ${!user || !chat || chat.length < 3 ? 'text-[#8C8C8C]' : 'text-[#112EA0]'}`} size={22} />
+                </button>
+              </div>
             </div>
-          </div>
+
+          </form>
         </div>
       </div>
     </div>
