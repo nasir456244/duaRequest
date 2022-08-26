@@ -32,7 +32,7 @@ const MyPrayer = () => {
     const queryParams = [
       collection(db, "Prayers"),
       orderBy("createdAt", "desc"),
-      limit(5),
+      limit(3),
     ];
     if (lastKey) {
       queryParams.push(startAfter(lastKey));
