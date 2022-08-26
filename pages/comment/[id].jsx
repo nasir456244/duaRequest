@@ -173,7 +173,7 @@ const CommentPage = () => {
             <div
               className={styles.body} >
               <InfiniteScroll
-                isReverse={true}
+                isReverse={false}
                 loadMore={fetchMoreData}
                 hasMore={comments?.length <= totalSize}
                 useWindow={false}
