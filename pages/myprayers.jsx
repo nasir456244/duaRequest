@@ -93,6 +93,7 @@ const MyPrayer = () => {
             <InfiniteScroll
               loadMore={fetchMoreData}
               hasMore={prayers?.length <= totalSize}
+              threshold={10}
             >
               {prayers?.map((prayer, index) => (
                 <MyPrayers

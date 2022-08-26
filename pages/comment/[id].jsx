@@ -88,7 +88,6 @@ const CommentPage = () => {
       setCommentsLoding(false);
       setTotalSize(data?.docs.length)
       setLastKey(data?.docs[data?.docs?.length - 1]);
-
   };
 
 
@@ -173,10 +172,11 @@ const CommentPage = () => {
             <div
               className={styles.body} >
               <InfiniteScroll
-                isReverse={false}
+                isReverse={true}
                 loadMore={fetchMoreData}
                 hasMore={comments?.length <= totalSize}
                 useWindow={false}
+                threshold={10}
               >
                 {comments?.map((comment, index) => (
                   <Comment
