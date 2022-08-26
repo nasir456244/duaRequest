@@ -72,7 +72,7 @@ const CommentPage = () => {
         setComments([...comments, ...data.docs.map(doc => ({ id: doc.id, ...doc.data() }))]);
         setCommentsLoding(false);
         setTotalSize(totalSize + data?.docs.length)
-        // bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
+        bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
       })
   }, [changeState.comment]);
 
@@ -80,7 +80,7 @@ const CommentPage = () => {
     const queryParams = [
       collection(db, "Prayers", queryId, "comments"),
       orderBy("createdAt", "desc"),
-      limit(5),
+      limit(7),
     ];
       const q = query(...queryParams);
       const data = await getDocs(q);
