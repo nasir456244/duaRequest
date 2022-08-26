@@ -12,7 +12,7 @@ const styles = {
   commentBody: `tracking-2 flex flex-col w-full mt-[12px] overflow-hidden p-[4px] bg-[#ffffff] rounded-2xl break-words h-fit`,
   address: `flex items-center text-[14px] font-semibold text-[#000000] not-italic `,
   time: `flex justify-end w-full text-[14px] `,
-  comment: `font-medium text-[12px] color-black mb-8 `,
+  comment: `font-medium text-[15px] color-black mb-8 text-[#8C8C8C]`,
   buttons: `flex absolute right-[30px] bottom-[10px]   `
 };
 
@@ -161,23 +161,20 @@ const Comment = ({ address, comment, createdAt, name, image, id,
           >
             <div className={styles.address}>
               <div
-                className={`${address == user?.email ? "text-[#000000]" : "text-[#000000]"
-                  } w-full`}
+                className='text-[#000] w-full'
               >
                 {address == user?.email ? <p>You</p> : name}
               </div>
               <div className={styles.time}>
                 <p
-                  className={`${address == user?.email ? "text-[#000000]" : "text-[#000000]"
-                    } font-medium text-[12px]`}
+                  className='text-[#000] font-medium text-[13px]'
                 >
                   <TimeAgo datetime={createdAt?.toDate()} />
                 </p>
               </div>
             </div>
             <p
-              className={`${styles.comment}${address == user?.email ? "text-[#8C8C8C]" : "text-[#8C8C8C]"
-                }`}
+              className={styles.comment}
             >
               {comment}
             </p>

@@ -135,8 +135,7 @@ const Prayer = ({ address, id, prayer, timestamp, name, image }) => {
                   router.push(`/comment/${id}`);
                 }} className=" mt-[2px] cursor-pointer text-[#8C8C8C] sm:hidden">Comments</p>
             </div>
-            <form onSubmit={handleSubmit(sendComment)}>
-              <div className="flex w-[333px] relative  top-1 overflow-hidden justify-between items-center bg-[#F2F2F2] p-3 h-[38px] rounded-md">
+            <form className="flex w-[333px] relative  top-1 overflow-hidden justify-between items-center bg-[#F2F2F2] p-3 h-[38px] rounded-md" onSubmit={handleSubmit(sendComment)}>
                 <FaSmileWink className="text-[#8C8C8C] text-[25px] sm:text-[42px]" />
 
                 <input
@@ -151,9 +150,9 @@ const Prayer = ({ address, id, prayer, timestamp, name, image }) => {
                   onChange={(e) => {
                     setComment(e.target?.value);
                   }}
-                  placeholder={` ${user ? "Write a comment" : "Login to comment"
+                  placeholder={` ${user ? "Write a comment..." : "Login to comment"
                     }`}
-                    className="w-[344px] bg-[#f2f2f2] border-nonfocus:ring-0 outline-none m-[15px] overflow-hidden	"
+                    className="w-[344px] md:text-[15px] sm:text-[13px] bg-[#f2f2f2] border-nonfocus:ring-0 outline-none m-[15px] overflow-hidden	"
                     />
                 <button
                   type="submit"
@@ -167,7 +166,6 @@ const Prayer = ({ address, id, prayer, timestamp, name, image }) => {
                   >
                   <HiPaperAirplane size={25} />
                 </button>
-              </div>
               {errors?.commentField && <span className="font-medium text-[#f00]">This is required</span>}
             </form>
           </div>

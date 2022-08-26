@@ -30,7 +30,7 @@ const styles = {
   modalContainer: `flex flex-col overflow-auto sm:max-h-[85vh] md:max-h-[850px] bg-white max-screen  w-[580px]  overflow-hidden `,
   title: `text-[20px] text-black font-bold	leading-7 flex justify-center`,
   body: `border overflow-auto mt-[15px] mb-[5px] p-[10px] rounded-xl h-[700px] `,
-  input: `w-full  p-2 text-xl resize-none break-all bg-[#F2F2F2] outline-0 text-[#000000] mr-2 rounded-[12px] overflow-hidden`,
+  input: `w-full p-2 text-[15px] resize-none break-all bg-[#F2F2F2] outline-0 text-[#000000] mr-2 rounded-[12px] overflow-hidden`,
   footer: `flex flex-row items-center justify-center content-center w-full p-4  `,
   postButton: `rounded-[50%] p-2 flex items-center justify-center text-[#fff] `,
 };
