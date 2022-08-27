@@ -55,7 +55,9 @@ export const PrayerRequestProvider = ({ children }) => {
 
   const SignInWithFacebook = () => {
     if(user) return;
-    const loading = toast.loading('loading');
+    const loading = toast.loading('loading', {
+      style: { background: "#04111d", color: "#fff" },
+    });
     signInWithPopup(auth, facebookProvider)
       .then(response => {
         toast.dismiss(loading)

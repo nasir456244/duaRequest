@@ -3,6 +3,7 @@ import React from 'react'
 import Image from 'next/image'
 import Nofound from "../public/404.png"
 import Navbar from '../components/Navbar'
+import Footer from '@/components/Footer'
 
 const styles = {
     container: `flex justify-center items-center select-none mt-20 `,
@@ -25,6 +26,7 @@ const PageNotFound = () => {
             
         </div>
     </div>
+    <Footer />
     </div>
   )
 }

@@ -29,11 +29,12 @@ const Prayer = ({ address, id, prayer, timestamp, name, image }) => {
   const router = useRouter();
   const { user } = useContext(PrayerRequestContext)
   const { register, handleSubmit, formState:{errors} } = useForm();
+  const isPaidAccount = user?.stripeRole !== "free"
 
 
     useEffect(
       () =>
-        {user && onSnapshot(collection(db, "Prayers", id, "likes"), (snapshot) =>
+        {user && isPaidAccount && onSnapshot(collection(db, "Prayers", id, "likes"), (snapshot) =>
           setLikes(snapshot?.docs)
         )},
       [id]
@@ -41,7 +42,7 @@ const Prayer = ({ address, id, prayer, timestamp, name, image }) => {
 
     useEffect(
       () =>
-        {user && setHasLiked(
+        {user && isPaidAccount && setHasLiked(
           likes?.findIndex((like) => like?.id === user?.uid) !== -1
         )},
       [likes, user]
@@ -49,7 +50,7 @@ const Prayer = ({ address, id, prayer, timestamp, name, image }) => {
     
     useEffect(
       () =>
-        {user && onSnapshot(
+        {user && isPaidAccount && onSnapshot(
           query(
             collection(db, "Prayers", id, "comments"),
             orderBy("createdAt", "asc"),
@@ -63,12 +64,14 @@ const Prayer = ({ address, id, prayer, timestamp, name, image }) => {
 
   const likepost = () => {
     if (!user) return;
+    if(!isPaidAccount) return;
     if (!hasliked)  likePrayer(id, user?.uid);
     return;
   };
 
   const sendComment = () => {
     if (!user) return;
+    if(!isPaidAccount) return;
 
     const commentToSend = comment;
     setComment("");
@@ -87,7 +90,7 @@ const Prayer = ({ address, id, prayer, timestamp, name, image }) => {
 
   return (
     <div className={styles.listContainer}>
-      {user && 
+      {user && isPaidAccount &&
         <>
           <div className="flex  justify-center p-4 mx-4">
         
@@ -159,7 +162,6 @@ const Prayer = ({ address, id, prayer, timestamp, name, image }) => {
                       type="submit"
                       size={25}
                       disabled={!comment?.trim()}
-                      // onClick={sendComment}
                       className={`${!comment || comment?.length < 3 || !user
                         ? "flex text-[#8C8C8C]"
                         : "flex text-[#112EA0] cursor-pointer transition-all ease-out duration-300 hover:scale-105"

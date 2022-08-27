@@ -27,10 +27,12 @@ const Prayers = () => {
   const ref = useRef(true)
   const { changeState } = useStateValue()
   const { user } = useContext(PrayerRequestContext)
+  const isPaidAccount = user?.stripeRole !== "free"
 
   
   useEffect(() => {
     if(!user) return;
+    if(!isPaidAccount) return;
     const firstRender = ref.current
     if (firstRender) {
       ref.current = false
@@ -49,6 +51,7 @@ const Prayers = () => {
 
   const fetchData = async () => {
     if(!user) return;
+    if(!isPaidAccount) return;
     const data = await getDocs(query(collection(db, "Prayers"),
       orderBy("createdAt", "desc"), limit(5)))
     setPrayers(data.docs.map(doc => ({ id: doc.id, ...doc.data() })));
@@ -59,6 +62,7 @@ const Prayers = () => {
 
   const fetchMoreData = async () => {
     if(!user) return;
+    if(!isPaidAccount) return;
     const queryParams = [
       collection(db, "Prayers"),
       orderBy("createdAt", "desc"),
@@ -84,7 +88,7 @@ const Prayers = () => {
 
     return (
       <div className={styles.container}>
-        {user &&
+        {user && isPaidAccount &&
           <>
         
             {isPrayerLoading ? (

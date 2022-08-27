@@ -6,6 +6,7 @@ import Google from '@/public/Google.svg'
 import Navbar from '../components/Navbar';
 import Image from 'next/image';
 import { Toaster } from "react-hot-toast";
+import Footer from '@/components/Footer';
 
 const Login = () => {
 
@@ -73,7 +74,9 @@ const Login = () => {
                 </>
             }
         </div>
-            </div>
+        <Footer />
+
+    </div>
     )
 }
 

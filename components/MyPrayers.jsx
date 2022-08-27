@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import TimeAgo from "timeago-react";
 import { ImBin2 } from "react-icons/im";
 import { PrayerRequestContext } from "../context/PrayerRequest";
@@ -6,19 +6,21 @@ import DeleteModal from "../components/DeleteModal";
 
 
 const styles = {
-  listContainer: ` tracking-2 hover:shadow-2xl my-[6px] flex flex-col max-w-[544px] p-[4px] bg-[#ffffff] rounded-2xl break-words overflow-hidden max-w-full h-fit `,
+  listContainer: ` tracking-2 hover:shadow-2xl -my-[9px] flex flex-col max-w-[544px] p-[4px] bg-[#ffffff] rounded-2xl break-words overflow-hidden max-w-full h-fit `,
 };
 
 const MyPrayers = ({ address, name, createdAt, image, prayer, id, deleteConfirmation }) => {
   const [likes, setLikes] = useState();
   const { user } = useContext(PrayerRequestContext);
   const [deletePrayerID, setDeletePrayerID] = useState("");
+  const isPaidAccount = user?.stripeRole !== "free"
 
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
  
 
   const deletePrayer = (id) => {
     if (!user) return;
+    if(!isPaidAccount) return;
     setIsDeleteModalOpen(true);
     setDeletePrayerID(id);
     return;
@@ -27,7 +29,7 @@ const MyPrayers = ({ address, name, createdAt, image, prayer, id, deleteConfirma
   return (
     <>
     
-      {user &&    
+      {user && isPaidAccount &&    
           <div className="relative">
             {isDeleteModalOpen && (
               <DeleteModal

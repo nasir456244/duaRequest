@@ -15,6 +15,7 @@ import { PrayerRequestContext } from "../context/PrayerRequest";
 import InfiniteScroll from "react-infinite-scroller";
 import _ from "lodash";
 import { DeletePrayer } from "@/lib/db";
+import Footer from "@/components/Footer";
 
 const styles = {
   container: `w-full flex justify-center p-[12px] text-[#27425d]  overflow-x-hidden`,
@@ -27,9 +28,11 @@ const MyPrayer = () => {
   const [lastKey, setLastKey] = useState("");
   const [isPrayerLoading, setIsPrayerLoading] = useState(true);
   const { user } = useContext(PrayerRequestContext);
+  const isPaidAccount = user?.stripeRole !== "free"
 
   const fetchMoreData = async () => {
     if(!user) return;
+    if(!isPaidAccount) return;
     const queryParams = [
       collection(db, "Prayers"),
       orderBy("createdAt", "desc"),
@@ -55,6 +58,7 @@ const MyPrayer = () => {
   
     useEffect(() => {
       if(!user) return;
+      if(!isPaidAccount) return;
       const fetchPrayers = async () => {
         const queryParams = [
           collection(db, "Prayers"),
@@ -69,7 +73,7 @@ const MyPrayer = () => {
         setIsPrayerLoading(false);
         setTotalSize(sortedDocs.length)
       };
-      if (user?.uid) {
+      if (user?.uid && isPaidAccount) {
         fetchPrayers()
       }
 
@@ -77,6 +81,7 @@ const MyPrayer = () => {
   
   const deleteConfirmation = async (event, deletePrayerID) => {
     if(!user) return;
+    if(!isPaidAccount) return;
     if (event) {
       await DeletePrayer(deletePrayerID)
       setPrayers(prayers.filter(prayer => prayer.id !== deletePrayerID))
@@ -87,7 +92,7 @@ const MyPrayer = () => {
   return (
     <>
       <Navbar />
-      {user && 
+      {user && isPaidAccount &&
         <div className={styles.container}>
           {isPrayerLoading ? (
             <PrayerSkeleton />
@@ -115,6 +120,8 @@ const MyPrayer = () => {
           )}
         </div>
       }
+      <Footer />
+
     </>
   );
 };

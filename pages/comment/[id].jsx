@@ -24,10 +24,11 @@ import { addComment, DeleteComment } from "../../lib/db";
 import InfiniteScroll from "react-infinite-scroller";
 import useStateValue from "hooks/useStateValue";
 import { useForm } from "react-hook-form";
+import Footer from "@/components/Footer";
 
 const styles = {
   mainContainer: ` flex justify-center p-3 `,
-  modalContainer: `flex flex-col overflow-auto sm:max-h-[85vh] md:max-h-[850px] bg-white max-screen  w-[580px]  overflow-hidden `,
+  modalContainer: `flex flex-col overflow-auto sm:max-h-[77vh] md:max-h-[800px] bg-white w-[580px]  overflow-hidden `,
   title: `text-[20px] text-black font-bold	leading-7 flex justify-center`,
   body: `border overflow-auto mt-[15px] mb-[5px] p-[10px] rounded-xl h-[700px] `,
   input: `w-full p-2 text-[15px] resize-none break-all bg-[#F2F2F2] outline-0 text-[#000000] mr-2 rounded-[12px] overflow-hidden`,
@@ -50,9 +51,11 @@ const CommentPage = () => {
   const ref = useRef(true)
   const bottomRef = useRef(null)
   const { register, handleSubmit, formState:{errors} } = useForm();
+  const isPaidAccount = user?.stripeRole !== "free"
 
     useEffect(() => {
       if(!user) return;
+      if(!isPaidAccount) return;
       const firstRender = ref.current
       if (firstRender) {
         const queryId = window.location.pathname.split("/")[2]
@@ -80,6 +83,7 @@ const CommentPage = () => {
   
   const fetchComments = async (queryId) => {
     if(!user) return;
+    if(!isPaidAccount) return;
     const queryParams = [
       collection(db, "Prayers", queryId, "comments"),
       orderBy("createdAt", "desc"),
@@ -96,6 +100,7 @@ const CommentPage = () => {
 
   const fetchMoreData = async () => {
     if(!user) return;
+    if(!isPaidAccount) return;
     const queryParams = [
       collection(db, "Prayers", queryId, "comments"),
       orderBy("createdAt", "desc"),
@@ -118,6 +123,7 @@ const CommentPage = () => {
 
   const sendComment = (e) => {
     if (!user) return;
+    if(!isPaidAccount) return;
     if (!chat) return;
     const commentToSend = chat;
     setChat("");
@@ -136,6 +142,7 @@ const CommentPage = () => {
 
   const deleteConfirmation = async (event, deleteCommentID) => {
     if(!user) return;
+    if(!isPaidAccount) return;
     const PrayerId = window.location.pathname.split("/")[2]
 
     if (event) {
@@ -148,7 +155,7 @@ const CommentPage = () => {
   return (
     <div>
       <Navbar />
-      {user && 
+      {user && isPaidAccount &&
         <div className={styles.mainContainer}>
           <div className={styles.modalContainer}>
             <div className="flex justify-between p-3 ml-[16px] ">
@@ -156,7 +163,7 @@ const CommentPage = () => {
                 <h1>Add a comment</h1>
               </div>
               <div
-                onClick={() => router?.replace("/")}
+                onClick={() => router?.replace("/community")}
                 className="flex flex-row justify-center content-center items-center cursor-pointer  text-black  "
               >
                 <p className="font-semibold text-sm px-2">go back to prayers</p>
@@ -239,6 +246,7 @@ const CommentPage = () => {
           </div>
         </div>
       }
+      <Footer />
     </div>
   );
 };

@@ -20,6 +20,7 @@ const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const router = useRouter();
   const { user } = useContext(PrayerRequestContext)
+  const isPaidAccount = user?.stripeRole !== "free"
 
   return (
     <div className={styles.container}>
@@ -34,7 +35,7 @@ const Navbar = () => {
             <a>Home</a>
           </Link>
         </li>
-        {user &&
+        {user && isPaidAccount &&
           <>
             <li className={router.pathname == "/community" ? styles.activeItem : styles.listItem}>
               <Link className={styles.item} href="/community">

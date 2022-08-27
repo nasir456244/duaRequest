@@ -31,6 +31,7 @@ const Comment = ({ address, comment, createdAt, name, image, id,
     useEffect(
       () => {
         if(!user) return;
+        if(!isPaidAccount) return;
         const PrayerId = window.location.pathname.split("/")[2]
         const unsub = onSnapshot(collection(db, 'Prayers', PrayerId, 'comments', id, 'likes'), (snapshot) =>
           setLikes(snapshot?.docs)
@@ -42,7 +43,7 @@ const Comment = ({ address, comment, createdAt, name, image, id,
 
     useEffect(
       () =>
-        {user && setHasLiked(
+        {user && isPaidAccount && setHasLiked(
           likes?.findIndex((like) => like?.id === user?.uid) !== -1
         )},
       [likes, user]
@@ -52,6 +53,7 @@ const Comment = ({ address, comment, createdAt, name, image, id,
     useEffect(
       () => {
         if(!user) return;
+        if(!isPaidAccount) return;
         const PrayerId = window.location.pathname.split("/")[2]
         const unsub = onSnapshot(collection(db, 'Prayers', PrayerId, 'comments', id, 'dislikes'), (snapshot) =>
           setDislikes(snapshot.docs)
@@ -63,14 +65,15 @@ const Comment = ({ address, comment, createdAt, name, image, id,
 
     useEffect(
       () =>
-        setHasDisLiked(
+        {user && isPaidAccount && setHasDisLiked(
           dislikes?.findIndex((like) => like?.id === user?.uid) !== -1
-        ),
+        )},
       [dislikes, user]
     );
 
     useEffect(() => {
       if(!user) return;
+      if(!isPaidAccount) return;
       const PrayerId = window.location.pathname.split("/")[2]
       getDoc(doc(db, `Prayers/${PrayerId}`)).then((res) =>
         setOwner(res?.data()?.uid == user?.uid)
@@ -113,7 +116,7 @@ const Comment = ({ address, comment, createdAt, name, image, id,
 
   return (
     <div className="relative">
-      {user && 
+      {user && isPaidAccount &&
         <>
           {isDeleteModalOpen && (
             <DeleteModal

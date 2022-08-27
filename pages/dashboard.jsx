@@ -5,6 +5,7 @@ import { createCheckoutSession, goToBillingPortal } from '@/lib/checkout'
 import Image from 'next/image'
 import { MoonLoader } from 'react-spinners';
 import Link from 'next/link'
+import Footer from '@/components/Footer'
 
 
 
@@ -99,6 +100,8 @@ const Dashboard = () => {
 
         }
       </div>
+    <Footer />
+
     </div>
   )
 }
