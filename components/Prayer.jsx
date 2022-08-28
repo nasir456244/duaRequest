@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, useRef } from "react";
 import TimeAgo from "timeago-react";
 import { BsFillSuitHeartFill } from "react-icons/bs";
 import { FaCommentAlt, FaSmileWink } from "react-icons/fa";
@@ -10,6 +10,10 @@ import {
   query,
   serverTimestamp,
   limitToLast,
+  getDocs,
+  limit,
+  getDoc,
+  where,
 } from "firebase/firestore";
 import { HiPaperAirplane } from "react-icons/hi";
 import { useRouter } from "next/router";
@@ -17,12 +21,13 @@ import { PrayerRequestContext } from "@/context/PrayerRequest";
 import { addComment, likePrayer } from "@/lib/db";
 import { useForm } from "react-hook-form";
 import Image from "next/image";
+import useStateValue from "hooks/useStateValue";
 
 const styles = {
   listContainer: `hover:shadow-2xl my-[6px] flex flex-col bg-[#ffffff] rounded-2xl break-words overflow-hidden h-fit`,
 };
 
-const Prayer = ({ address, id, prayer, timestamp, name, image }) => {
+const Prayer = ({ address, id, prayer, timestamp, name, image, }) => {
   const [likes, setLikes] = useState([]);
   const [hasliked, setHasLiked] = useState(false);
   const [comment, setComment] = useState("");
@@ -31,15 +36,11 @@ const Prayer = ({ address, id, prayer, timestamp, name, image }) => {
   const { user } = useContext(PrayerRequestContext)
   const { register, handleSubmit, formState:{errors} } = useForm();
   const isPaidAccount = user?.stripeRole !== "free"
+  const ref = useRef(true)
+  const { changeState, setChangeState } = useStateValue()
 
 
-    useEffect(
-      () =>
-        {user && isPaidAccount && onSnapshot(collection(db, "Prayers", id, "likes"), (snapshot) =>
-          setLikes(snapshot?.docs)
-        )},
-      [id]
-    );
+   
 
     useEffect(
       () =>
@@ -47,26 +48,54 @@ const Prayer = ({ address, id, prayer, timestamp, name, image }) => {
           likes?.findIndex((like) => like?.id === user?.uid) !== -1
         )},
       [likes, user]
-    );     
-    
-    useEffect(
-      () =>
-        {user && isPaidAccount && onSnapshot(
-          query(
-            collection(db, "Prayers", id, "comments"),
-            orderBy("createdAt", "asc"),
-            limitToLast(3)
-          ),
-          (snapshot) => setComments(snapshot?.docs)
-        )},
-      []
     );
+    
+
+    const showLikes = async () => {
+      {user && isPaidAccount && getDocs(query(collection(db, "Prayers", id, "likes"), where('uid', '==', user?.uid))).then(data => {
+        setLikes([...data.docs.map(doc => ({ id: doc.id, ...doc.data() }))]);
+      }); return;}
+    }
+    console.log(likes)
+
+    useEffect(() => {
+      if(!user || !isPaidAccount) return;
+      const firstRender = ref.current;
+      if(firstRender) {
+        ref.current = false;
+        showLikes();
+        fetchComments();
+        return;
+      };
+
+      getDocs(query(collection(db, "Prayers", id, "comments"),
+        orderBy("createdAt", "desc"), limit(1))).then(data => {
+          if (data?.docs[0]?.id === comments[comments?.length - 1]?.id) return;
+          setComments([...comments, ...data.docs.map(doc => ({ id: doc.id, ...doc.data() }))]);
+      })
+
+    },[changeState.comment])
+
+    console.log(comments)
+
+    const fetchComments = async () => {
+      if(!user || !isPaidAccount) return;
+      const queryParams = [
+        collection(db, "Prayers", id, "comments"),
+        orderBy("createdAt", "desc"),
+        limit(3),
+      ]
+      const q = query(...queryParams);
+      const data = await getDocs(q)
+      setComments([...data?.docs.map(doc => ({ id: doc.id, ...doc.data() }))].reverse());
+    } 
   
 
   const likepost = () => {
     if (!user) return;
     if(!isPaidAccount) return;
     if (!hasliked)  likePrayer(id, user?.uid);
+    showLikes();
     return;
   };
 
@@ -86,6 +115,7 @@ const Prayer = ({ address, id, prayer, timestamp, name, image }) => {
       uid: user?.uid
     }
     addComment(id, newComment)
+    setChangeState({ ...changeState, comment: !changeState.comment });
     return;
   };
 
@@ -190,13 +220,13 @@ const Prayer = ({ address, id, prayer, timestamp, name, image }) => {
 
           <div className=" bg-opacity-100 bg-[#f1f1f1] flex flex-col max-w-full max-h-full">
 
-          {comments?.map((comment) => (
+          {comments?.slice(-3)?.map((comment) => (
             <div
               key={comment?.id}
               className="flex p-4 pt-4 max-h-full  overflow-hidden max-w-full"
               >
               <Image
-                src={`${comment?.data()?.image}`}
+                src={`${comment?.image}`}
                 alt="profile"
                 className="rounded-[50%] ml-1"
                 width={40}
@@ -204,15 +234,15 @@ const Prayer = ({ address, id, prayer, timestamp, name, image }) => {
                 />
               
               <div className="flex-1 flex-row w-64 ml-2">
-                <p className="font-semibold text-[14px] text-[#000000] not-italic">{comment?.data()?.name}</p>
+                <p className="font-semibold text-[14px] text-[#000000] not-italic">{comment?.name}</p>
                 <p className="text-[14px] text-[#8C8C8C] sm:w-[180px] text-ellipsis whitespace-nowrap overflow-hidden w-full">
-                  {comment?.data()?.comment}
+                  {comment?.comment}
                 </p>
               </div>
 
               <div className="flex w-max h-max overflow-hidden">
                 <p className="font-medium w-max h-max flex justify-end text-xs leading-4	drop-shadow-3xl">
-                  <TimeAgo datetime={comment?.data()?.createdAt?.toDate()} />
+                  <TimeAgo datetime={comment?.createdAt?.toDate()} />
                 </p>
               </div>
             </div>

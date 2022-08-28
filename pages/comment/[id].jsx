@@ -138,6 +138,7 @@ const CommentPage = () => {
     };
     addComment(queryId, newComment).then(() => bottomRef.current?.scrollIntoView({ behavior: 'smooth' }))
     setChangeState({ ...changeState, comment: !changeState.comment })
+    return;
   };
 
   const deleteConfirmation = async (event, deleteCommentID) => {

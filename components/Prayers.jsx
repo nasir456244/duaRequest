@@ -78,7 +78,7 @@ const Prayers = () => {
         setIsPrayerLoading(false);
         setLastKey(data?.docs?.length && data?.docs[data?.docs?.length - 1]);
         setTotalSize(totalSize + data?.docs.length);
-      },700)
+      },500)
     }
   };
 
