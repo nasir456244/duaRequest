@@ -4,7 +4,7 @@ import Head from "next/head";
 import Footer from "@/components/Footer";
 
 const styles = {
-  container: `max-h-full max-w-full flex flex-col overflow-x-hidden select-none`,
+  container: `max-h-full max-w-full flex flex-col overflow-hidden select-none`,
 };
 
 const Home = () => {

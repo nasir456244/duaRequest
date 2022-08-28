@@ -5,15 +5,11 @@ import { FaCommentAlt, FaSmileWink } from "react-icons/fa";
 import { db } from "../lib/firebaseConfig";
 import {
   collection,
-  onSnapshot,
   orderBy,
   query,
   serverTimestamp,
-  limitToLast,
   getDocs,
   limit,
-  getDoc,
-  where,
 } from "firebase/firestore";
 import { HiPaperAirplane } from "react-icons/hi";
 import { useRouter } from "next/router";
@@ -24,7 +20,7 @@ import Image from "next/image";
 import useStateValue from "hooks/useStateValue";
 
 const styles = {
-  listContainer: `hover:shadow-2xl my-[6px] flex flex-col bg-[#ffffff] rounded-2xl break-words overflow-hidden h-fit`,
+  listContainer: `hover:shadow-2xl my-[6px] max-w-full flex flex-col bg-[#ffffff] rounded-2xl break-words overflow-hidden max-h-full`,
 };
 
 const Prayer = ({ address, id, prayer, timestamp, name, image, }) => {
@@ -52,12 +48,11 @@ const Prayer = ({ address, id, prayer, timestamp, name, image, }) => {
     
 
     const showLikes = async () => {
-      {user && isPaidAccount && getDocs(query(collection(db, "Prayers", id, "likes"), where('uid', '==', user?.uid))).then(data => {
+      {user && isPaidAccount && getDocs(collection(db, "Prayers", id, "likes")).then(data => {
         setLikes([...data.docs.map(doc => ({ id: doc.id, ...doc.data() }))]);
       }); return;}
     }
-    console.log(likes)
-
+    
     useEffect(() => {
       if(!user || !isPaidAccount) return;
       const firstRender = ref.current;
@@ -123,11 +118,12 @@ const Prayer = ({ address, id, prayer, timestamp, name, image, }) => {
     <div className={styles.listContainer}>
       {user && isPaidAccount &&
         <>
-          <div className="flex  justify-center p-4 overflow-hidden w-full">
-        
-            <Image layout="fixed" height={42} alt='profile' width={42} className="flex rounded-[50%]" src={image} />
+          <div className="flex justify-center md:p-4 sm:p-9 sm:py-4  overflow-hidden ">
+            <div className="relative sm:right-2 w-full h-full rounded-[50%]">
+              <Image layout="fixed"  height={42} alt='profile' width={42} className="flex rounded-[50%]" src={image} />
+            </div>
             
-            <div className="flex flex-col w-full ml-2 ">
+            <div className="flex flex-col w-full ml-1">
               <div className="flex justify-between items-center ">
                 <p className="font-semibold text-[14px] text-[#000000] not-italic ">{name}</p>
                 <TimeAgo datetime={timestamp} className="font-medium text-xs pr-[4px]" />
@@ -223,7 +219,7 @@ const Prayer = ({ address, id, prayer, timestamp, name, image, }) => {
           {comments?.slice(-3)?.map((comment) => (
             <div
               key={comment?.id}
-              className="flex p-4 pt-4 max-h-full  overflow-hidden max-w-full"
+              className="flex p-4 pt-4 max-h-full overflow-hidden max-w-full"
               >
               <Image
                 src={`${comment?.image}`}
