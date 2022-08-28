@@ -16,6 +16,7 @@ import { useRouter } from "next/router";
 import { PrayerRequestContext } from "@/context/PrayerRequest";
 import { addComment, likePrayer } from "@/lib/db";
 import { useForm } from "react-hook-form";
+import Image from "next/image";
 
 const styles = {
   listContainer: `hover:shadow-2xl my-[6px] flex flex-col bg-[#ffffff] rounded-2xl break-words overflow-hidden h-fit`,
@@ -92,9 +93,9 @@ const Prayer = ({ address, id, prayer, timestamp, name, image }) => {
     <div className={styles.listContainer}>
       {user && isPaidAccount &&
         <>
-          <div className="flex  justify-center p-4 mx-4">
+          <div className="flex  justify-center p-4 overflow-hidden w-full">
         
-            <img className="flex rounded-[50%] w-[42px] h-[42px]" src={image} />
+            <Image layout="fixed" height={42} alt='profile' width={42} className="flex rounded-[50%]" src={image} />
             
             <div className="flex flex-col w-full ml-2 ">
               <div className="flex justify-between items-center ">
@@ -194,10 +195,12 @@ const Prayer = ({ address, id, prayer, timestamp, name, image }) => {
               key={comment?.id}
               className="flex p-4 pt-4 max-h-full  overflow-hidden max-w-full"
               >
-              <img
+              <Image
                 src={`${comment?.data()?.image}`}
                 alt="profile"
-                className="rounded-[50%] ml-1 h-[40px] w-[40px]"  
+                className="rounded-[50%] ml-1"
+                width={40}
+                height={40}  
                 />
               
               <div className="flex-1 flex-row w-64 ml-2">

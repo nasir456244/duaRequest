@@ -2,11 +2,11 @@ import React, { useContext, useState } from 'react'
 import { PrayerRequestContext } from '@/context/PrayerRequest'
 import { useRouter } from 'next/router'
 import { FaFacebook, FaApple } from "react-icons/fa";
-import Google from '@/public/Google.svg'
 import Navbar from '../components/Navbar';
 import Image from 'next/image';
 import { Toaster } from "react-hot-toast";
 import Footer from '@/components/Footer';
+import {FcGoogle} from 'react-icons/fc'
 
 const Login = () => {
 
@@ -35,7 +35,7 @@ const Login = () => {
                         </div>
                         <div onClick={ SignInWithGoogle } className='flex rounded-md cursor-pointer mx-6 flex-row items-center  justify-center p-1 m-3 h-[45px] bg-[#112EA0] hover:bg-blue-600 rounded-[6px] hover:shadow-2xl' >
                             <div className=' p-2 flex justify-center items-center h-full mx-3 rounded-full bg-[#fff]'>
-                                {Google && <Image className='h-full w-full' src={Google} alt='profile' /> }
+                                <FcGoogle className='rounded-[50%]' size={25} />
                             </div>
                             <button className='font-medium text-sm uppercase text-white '><b>Sign in with Google</b></button>
                         </div>

@@ -7,12 +7,13 @@ import { PrayerRequestContext } from "../../../context/PrayerRequest";
 import { dislikeComment, likeComment, removeDisLike, removeLike } from "../../../lib/db";
 import DeleteModal from "../../../components/DeleteModal";
 import { AiFillLike } from 'react-icons/ai'
+import Image from "next/image";
 
 const styles = {
   commentBody: `tracking-2 flex flex-col w-full mt-[12px] overflow-hidden p-[4px] bg-[#ffffff] rounded-2xl break-words h-fit`,
   address: `flex items-center text-[14px] font-semibold text-[#000000] not-italic `,
   time: `flex justify-end w-full text-[14px] `,
-  comment: `font-medium text-[15px] color-black mb-8 text-[#8C8C8C]`,
+  comment: `font-medium text-[15px] color-black mb-8 text-[#8C8C8C] relative top-1`,
   buttons: `flex absolute right-[30px] bottom-[10px]   `
 };
 
@@ -127,18 +128,19 @@ const Comment = ({ address, comment, createdAt, name, image, id,
           <div className="flex flex-row m-1 ">
             <div
               className={`${address == user?.email
-                ? "flex   w-full border border-l-[3px] m-1 rounded-md border-l-[#0ABEEE]	"
+                ? "flex w-full border border-l-[3px] m-1 rounded-md border-l-[#0ABEEE]	"
                 : "flex w-full border border-l-[3px] m-1 rounded-md border-l-[#112EA0]"
                 }`}
             >
 
               <div
-                className={`flex flex-col  content-centers items-center p-1 ${address == user?.email && ""
-                  }`}
+                className={`flex flex-col h-full justify-center items-center p-1`}
               >
-                <img
+                <Image
                   src={image}
-                  className="  rounded-[50%] w-[40px] h-[40px]  m-2"
+                  className="  rounded-[50%] "
+                  height={41}
+                  width={41}
                 />
 
                 {owner && isPaidAccount && (
@@ -166,13 +168,13 @@ const Comment = ({ address, comment, createdAt, name, image, id,
               >
                 <div className={styles.address}>
                   <div
-                    className='text-[#000] w-full'
+                    className='text-[#000] w-full relative top-1'
                   >
                     {address == user?.email ? <p>You</p> : name}
                   </div>
                   <div className={styles.time}>
                     <p
-                      className='text-[#000] font-medium text-[13px]'
+                      className='text-[#000] font-medium text-[13px] relative top-1'
                     >
                       <TimeAgo datetime={createdAt?.toDate()} />
                     </p>

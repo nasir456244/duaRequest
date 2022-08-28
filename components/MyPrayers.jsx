@@ -3,6 +3,7 @@ import TimeAgo from "timeago-react";
 import { ImBin2 } from "react-icons/im";
 import { PrayerRequestContext } from "../context/PrayerRequest";
 import DeleteModal from "../components/DeleteModal";
+import Image from "next/image";
 
 
 const styles = {
@@ -40,7 +41,7 @@ const MyPrayers = ({ address, name, createdAt, image, prayer, id, deleteConfirma
 
             <div className={styles.listContainer}>
               <div className="flex  justify-center p-4 ">
-                <img layout="fixed" className="flex rounded-[50%] w-[42px] h-[42px] " src={image} />
+                <Image width={45} height={43} layout="fixed" className="flex rounded-[50%]" src={image} />
                 <div className="flex flex-col w-full ml-2 ">
                   <div className="flex justify-between items-center ">
                     <p className="font-semibold text-[14px] text-[#000000] not-italic ">

@@ -4,6 +4,7 @@ import { RiMenu2Line } from "react-icons/ri";
 import { RiMenu3Fill } from "react-icons/ri";
 import { useRouter } from "next/router";
 import { PrayerRequestContext } from "../context/PrayerRequest";
+import Image from "next/image";
 
 const styles = {
   container: `w-full h-[100px] flex justify-around items-center p-[12px] overflow-hidden`,
@@ -59,15 +60,14 @@ const Navbar = () => {
       {user &&
         <div className="flex items-center justify-center w-[100px] text-[#fff]">
 
-          <img
+          <Image 
             onClick={() => router.push('/dashboard')}
-            className="cursor-pointer rounded-[50%] sm:ml-12 h-[50px] w-[50px]"
-            src={
-              user?.image
-            }
+            className="cursor-pointer rounded-[50%] sm:ml-12"
+            src={user?.image}
+            height={50}
+            width={50}
 
           />
-
         </div>
       }
       {!user &&
