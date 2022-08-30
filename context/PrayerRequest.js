@@ -33,7 +33,7 @@ export const PrayerRequestProvider = ({ children }) => {
 
   const SignInWithGoogle = () => {
     if(user) return
-    const loading = toast.loading('loading', {
+    const loading = toast.loading('authenticating', {
       style: { background: "#04111d", color: "#fff" },
     });
     signInWithPopup(auth, googleProvider)
@@ -55,7 +55,7 @@ export const PrayerRequestProvider = ({ children }) => {
 
   const SignInWithFacebook = () => {
     if(user) return;
-    const loading = toast.loading('loading', {
+    const loading = toast.loading('authenticating', {
       style: { background: "#04111d", color: "#fff" },
     });
     signInWithPopup(auth, facebookProvider)
