@@ -71,7 +71,6 @@ const Prayer = ({ address, id, prayer, timestamp, name, image, }) => {
 
     },[changeState.comment])
 
-    console.log(comments)
 
     const fetchComments = async () => {
       if(!user || !isPaidAccount) return;
@@ -89,8 +88,9 @@ const Prayer = ({ address, id, prayer, timestamp, name, image, }) => {
   const likepost = () => {
     if (!user) return;
     if(!isPaidAccount) return;
-    if (!hasliked)  likePrayer(id, user?.uid);
-    showLikes();
+    if (hasliked) return
+    likePrayer(id, user?.uid);
+    setLikes([...likes, {id:user?.uid, uid: user?.uid}]);
     return;
   };
 
@@ -206,7 +206,7 @@ const Prayer = ({ address, id, prayer, timestamp, name, image, }) => {
               {likes?.length > 0 &&
                 Intl.NumberFormat("en", { notation: "compact" }).format(
                   likes?.length
-                  ) + " Prayers"}
+                  ) + ' Prayers'}
             </p>
             :
             <p className="text-[13px] font-semibold pl-5 pb-3 pt-3 bg-opacity-100 bg-[#f1f1f1] w-full">

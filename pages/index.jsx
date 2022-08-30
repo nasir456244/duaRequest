@@ -2,6 +2,7 @@ import React from "react";
 import Navbar from "@/components/Navbar";
 import Head from "next/head";
 import Footer from "@/components/Footer";
+import Landing from "@/components/Landing";
 
 const styles = {
   container: `max-h-full max-w-full flex flex-col overflow-hidden select-none`,
@@ -17,6 +18,7 @@ const Home = () => {
         <meta charSet="utf-8" />
       </Head>
       <Navbar />
+      <Landing />
       <Footer />
 
     </div>

@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext, useRef } from "react";
 import TimeAgo from "timeago-react";
-import { collection, doc, getDoc, onSnapshot } from "firebase/firestore";
+import { collection, doc, getDoc, getDocs } from "firebase/firestore";
 import { db } from "../../../lib/firebaseConfig";
 import { MdDelete } from "react-icons/md";
 import { PrayerRequestContext } from "../../../context/PrayerRequest";
@@ -28,19 +28,32 @@ const Comment = ({ address, comment, createdAt, name, image, id,
   const [hasliked, setHasLiked] = useState(false);
   const [dislikes, setDislikes] = useState([]);
   const [hasdisliked, setHasDisLiked] = useState(false);
+  const ref = useRef(true)
 
-    useEffect(
-      () => {
-        if(!user) return;
-        if(!isPaidAccount) return;
+  useEffect( () => {
+    if(!user || !isPaidAccount) return;
+    const firstRender = ref.current;
+    if(firstRender) {
+      ref.current = false;
+      showLikes();
+      showDislikes();
+      return;
+    }
+    return;
+  },[])
+
+    const showLikes = async () => {
+      if(user && isPaidAccount) {
         const PrayerId = window.location.pathname.split("/")[2]
-        const unsub = onSnapshot(collection(db, 'Prayers', PrayerId, 'comments', id, 'likes'), (snapshot) =>
-          setLikes(snapshot?.docs)
-        )
-        return () => unsub();
-      },
-      [id]
-    );
+        getDocs(collection(db, "Prayers", PrayerId, 'comments', id, "likes")).then(data => {
+          setLikes([...data.docs.map(doc => ({ id: doc.id, ...doc.data() }))]);
+        });
+      }
+      return;
+    }
+
+
+
 
     useEffect(
       () =>
@@ -51,18 +64,15 @@ const Comment = ({ address, comment, createdAt, name, image, id,
     );
 
 
-    useEffect(
-      () => {
-        if(!user) return;
-        if(!isPaidAccount) return;
+    const showDislikes = async () => {
+      if(user && isPaidAccount) {
         const PrayerId = window.location.pathname.split("/")[2]
-        const unsub = onSnapshot(collection(db, 'Prayers', PrayerId, 'comments', id, 'dislikes'), (snapshot) =>
-          setDislikes(snapshot.docs)
-        )
-        return () => unsub();
-      },
-      [id]
-    );
+        getDocs(collection(db, "Prayers", PrayerId, 'comments', id, "dislikes")).then(data => {
+          setDislikes([...data.docs.map(doc => ({ id: doc.id, ...doc.data() }))]);
+        });
+      }
+      return;
+    }
 
     useEffect(
       () =>
@@ -80,28 +90,36 @@ const Comment = ({ address, comment, createdAt, name, image, id,
         setOwner(res?.data()?.uid == user?.uid)
       );
     }, [user?.uid]);
+
+
+    
+
   
   const likecomment = () => {
     if (!user) return;
     if (!isPaidAccount) return
     const PrayerId = window.location.pathname.split("/")[2]
-    if (hasliked) return
+    if (hasliked) return;
     if (hasdisliked) {
-      removeDisLike(PrayerId, id, user?.uid)
+      removeDisLike(PrayerId, id, user?.uid);
+      setDislikes(dislikes.filter((dislike) => dislike == user?.uid))
     }
-    likeComment(PrayerId, id, user?.uid)
+    likeComment(PrayerId, id, user?.uid);
+    setLikes([...likes, {id:user?.uid, uid: user?.uid}]);
     return;
   };
 
   const dislikecomment = () => {
     if (!user) return;
-    if (!isPaidAccount) return
+    if (!isPaidAccount) return;
     const PrayerId = window.location.pathname.split("/")[2]
-    if (hasdisliked) return
+    if (hasdisliked) return;
     if (hasliked) {
-      removeLike(PrayerId, id, user?.uid)
+      removeLike(PrayerId, id, user?.uid);
+      setLikes(likes.filter((like) => like == user?.uid))
     }
-    dislikeComment(PrayerId, id, user?.uid)
+    dislikeComment(PrayerId, id, user?.uid);
+    setDislikes([...dislikes, {id:user?.uid, uid: user?.uid}]);
     return;
   };
 
@@ -147,7 +165,7 @@ const Comment = ({ address, comment, createdAt, name, image, id,
                   <MdDelete
                     size={25}
                     onClick={() => deleteComment(id)}
-                    className="text-[#f00] cursor-pointer"
+                    className="text-[#f00] cursor-pointer relative top-2"
                   />
                 )}
                 <div className={styles.buttons}>

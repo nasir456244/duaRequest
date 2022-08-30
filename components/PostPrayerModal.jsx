@@ -32,9 +32,7 @@ const PostPrayerModal = () => {
   //Post Prayer
   const postPrayer = () => {
     try {
-      if (!user) return;
-      if(!isPaidAccount) return;
-      if (!prayer) return;
+      if (!user || !isPaidAccount || !prayer) return;
       const prayerToPost = prayer;
       setPrayer("");
       setModalOpen(false);
@@ -56,7 +54,6 @@ const PostPrayerModal = () => {
       });
     }
   };
-
 
   return (
     <>
