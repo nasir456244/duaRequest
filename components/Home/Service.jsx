@@ -33,6 +33,7 @@ const Service = () => {
       <div className="flex justify-center gap-4 custom1105:flex-nowrap flex-wrap">
         {list.map((data, index) => (
           <div
+            key={index}
             className={`flex flex-col justify-center items-center shadow-xl  ${
               index === 1
                 ? "bg-gradient-to-t from-[#00d6d8] to-[#00a9d5]"

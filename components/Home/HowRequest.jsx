@@ -19,11 +19,11 @@ const HowRequest = () => {
       </div>
       <div className="w-full md:w-[60%] text-left xl:text-left sm:px-3">
         <Title>
-          Can't Understand
+          Can&apos;t Understand
           <br /> How to Request Prayer?
         </Title>
         <p className="font-primary text-[1rem] lg:w-[70%] text-left text-white font-normal mb-8 opacity-80 lg:mr-10 tracking-wider">
-          As-salaamu 'alaikum and welcome <br />
+          As-salaamu alaikum and welcome <br />
           Thank you for your confidence in our website, steps bellow are how to get going and request prayer.
         </p>
 
