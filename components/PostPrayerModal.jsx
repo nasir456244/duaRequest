@@ -33,7 +33,8 @@ const PostPrayerModal = () => {
   const postPrayer = () => {
     try {
       if (!user || !isPaidAccount || !prayer) return;
-      const prayerToPost = prayer;
+      const prayerToPost = prayer.replace(/\s+/g, " ").trim();
+      if(prayerToPost.length < 50 || prayerToPost.length > 500) return;
       setPrayer("");
       setModalOpen(false);
       const newPrayer = {

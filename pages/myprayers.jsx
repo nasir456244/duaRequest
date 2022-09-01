@@ -30,6 +30,8 @@ const MyPrayer = () => {
   const { user } = useContext(PrayerRequestContext);
   const isPaidAccount = user?.stripeRole !== "free"
 
+
+
   const fetchMoreData = async () => {
     if(!user) return;
     if(!isPaidAccount) return;

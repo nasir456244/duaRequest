@@ -95,23 +95,30 @@ const Prayer = ({ address, id, prayer, timestamp, name, image, }) => {
   };
 
   const sendComment = () => {
-    if (!user) return;
-    if(!isPaidAccount) return;
+    try {
 
-    const commentToSend = comment;
-    setComment("");
-
-    const newComment = {
-      address: user?.email,
-      name: user?.name,
-      comment: commentToSend?.slice(0, 60),
-      createdAt: serverTimestamp(),
-      image: user?.image,
-      uid: user?.uid
+      if (!user || !isPaidAccount || !comment) return;
+      const commentToSend = comment.replace(/\s+/g, " ").trim();
+      if(commentToSend.length < 4 || commentToSend.length > 60) return;
+      setComment("");
+      
+      const newComment = {
+        address: user?.email,
+        name: user?.name,
+        comment: commentToSend?.slice(0, 60),
+        createdAt: serverTimestamp(),
+        image: user?.image,
+        uid: user?.uid
+      }
+      addComment(id, newComment)
+      setChangeState({ ...changeState, comment: !changeState.comment });
+      return;
+    } catch (error) {
+      console.log(error);
+      toast.error(error.message, {
+        style: { background: "#04111d", color: "#fff" },
+      });
     }
-    addComment(id, newComment)
-    setChangeState({ ...changeState, comment: !changeState.comment });
-    return;
   };
 
   return (
@@ -170,13 +177,13 @@ const Prayer = ({ address, id, prayer, timestamp, name, image, }) => {
                     <FaSmileWink className="text-[#8C8C8C] text-[25px] sm:text-[42px]" />
 
                     <input
-                      {...register('commentField', {required: true, minLength: 3 ,maxLength: 60})}
+                      {...register('comment', {required: true, minLength: 4 ,maxLength: 60})}
 
                       disabled={!user}
                       required
                       type="text"
                       value={comment}
-                      minLength={3}
+                      minLength={4}
                       maxLength={60}
                       onChange={(e) => {
                         setComment(e.target?.value);
@@ -188,17 +195,14 @@ const Prayer = ({ address, id, prayer, timestamp, name, image, }) => {
                     <button
                       type="submit"
                       size={25}
-                      disabled={!comment?.trim()}
-                      className={`${!comment || comment?.length < 3 || !user
-                        ? "flex text-[#8C8C8C]"
-                        : "flex text-[#112EA0] cursor-pointer transition-all ease-out duration-300 hover:scale-105"
-                      }  rotate-90  `}
+                      disabled={!comment.trim() || comment.length < 4 || comment.length > 60}
+                      className={`flex  disabled:text-[#8c8c8c] text-[#112EA0] disabled:cursor-not-allowed transition-all ease-out duration-300 hover:scale-105 rotate-90`}
                       >
                       <HiPaperAirplane size={25} />
                     </button>
-                  {errors?.commentField && <span className="font-medium text-[#f00]">This is required</span>}
                 </form>
               </div>
+              {errors?.comment && <span className="font-medium w-full flex items-center justify-center relative top-2 text-[#f00]">This is required</span>}
             </div>
           </div>
           {likes?.length > 0 ? 

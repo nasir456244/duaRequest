@@ -14,6 +14,7 @@ const styles = {
 const Home = () => {
   const { user } = useContext(PrayerRequestContext)
   const isPaidAccount = user?.stripeRole !== "free"
+ 
 
 
   return (

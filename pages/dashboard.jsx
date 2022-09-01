@@ -27,7 +27,6 @@ const Dashboard = () => {
   const isPaidAccount = user?.stripeRole !== "free"
 
 
-
   return (
     <div className={styles.container}>
       <Navbar />

@@ -122,23 +122,31 @@ const CommentPage = () => {
 
 
   const sendComment = (e) => {
-    if (!user) return;
-    if(!isPaidAccount) return;
-    if (!chat) return;
-    const commentToSend = chat;
-    setChat("");
+    try {
 
-    const newComment = {
-      address: user?.email,
-      comment: commentToSend?.slice(0, 250),
-      createdAt: serverTimestamp(),
-      image: user?.image,
-      name: user?.name,
-      uid: user?.uid,
-    };
-    addComment(queryId, newComment).then(() => bottomRef.current?.scrollIntoView({ behavior: 'smooth' }))
-    setChangeState({ ...changeState, comment: !changeState.comment })
-    return;
+      if (!user || !isPaidAccount || !chat) return;
+      
+      const commentToSend = chat.replace(/\s+/g, " ").trim();
+      if(commentToSend.length < 4 || commentToSend.length > 250) return;
+      setChat("")
+      
+      const newComment = {
+        address: user?.email,
+        comment: commentToSend?.slice(0, 250),
+        createdAt: serverTimestamp(),
+        image: user?.image,
+        name: user?.name,
+        uid: user?.uid,
+      };
+      addComment(queryId, newComment).then(() => bottomRef.current?.scrollIntoView({ behavior: 'smooth' }))
+      setChangeState({ ...changeState, comment: !changeState.comment })
+      return;
+    } catch (error) {
+      console.log(error);
+      toast.error(error.message, {
+        style: { background: "#04111d", color: "#fff" },
+      });
+    }
   };
 
   const deleteConfirmation = async (event, deleteCommentID) => {
@@ -208,14 +216,14 @@ const CommentPage = () => {
               </div>
             )}
             <form onSubmit={handleSubmit(sendComment)}>
-            {errors?.commentField && <span className="w-full flex items-center justify-center font-medium text-[#f00]">This is required</span>}
+            {errors?.chat && <span className="w-full flex items-center justify-center font-medium text-[#f00]">This is required</span>}
               <div className={styles.footer}>
                 
 
                 <div className="flex bg-[#F2F2F2] rounded-xl w-full items-center ">
                   <FaSmileWink className="  text-[#8C8C8C] m-2 " size={25} />
                   <input
-                      {...register('commentField', {required: true, minLength: 3 ,maxLength: 250})}
+                      {...register('chat', {required: true, minLength: 4 ,maxLength: 250})}
 
                     type="text"
                     required
@@ -225,20 +233,17 @@ const CommentPage = () => {
                     onChange={(e) => {
                       bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
                       setChat(e.target?.value) }}
-                    minLength={3}
+                    minLength={4}
                     maxLength={250}
                     placeholder={`${!user ? "Login to comment" : "Write a comment..."
                       }`}
                   />
                   <button
-                    disabled={!chat?.trim()}
+                    disabled={!chat?.trim() || chat.length < 4 || chat.length > 250}
                     type="submit"
-                    className={`${styles.postButton} ${!chat || !user || chat.length < 3
-                      ? "bg-[#F2F2F2] cursor-not-allowed rotate-90"
-                      : "bg-[#F2F2F2] cursor-pointer hover:shadow-2xl text-xl transition-all duration-300 hover:scale-105 rotate-90"
-                      }`}
+                    className={`${styles.postButton} disabled:bg-[#F2F2F2] disabled:cursor-not-allowed bg-[#F2F2F2] cursor-pointer hover:shadow-2xl text-xl transition-all duration-300 hover:scale-105 rotate-90`}
                   >
-                    <HiPaperAirplane className={` ${!user || !chat || chat.length < 3 ? 'text-[#8C8C8C]' : 'text-[#112EA0]'}`} size={22} />
+                    <HiPaperAirplane className={` ${!user || !chat || chat.length < 4 || !chat.trim() ? 'text-[#8C8C8C]' : 'text-[#112EA0]'}`} size={22} />
                   </button>
                 </div>
               </div>
