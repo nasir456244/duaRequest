@@ -2,10 +2,14 @@ import React from "react";
 import Navbar from "@/components/Navbar";
 import Head from "next/head";
 import Footer from "@/components/Footer";
-import Landing from "@/components/Landing";
+import Banner from "@/components/Home/Banner";
+import Service from "@/components/Home/Service";
+import PrayerSection from "@/components/Home/PrayerSection";
+import Features from "@/components/Home/Features";
+import HowRequest from "@/components/Home/HowRequest";
 
 const styles = {
-  container: `max-h-full max-w-full flex flex-col overflow-hidden select-none`,
+  container: `max-h-full max-w-full flex flex-col overflow-hidden select-none mb-10`,
 };
 
 const Home = () => {
@@ -18,7 +22,11 @@ const Home = () => {
         <meta charSet="utf-8" />
       </Head>
       <Navbar />
-      <Landing />
+      <Banner />
+      <Service />
+      <PrayerSection />
+      <Features />
+      <HowRequest />
       <Footer />
 
     </div>

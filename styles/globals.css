@@ -42,3 +42,40 @@ body::-webkit-scrollbar-thumb {
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+
+/* animation image  */
+.custom-animation {
+  animation: float 4s ease-in-out infinite;
+}
+
+/* button animation */
+.custom-btn-animation {
+  animation: ripple 1.5s infinite ease-in-out;
+}
+
+/* animation image  */
+@keyframes float {
+  50% {
+    transform: translateY(20px);
+  }
+}
+
+/* button animation */
+@keyframes ripple {
+  0% {
+    box-shadow: 0 0 0 0 #fff4, 0 0 0 0 #fff4;
+  }
+  80% {
+    box-shadow: 0 0 0 20px #fff0, 0 0 0 40px #fff0;
+  }
+  100% {
+    box-shadow: 0 0 0 0 #fff0, 0 0 0 0 #fff0;
+  }
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+}
