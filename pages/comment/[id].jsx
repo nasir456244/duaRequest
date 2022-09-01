@@ -54,8 +54,7 @@ const CommentPage = () => {
   const isPaidAccount = user?.stripeRole !== "free"
 
     useEffect(() => {
-      if(!user) return;
-      if(!isPaidAccount) return;
+      if(!user || !isPaidAccount) return;
       const firstRender = ref.current
       if (firstRender) {
         const queryId = window.location.pathname.split("/")[2]

@@ -61,6 +61,7 @@ const Navbar = () => {
         <div className="flex items-center justify-center w-[100px] text-[#fff]">
 
           <Image 
+            alt="profile"
             onClick={() => router.push('/dashboard')}
             className="cursor-pointer rounded-[50%] sm:ml-12"
             src={user?.image}

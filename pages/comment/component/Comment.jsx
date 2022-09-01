@@ -52,9 +52,6 @@ const Comment = ({ address, comment, createdAt, name, image, id,
       return;
     }
 
-
-
-
     useEffect(
       () =>
         {user && isPaidAccount && setHasLiked(
@@ -83,8 +80,7 @@ const Comment = ({ address, comment, createdAt, name, image, id,
     );
 
     useEffect(() => {
-      if(!user) return;
-      if(!isPaidAccount) return;
+      if (!user || !isPaidAccount) return;
       const PrayerId = window.location.pathname.split("/")[2]
       getDoc(doc(db, `Prayers/${PrayerId}`)).then((res) =>
         setOwner(res?.data()?.uid == user?.uid)
@@ -93,11 +89,8 @@ const Comment = ({ address, comment, createdAt, name, image, id,
 
 
     
-
-  
   const likecomment = () => {
-    if (!user) return;
-    if (!isPaidAccount) return
+    if (!user || !isPaidAccount) return;
     const PrayerId = window.location.pathname.split("/")[2]
     if (hasliked) return;
     if (hasdisliked) {
@@ -110,8 +103,7 @@ const Comment = ({ address, comment, createdAt, name, image, id,
   };
 
   const dislikecomment = () => {
-    if (!user) return;
-    if (!isPaidAccount) return;
+    if (!user || !isPaidAccount) return;
     const PrayerId = window.location.pathname.split("/")[2]
     if (hasdisliked) return;
     if (hasliked) {
