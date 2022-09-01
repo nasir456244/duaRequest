@@ -1,12 +1,15 @@
-import React from "react";
+import React, { useContext } from "react";
 import Img from "@/public/banner.png";
 import Title from "../Shared/Title";
 import Image from "next/image";
 import Link from "next/link";
+import { PrayerRequestContext } from "@/context/PrayerRequest";
 
 const Banner = () => {
+  const { user } = useContext(PrayerRequestContext)
+
   return (
-    <section className="flex justify-center items-center sm:px-4 min-h-screen gap-2 md:relative md:bottom-[85px] flex-wrap-reverse">
+    <section className="flex justify-center items-center sm:px-4 min-h-screen gap-2 md:relative md:bottom-[15px] flex-wrap-reverse">
       <div className="w-full md:w-1/2 text-center relative md:left-[10px] lg:text-left">
         <Title>Request Prayer Here for ALLAH&apos;s Pleasure</Title>
 
@@ -18,7 +21,7 @@ const Banner = () => {
         </p>
         <div className="flex items-center gap-8 flex-wrap lg:justify-start justify-center">
           <div className="border cursor-pointer border-[#1cd1b5] px-6 py-3 rounded-3xl bg-gradient-to-r from-[#00d6d8] to-[#00a9d5] hover:scale-110 transform transition-all ease-in-out duration-500 custom-btn-animation">
-            <Link href={'/login'}>
+            <Link href={`${user ? '/dashboard' : '/login'}`}>
 
               <a
                 href="#!"
@@ -29,7 +32,7 @@ const Banner = () => {
             </Link>
           </div>
           <div className="border cursor-pointer border-[#1cd1b5] px-6 py-3 rounded-3xl hover:scale-110 transform transition-all ease-in-out duration-500">
-            <Link href={'/login'}>
+            <Link href={`${user ? '/dashboard' : '/login'}`}>
               <a
                 href="#!"
                 className="text-white font-primary text-[1rem] tracking-wider"

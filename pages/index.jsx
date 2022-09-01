@@ -13,7 +13,6 @@ const styles = {
 };
 
 const Home = () => {
-
   return (
     <div className={styles.container}>
       <Head>
