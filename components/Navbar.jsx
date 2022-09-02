@@ -7,11 +7,12 @@ import { PrayerRequestContext } from "../context/PrayerRequest";
 import Image from "next/image";
 
 const styles = {
-  container: `w-full h-[100px] flex justify-around items-center p-[12px] overflow-hidden`,
+  container: `w-full h-[100px] sm:justify-between flex justify-around items-center p-[12px] overflow-hidden`,
   logo: `text-[1.8rem] text-[#fff]`,
-  list: `md:flex hidden items-center justify-center xs:fixed xs:bottom-[20px]  lg:static`,
-  listItem: `p-3 list-none hover:border-b-2 cursor-pointer text-[16px] font-medium text-[#fff]`,
-  activeItem: `p-3 list-none border-[#0ABEEE] border-b-2 cursor-pointer text-[16px] font-medium text-[#0ABEEE]`,
+  item: `sm:border-b-2 sm:border-[#0ABEEE]`,
+  list: `md:flex hidden items-center justify-center xs:fixed xs:bottom-[20px] lg:static`,
+  listItem: `p-3 list-none md:hover:border-b-2 cursor-pointer text-[16px] font-medium text-[#fff]`,
+  activeItem: `p-3 list-none border-[#0ABEEE] md:border-b-2 cursor-pointer text-[16px] font-medium text-[#0ABEEE]`,
   menuContainer: `md:hidden flex text-white`,
   ListMenuContainer: `min-w-[30vw] min-h-[100vh] top-[0] items-center right-[0] flex fixed overflow-hidden z-40 bg-gradient-to-tr from-violet-700 via-cyan-600 to-green-300`,
   OpenMenuContainer: ` w-full h-full flex flex-col items-center justify-center`,
@@ -32,38 +33,38 @@ const Navbar = () => {
       </div>
       <div className={styles.list}>
         <li className={router.pathname == "/" ? styles.activeItem : styles.listItem}>
-          <Link className={styles.item} href="/">
-            <a>Home</a>
+          <Link href="/">
+            <a className={styles.item}>Home</a>
           </Link>
         </li>
         {user && isPaidAccount &&
           <>
             <li className={router.pathname == "/community" ? styles.activeItem : styles.listItem}>
-              <Link className={styles.item} href="/community">
-                <a>Community</a>
+              <Link href="/community">
+                <a className={styles.item}>Community</a>
               </Link>
             </li>
             <li className={router.pathname == "/myprayers" ? styles.activeItem : styles.listItem}>
-              <Link className={styles.item} href="/myprayers">
-                <a>My Prayers</a>
+              <Link href="/myprayers">
+                <a className={styles.item}>My Prayers</a>
               </Link>
             </li>
           </>
         }
         <li className={router.pathname == "/contact" ? styles.activeItem : styles.listItem}>
-          <Link className={styles.item} href="/contact">
-            <a>Contact</a>
+          <Link href="/contact">
+            <a className={styles.item}>Contact</a>
           </Link>
         </li>
       </div>
 
       {user &&
-        <div className="flex items-center justify-center w-[100px] text-[#fff]">
+        <div className="flex items-center justify-center sm:hidden w-[100px] text-[#fff]">
 
           <Image 
             alt="profile"
             onClick={() => router.push('/dashboard')}
-            className="cursor-pointer rounded-[50%] sm:ml-12"
+            className="cursor-pointer rounded-[50%]"
             src={user?.image}
             height={50}
             width={50}
@@ -101,33 +102,41 @@ const Navbar = () => {
             className="text-white cursor-pointer transition-all duration-500 hover:scale-110 flex absolute left-[10px] top-[10px]"
           />
           <div className={styles.OpenMenuContainer}>
+            {user && 
+
+              <div className="flex items-center justify-center md:hidden relative bottom-[50px] w-[100px] text-[#fff]">
+                <Image 
+                  alt="profile"
+                  onClick={() => router.push('/dashboard')}
+                  className="cursor-pointer rounded-[50%]"
+                  src={user?.image}
+                  height={50}
+                  width={50}
+                />
+              </div>   
+              }
             <li className={styles.listItem}>
-              <Link className={styles.item} href="/">
-                <a>Home</a>
+              <Link href="/">
+                <a className={styles.item}>Home</a>
               </Link>
             </li>
             {user && 
               <>
                 <li className={styles.listItem}>
-                  <Link className={styles.item} href="/community">
-                    <a>Community</a>
+                  <Link href="/community">
+                    <a className={styles.item}>Community</a>
                   </Link>
                 </li>
                 <li className={styles.listItem}>
-                  <Link className={styles.item} href="/myprayers">
-                    <a>My Prayers</a>
+                  <Link href="/myprayers">
+                    <a className={styles.item}>My Prayers</a>
                   </Link>
                 </li>
               </>
             }
             <li className={styles.listItem}>
-              <Link className={styles.item} href="/about">
-                <a>About</a>
-              </Link>
-            </li>
-            <li className={styles.listItem}>
-              <Link className={styles.item} href="/contact">
-                <a>Contact</a>
+              <Link href="/contact">
+                <a className={styles.item}>Contact</a>
               </Link>
             </li>
           </div>
