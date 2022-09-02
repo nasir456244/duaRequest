@@ -11,7 +11,7 @@ const Banner = () => {
   return (
     <section className="flex justify-center items-center sm:px-4 min-h-screen gap-2 md:relative md:bottom-[15px] flex-wrap-reverse">
       <div className="w-full md:w-1/2 text-center relative md:left-[10px] lg:text-left">
-        <Title>Request Prayer Here for ALLAH&apos;s Pleasure</Title>
+        <Title>Dua Request Here for ALLAH&apos;s Pleasure</Title>
 
         <p className="font-primary text-[1rem] text-left text-white font-normal mb-8 opacity-80 tracking-wide">
           Dua is like a conversation with Allah Almighty in which we put our
@@ -27,7 +27,7 @@ const Banner = () => {
                 href="#!"
                 className="text-white font-primary text-[1rem] tracking-wider"
                 >
-                Request Prayer
+                Request Dua
               </a>
             </Link>
           </div>

@@ -47,7 +47,7 @@ const Dashboard = () => {
 
               <div className={styles.middle}>
 
-                <p className='font-medium p-5'>Prayer Request uses Stripe to update, change, or cancel your subscription. You can also update card information and billing addresses through the secure portal.</p>
+                <p className='font-medium p-5'>Dua Request uses Stripe to update, change, or cancel your subscription. You can also update card information and billing addresses through the secure portal.</p>
               </div>
 
               <div className={styles.buttons}>
@@ -86,7 +86,7 @@ const Dashboard = () => {
 
             <div className={styles.middle}>
 
-              <p className='font-medium p-5'>Prayer Request uses Stripe to update, change, or cancel your subscription. You can also update card information and billing addresses through the secure portal.</p>
+              <p className='font-medium p-5'>Dua Request uses Stripe to update, change, or cancel your subscription. You can also update card information and billing addresses through the secure portal.</p>
             </div>
 
             <div className={styles.buttons}>

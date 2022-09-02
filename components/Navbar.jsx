@@ -28,7 +28,7 @@ const Navbar = () => {
     <div className={styles.container}>
       <div className={styles.logo}>
         <Link href="/">
-          <a>Support</a>
+          <a>Dua Request</a>
         </Link>
       </div>
       <div className={styles.list}>

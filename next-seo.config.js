@@ -1,20 +1,20 @@
 const title =
-  'Prayer Request – Dua is like a conversation with Allah Almighty in which we put our needs before Him and ask His help in the resolution of our problems.';
-const description = 'Prayer Request is a place where you can request prayer for yourself and your loved ones and pray for others.';
+  'Dua Request – Dua Request is a place where you can request prayer for yourself and your loved ones and pray for others.';
+const description = 'Dua is like a conversation with Allah Almighty in which we put our needs before Him and ask His help in the resolution of our problems.';
 
 const SEO = {
   title,
   description,
-  canonical: 'https://prayerrequest.vercel.app',
+  canonical: 'https://duarequest.app',
   openGraph: {
     type: 'website',
     locale: 'en_IE',
-    url: 'https://prayerrequest.vercel.app',
+    url: 'https://duarequest.app',
     title,
     description,
     images: [
       {
-        url: 'https://prayerrequest.vercel.app/logo.png',
+        url: 'https://duarequest.app/logo.png',
         alt: title,
         width: 1280,
         height: 720

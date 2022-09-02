@@ -87,7 +87,7 @@ const PostPrayerModal = () => {
               </button>
             </div>
             <div className={styles.title}>
-              <h1>Request prayer</h1>
+              <h1>Request Dua</h1>
             </div>
               <form onSubmit={handleSubmit(postPrayer)}>
                 <div className={styles.body}>
