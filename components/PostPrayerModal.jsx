@@ -36,6 +36,7 @@ const PostPrayerModal = () => {
       const prayerToPost = prayer.replace(/\s+/g, " ").trim();
       if(prayerToPost.length < 50 || prayerToPost.length > 500) return;
       setPrayer("");
+      reset({prayer: ''});
       setModalOpen(false);
       const newPrayer = {
         address: user?.email,
