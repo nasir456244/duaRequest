@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import Img from "@/public/banner.png";
+import Img from "@/public/assets/banner.png";
 import Title from "../Shared/Title";
 import Image from "next/image";
 import Link from "next/link";

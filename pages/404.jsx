@@ -1,8 +1,8 @@
 import Link from 'next/link'
 import React from 'react'
 import Image from 'next/image'
-import Nofound from "../public/404.png"
-import Navbar from '../components/Navbar'
+import Nofound from "@/public/404.png"
+import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 
 const styles = {
@@ -14,8 +14,8 @@ const styles = {
 
 const PageNotFound = () => {
   return (
-    <div>
-       <Navbar />
+    <div>    
+      <Navbar />
     <div className={styles.container}>
         <div className={styles.body}>
             <div>

@@ -1,7 +1,7 @@
 import React from "react";
-import Img1 from "@/public/icon1.png";
-import Img2 from "@/public/icon2.png";
-import Img3 from "@/public/icon3.png";
+import Img1 from "@/public/assets/icon1.png";
+import Img2 from "@/public/assets/icon2.png";
+import Img3 from "@/public/assets/icon3.png";
 import Title from "../Shared/Title";
 import Image from "next/image";
 

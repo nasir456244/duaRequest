@@ -15,11 +15,6 @@ const styles = {
 const Home = () => {
   return (
     <div className={styles.container}>
-      <Head>
-        <title>Prayer request</title>
-        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
-        <meta charSet="utf-8" />
-      </Head>
       <Navbar />
       <Banner />
       <Service />
