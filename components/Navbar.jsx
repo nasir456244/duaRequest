@@ -5,10 +5,11 @@ import { RiMenu3Fill } from "react-icons/ri";
 import { useRouter } from "next/router";
 import { PrayerRequestContext } from "../context/PrayerRequest";
 import Image from "next/image";
+import Icon from '@/public/icon.png';
 
 const styles = {
   container: `w-full h-[100px] sm:justify-between flex justify-around items-center p-[12px] overflow-hidden`,
-  logo: `text-[1.8rem] text-[#fff]`,
+  logo: `lg:text-[1.8rem] md:text-[1.4rem] text-[#fff] flex items-center justify-center `,
   item: `sm:border-b-2 sm:border-[#0ABEEE]`,
   list: `md:flex hidden items-center justify-center xs:fixed xs:bottom-[20px] lg:static`,
   listItem: `p-3 list-none md:hover:border-b-2 cursor-pointer text-[16px] font-medium text-[#fff]`,
@@ -27,8 +28,11 @@ const Navbar = () => {
   return (
     <div className={styles.container}>
       <div className={styles.logo}>
+        <div className="flex items-center justify-center">
+          <Image width={90} height={70} alt='logo' src={Icon} />
+        </div>
         <Link href="/">
-          <a>Dua Request</a>
+          <a className="sm:hidden">Dua Request</a>
         </Link>
       </div>
       <div className={styles.list}>
