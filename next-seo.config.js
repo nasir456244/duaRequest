@@ -14,10 +14,10 @@ const SEO = {
     description,
     images: [
       {
-        url: 'https://duarequest.app/icon.png',
+        url: 'https://duarequest.app/logo.png',
         alt: title,
         width: 1280,
-        height: 620
+        height: 720
       }
     ]
   }
