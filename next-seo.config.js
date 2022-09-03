@@ -17,7 +17,7 @@ const SEO = {
         url: 'https://duarequest.app/icon.png',
         alt: title,
         width: 1280,
-        height: 720
+        height: 620
       }
     ]
   }
