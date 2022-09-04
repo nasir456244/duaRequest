@@ -6,7 +6,6 @@ import { useRouter } from "next/router";
 import { PrayerRequestContext } from "../context/PrayerRequest";
 import Image from "next/image";
 import Icon from '@/public/icon.png';
-import { VscAccount } from 'react-icons/vsc'
 
 const styles = {
   container: `w-full h-[100px] sm:justify-between flex justify-around items-center p-[12px] overflow-hidden`,
@@ -73,7 +72,6 @@ const Navbar = () => {
           />
         </div>
       }
-      {user && user?.image == null &&  <VscAccount className="text-[#fff] animate-pulse" size={40} /> }
       {!user &&
         <button
           onClick={() => router.push("/login")}
