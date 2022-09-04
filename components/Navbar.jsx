@@ -36,13 +36,14 @@ const Navbar = () => {
         </Link>
       </div>
       <div className={styles.list}>
-        <li className={router.pathname == "/" ? styles.activeItem : styles.listItem}>
-          <Link href="/">
-            <a className={styles.item}>Home</a>
-          </Link>
-        </li>
-        {user && isPaidAccount &&
+      {user && isPaidAccount &&
           <>
+            <li className={router.pathname == "/" ? styles.activeItem : styles.listItem}>
+              <Link href="/">
+                <a className={styles.item}>Home</a>
+              </Link>
+            </li>
+        
             <li className={router.pathname == "/community" ? styles.activeItem : styles.listItem}>
               <Link href="/community">
                 <a className={styles.item}>Community</a>
@@ -55,11 +56,6 @@ const Navbar = () => {
             </li>
           </>
         }
-        <li className={router.pathname == "/contact" ? styles.activeItem : styles.listItem}>
-          <Link href="/contact">
-            <a className={styles.item}>Contact</a>
-          </Link>
-        </li>
       </div>
 
       {user &&
@@ -138,11 +134,7 @@ const Navbar = () => {
                 </li>
               </>
             }
-            <li className={styles.listItem}>
-              <Link href="/contact">
-                <a className={styles.item}>Contact</a>
-              </Link>
-            </li>
+
           </div>
         </div>
       )}
