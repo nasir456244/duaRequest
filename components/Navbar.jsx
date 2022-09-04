@@ -124,7 +124,7 @@ const Navbar = () => {
                 <a className={styles.item}>Home</a>
               </Link>
             </li>
-            {user && 
+            {user && isPaidAccount &&
               <>
                 <li className={styles.listItem}>
                   <Link href="/community">
