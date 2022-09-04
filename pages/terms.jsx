@@ -3,8 +3,8 @@ import Navbar from '@/components/Navbar'
 import React from 'react'
 
 const styles = {
-    container: `w-full h-full flex items-center justify-center`,
-    body: `flex flex-col justify-center w-[50%] text-[#fff] gap-4 mb-[50px]`
+    container: `w-full p-[30px] h-full flex items-center justify-center`,
+    body: `flex flex-col justify-center max-w-[700px] text-[#fff] gap-4 mb-[50px]`
 }
 
 const terms = () => {
