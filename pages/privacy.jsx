@@ -39,7 +39,7 @@ const privacy = () => {
                 
                 <h2 className='text-[19px] mb-4'>LOG FILES</h2>
                 <br/>
-                <p>DuaRequest follows a standard procedure of using log files. These files, log visitors when they visit websites. All hosting companies do this and a part of hosting services' analytics. The information collected from log files includes internet protocol (IP) addresses, browser type, Internet Service Provider (ISP), date and time stamp, referring/exit pages, and possibly the number of clicks. These are not linked to any information that is personally identifiable. The purpose of the information is for analyzing trends, administering the site, tracking users' movement on the website, and gathering demographic information</p>
+                <p>DuaRequest follows a standard procedure of using log files. These files, log visitors when they visit websites. All hosting companies do this and a part of hosting services`&apos;` analytics. The information collected from log files includes internet protocol (IP) addresses, browser type, Internet Service Provider (ISP), date and time stamp, referring/exit pages, and possibly the number of clicks. These are not linked to any information that is personally identifiable. The purpose of the information is for analyzing trends, administering the site, tracking users`&apos;` movement on the website, and gathering demographic information</p>
                 <h2 className='text-[19px] mb-4'>PERSONAL INFORMATION WE COLLECT</h2>
                 
                 <h3>Information you provide to us</h3>
@@ -53,7 +53,7 @@ const privacy = () => {
                 
                 <p><b>Data collected automatically</b>.We, our service providers and third-party partners may automatically log information about you, your computer or mobile device, and your activity over time on the Services and other online services, such as:</p>
                 <br/>
-                <li className='ml-4 '><b>Device data</b>,such as your computer or mobile device operating system type and version number, manufacturer and model, browser type, screen resolution, IP address, unique identifiers (e.g., Apple's ID for Advertising or Google's Advertising ID), general location information (such as city or state), and precise geolocation (if you permit our Services to access it from your device settings).</li>
+                <li className='ml-4 '><b>Device data</b>,such as your computer or mobile device operating system type and version number, manufacturer and model, browser type, screen resolution, IP address, unique identifiers (e.g., Apple`&apos;`s ID for Advertising or Google`&apos;`s Advertising ID), general location information (such as city or state), and precise geolocation (if you permit our Services to access it from your device settings).</li>
                 <li className='ml-4 '><b>Online activity data</b>,such as the website you visited before browsing to our website, pages or screens you viewed on the Services, how long you spent on a page or screen, navigation paths between pages or screens, information about your activity on a page or screen, access times, and duration of access.</li>
                 
                 <p><b>Cookies</b>.Some of our automatic data collection is facilitated by cookies and similar technologies. Cookies are small data files placed on your computer when you visit a site. We may set cookies when you use the Services to track user trends and patterns, help you navigate between pages efficiently, remember your preferences and generally improve your browsing experience. Cookies used on the Services may also be set by analytics service providers and advertising partners. In addition to cookies, the Services and our emails may use pixel tags (also known as web beacons and clear GIFs) to compile statistics about use of the Services, measure the success of our marketing campaigns, and indicate whether recipients of our emails open or click links within them.</p>
@@ -74,7 +74,7 @@ const privacy = () => {
                 
                 <li className='ml-4 '>operate our business;</li>
                 <li className='ml-4 '>comply with applicable laws, lawful requests, and legal processes, such as responding to subpoenas or requests from government authorities;</li>
-                <li className='ml-4 '>protect our, your or others' rights, privacy, safety, or property (including by making and defending legal claims);</li>
+                <li className='ml-4 '>protect our, your or others`&apos;` rights, privacy, safety, or property (including by making and defending legal claims);</li>
                 <li className='ml-4 '>enforce the terms and conditions that govern the Services; and</li>
                 <li className='ml-4 '>prevent, identify, investigate and deter fraudulent, harmful, unauthorized, unethical or illegal activity, including cyberattacks and identity theft.</li>
                 
@@ -110,11 +110,11 @@ const privacy = () => {
                 <li className='ml-4 '>To support a claim or defense in court.</li>
                 
                 <h2 className='text-[19px] mb-4'>COOKIES AND WEB BEACONS</h2>
-                <p>Like any other website, our website - https://duarequest.app uses 'cookies'. These cookies are used to store information including visitors' preferences, and the pages on the website that the visitor accessed or visited. The information is used to optimize the users' experience by customizing our web page content based on visitors' browser type and/or other information.</p>
+                <p>Like any other website, our website - https://duarequest.app uses `&apos;`cookies`&apos;`. These cookies are used to store information including visitors`&apos;` preferences, and the pages on the website that the visitor accessed or visited. The information is used to optimize the users`&apos;` experience by customizing our web page content based on visitors`&apos;` browser type and/or other information.</p>
                 
-                <p>For more general information on cookies, please read "What Are Cookies" from Cookie Consent.</p>
+                <p>For more general information on cookies, please read `&quot;`What Are Cookies`&quot;` from Cookie Consent.</p>
                 
-                <h2 className='text-[19px] mb-4'>CHILDREN'S INFORMATION</h2>
+                <h2 className='text-[19px] mb-4'>CHILDREN`&apos;`S INFORMATION</h2>
                 
                 <p>Another part of our priority is adding protection for children while using the internet. We encourage parents and guardians to observe, participate in, and/or monitor and guide their online activity.</p>
                 

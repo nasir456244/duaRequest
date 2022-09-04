@@ -105,7 +105,7 @@ const terms = () => {
                     We are committed to ensuring that our website is as useful and efficient
                     as possible. For that reason, we reserve the right to make changes to the
                     services, at any time. We will never charge you for any service without
-                    making it very clear to you precisely what you're paying for.
+                    making it very clear to you precisely what you`&apos;`re paying for.
                 </p>
                 <p>
                     Any new features which are added to the current site shall also be subject
@@ -118,10 +118,10 @@ const terms = () => {
                     constitutes acceptance of those changes.
                 </p>
                 <h2 className='text-[19px] mb-4'> SERVICE TERMS   </h2>
-                <li className='ml-4 '>DuaRequest at this moment grants the User a non-exclusive, non-transferable, limited right to access and use the Service, under the conditions of these Terms & Conditions and for the duration of the Agreement.</li>
-                <li className='ml-4 '>The use of the Service is at the User's own expense and risk. The User is responsible for meeting the technical and functional requirements and using the electronic communication facilities that are necessary to be able to access and use the Service. The User will at all times bear the risk of loss, theft or damage to any of its data. </li>
+                <li className='ml-4 '>DuaRequest at this moment grants the User a non-exclusive, non-transferable, limited right to access and use the Service, under the conditions of these Terms and Conditions and for the duration of the Agreement.</li>
+                <li className='ml-4 '>The use of the Service is at the User`&apos;`s own expense and risk. The User is responsible for meeting the technical and functional requirements and using the electronic communication facilities that are necessary to be able to access and use the Service. The User will at all times bear the risk of loss, theft or damage to any of its data. </li>
                 <li className='ml-4 '>DuaRequest will have the right (but not the obligation), at its sole discretion, to review, edit, limit, refuse or remove Content, or to limit or refuse the User access to the Service. More specifically in the event the use of the Service, according to us, violates these Terms of Use.</li>
-                <li className='ml-4 '>We may disclose the User's Personal Data or Content, or other data relating to the use of the Service, to third parties where it believes, in good faith, that it is necessary to comply with a court order, ongoing judicial proceeding, criminal or civil subpoena, or other legal process or to exercise its constitutional rights of defense against legal claims.</li>
+                <li className='ml-4 '>We may disclose the User`&apos;`s Personal Data or Content, or other data relating to the use of the Service, to third parties where it believes, in good faith, that it is necessary to comply with a court order, ongoing judicial proceeding, criminal or civil subpoena, or other legal process or to exercise its constitutional rights of defense against legal claims.</li>
                 <h2 className='text-[19px] mb-4'>PRICE AND PAYMENT</h2>
                 
                 <p>
@@ -242,8 +242,8 @@ const terms = () => {
                     ACCESSIBLE THROUGH THE PLATFORM.
                 </p>
                 <p>
-                    YOU UNDERSTAND, AGREE AND ACKNOWLEDGE THAT THE PLATFORM IS PROVIDED "AS
-                    IS" WITHOUT ANY EXPRESS OR IMPLIED WARRANTIES OF ANY KIND, INCLUDING BUT
+                    YOU UNDERSTAND, AGREE AND ACKNOWLEDGE THAT THE PLATFORM IS PROVIDED `&quot;`AS
+                    IS`&quot;` WITHOUT ANY EXPRESS OR IMPLIED WARRANTIES OF ANY KIND, INCLUDING BUT
                     NOT LIMITED TO MERCHANTABILITY, NON-INFRINGEMENT, SECURITY, FITNESS FOR A
                     PARTICULAR PURPOSE OR ACCURACY. THE USE OF THE PLATFORM IS AT YOUR OWN
                     RISK. TO THE FULLEST EXTENT OF THE LAW, WE EXPRESSLY DISCLAIM ALL
