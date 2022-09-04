@@ -9,7 +9,8 @@ module.exports = {
   images: {
     domains: [
       "lh3.googleusercontent.com",
-      "scontent.fbne8-1.fna.fbcdn.net"
+      "scontent.fbne8-1.fna.fbcdn.net",
+      "graph.facebook.com"
     ]
   }
   
