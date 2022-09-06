@@ -13,7 +13,6 @@ function MyApp({ Component, pageProps }) {
   const router = useRouter()
 
   useEffect(() => {
-    if (process.env.NODE_ENV === 'production') {
       const handleRouteChange = (url) => {
         gtag.pageview(url)
       }
@@ -23,7 +22,7 @@ function MyApp({ Component, pageProps }) {
         router.events.off('routeChangeComplete', handleRouteChange)
         router.events.off('hashChangeComplete', handleRouteChange)
       }
-    }
+    
   }, [router.events])
 
   return (
