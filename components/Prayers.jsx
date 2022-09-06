@@ -31,8 +31,7 @@ const Prayers = () => {
 
   
   useEffect(() => {
-    if(!user) return;
-    if(!isPaidAccount) return;
+    if(!user || !isPaidAccount) return;
     const firstRender = ref.current
     if (firstRender) {
       ref.current = false
@@ -50,8 +49,7 @@ const Prayers = () => {
   }, [changeState.prayer]);
 
   const fetchData = async () => {
-    if(!user) return;
-    if(!isPaidAccount) return;
+    if(!user || !isPaidAccount) return;
     const data = await getDocs(query(collection(db, "Prayers"),
       orderBy("createdAt", "desc"), limit(5)))
     setPrayers(data.docs.map(doc => ({ id: doc.id, ...doc.data() })));
@@ -61,8 +59,7 @@ const Prayers = () => {
   }
 
   const fetchMoreData = async () => {
-    if(!user) return;
-    if(!isPaidAccount) return;
+    if(!user || !isPaidAccount) return;
     const queryParams = [
       collection(db, "Prayers"),
       orderBy("createdAt", "desc"),
@@ -82,6 +79,7 @@ const Prayers = () => {
     }
   };
 
+  
 
 
 

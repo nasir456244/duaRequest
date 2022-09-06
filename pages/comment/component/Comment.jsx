@@ -18,9 +18,8 @@ const styles = {
 };
 
 const Comment = ({ address, comment, createdAt, name, image, id,
-  deleteConfirmation }) => {
+  deleteConfirmation, owner }) => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  const [owner, setOwner] = useState();
   const [deleteCommentID, setDeleteCommentID] = useState("");
   const { user } = useContext(PrayerRequestContext);
   const isPaidAccount = user?.stripeRole !== "free"
@@ -78,15 +77,6 @@ const Comment = ({ address, comment, createdAt, name, image, id,
         )},
       [dislikes, user]
     );
-
-    useEffect(() => {
-      if (!user || !isPaidAccount) return;
-      const PrayerId = window.location.pathname.split("/")[2]
-      getDoc(doc(db, `Prayers/${PrayerId}`)).then((res) =>
-        setOwner(res?.data()?.uid == user?.uid)
-      );
-    }, [user?.uid]);
-
 
     
   const likecomment = () => {
@@ -157,7 +147,7 @@ const Comment = ({ address, comment, createdAt, name, image, id,
                   <MdDelete
                     size={25}
                     onClick={() => deleteComment(id)}
-                    className="text-[#f00] cursor-pointer relative top-2"
+                    className="text-[#f00] cursor-pointer relative top-2 ease-in"
                   />
                 )}
                 <div className={styles.buttons}>

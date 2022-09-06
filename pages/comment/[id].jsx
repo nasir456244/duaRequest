@@ -44,12 +44,12 @@ const CommentPage = () => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
   const [deleteDua, setDeleteDua] = useState(false)
   const { user } = useContext(PrayerRequestContext);
+  const [owner, setOwner] = useState();
   const [totalSize, setTotalSize] = useState(0);
   const [queryId, setqueryId] = useState("")
   const [lastKey, setLastKey] = useState("");
   const { changeState, setChangeState } = useStateValue()
   const ref = useRef(true)
-  const bottomRef = useRef(null)
   const { register, handleSubmit, formState:{errors} } = useForm();
   const isPaidAccount = user?.stripeRole !== "free"
 
@@ -60,6 +60,7 @@ const CommentPage = () => {
         const queryId = window.location.pathname.split("/")[2]
         ref.current = false
         setCommentsLoding(true)
+        getOwner();
         setqueryId(queryId)
         getDoc(doc(db, `Prayers/${queryId}`))
           .then((res) => {
@@ -159,6 +160,15 @@ const CommentPage = () => {
     return
   };
 
+  const getOwner = () => {
+    if(!user || !isPaidAccount) return;
+    const PrayerId = window.location.pathname.split("/")[2]
+    getDoc(doc(db, `Prayers/${PrayerId}`)).then((res) =>
+      setOwner(res?.data()?.uid == user?.uid)
+    );
+    return;
+  }
+
   return (
     <div>
       <Navbar />
@@ -207,9 +217,9 @@ const CommentPage = () => {
                       comment={comment?.comment}
                       createdAt={comment?.createdAt}
                       id={comment?.id}
+                      owner={owner}
                     />
                   ))}
-                  <div ref={bottomRef} />
                 </InfiniteScroll>
               </div>
             )}

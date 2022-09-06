@@ -86,8 +86,7 @@ const Prayer = ({ address, id, prayer, timestamp, name, image, }) => {
   
 
   const likepost = () => {
-    if (!user) return;
-    if(!isPaidAccount) return;
+    if(!user || !isPaidAccount) return;
     if (hasliked) return
     likePrayer(id, user?.uid);
     setLikes([...likes, {id:user?.uid, uid: user?.uid}]);
@@ -96,7 +95,6 @@ const Prayer = ({ address, id, prayer, timestamp, name, image, }) => {
 
   const sendComment = () => {
     try {
-
       if (!user || !isPaidAccount || !comment) return;
       const commentToSend = comment.replace(/\s+/g, " ").trim();
       if(commentToSend.length < 4 || commentToSend.length > 60) return;
