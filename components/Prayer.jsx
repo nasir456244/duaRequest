@@ -84,7 +84,6 @@ const Prayer = ({ address, id, prayer, timestamp, name, image, }) => {
       setComments([...data?.docs.map(doc => ({ id: doc.id, ...doc.data() }))].reverse());
     } 
   
-
   const likepost = () => {
     if(!user || !isPaidAccount) return;
     if (hasliked) return

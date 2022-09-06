@@ -36,17 +36,17 @@ const Prayers = () => {
     if (firstRender) {
       ref.current = false
       fetchData()
+      // fetchComments()
       return
     }
     getDocs(query(collection(db, "Prayers"),
       orderBy("createdAt", "desc"), limit(1))).then(data => {
         if (data.docs[0]?.id === prayers[0]?.id) return
         setPrayers([...data.docs.map(doc => ({ id: doc.id, ...doc.data() })), ...prayers]);
-        setIsPrayerLoading(false);
         setTotalSize(totalSize + data?.docs.length);
       })
 
-  }, [changeState.prayer]);
+  }, [changeState.prayer, user]);
 
   const fetchData = async () => {
     if(!user || !isPaidAccount) return;
@@ -70,17 +70,12 @@ const Prayers = () => {
       const q = query(...queryParams);
       const data = await getDocs(q);
       setTimeout( () => {
-
         setPrayers([...prayers, ...data?.docs.map(doc => ({ id: doc.id, ...doc.data() }))]);
-        setIsPrayerLoading(false);
         setLastKey(data?.docs?.length && data?.docs[data?.docs?.length - 1]);
         setTotalSize(totalSize + data?.docs.length);
       },500)
     }
   };
-
-  
-
 
 
 
