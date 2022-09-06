@@ -76,12 +76,10 @@ const CommentPage = () => {
           setComments([...comments, ...data.docs.map(doc => ({ id: doc.id, ...doc.data() }))]);
           setCommentsLoding(false);
           setTotalSize(totalSize + data?.docs.length)
-          bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
         })
     }, [changeState.comment]);
 
-    useEffect(() => bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
-    ,[chat])
+    useEffect( () => bottomRef.current?.scrollIntoView({ behavior: 'smooth' }),[chat])
   
   const fetchComments = async (queryId) => {
     if(!user) return;
@@ -89,7 +87,7 @@ const CommentPage = () => {
     const queryParams = [
       collection(db, "Prayers", queryId, "comments"),
       orderBy("createdAt", "desc"),
-      limit(5),
+      limit(7),
     ];
       const q = query(...queryParams);
       const data = await getDocs(q);
@@ -106,7 +104,7 @@ const CommentPage = () => {
     const queryParams = [
       collection(db, "Prayers", queryId, "comments"),
       orderBy("createdAt", "desc"),
-      limit(3),
+      limit(5),
     ];
     if (lastKey) {
       
@@ -140,7 +138,7 @@ const CommentPage = () => {
         name: user?.name,
         uid: user?.uid,
       };
-      addComment(queryId, newComment).then(() => bottomRef.current?.scrollIntoView({ behavior: 'smooth' }))
+      addComment(queryId, newComment)
       setChangeState({ ...changeState, comment: !changeState.comment })
       return;
     } catch (error) {
@@ -213,8 +211,8 @@ const CommentPage = () => {
                       id={comment?.id}
                     />
                   ))}
+                  <div ref={bottomRef} />
                 </InfiniteScroll>
-                <div ref={bottomRef} />
               </div>
             )}
             <form onSubmit={handleSubmit(sendComment)}>
@@ -232,7 +230,7 @@ const CommentPage = () => {
                     disabled={!user}
                     value={chat}
                     className={styles.input}
-                    onChange={(e) =>setChat(e.target?.value) }
+                    onChange={(e) =>setChat(e.target?.value)}
                     minLength={4}
                     maxLength={250}
                     placeholder={`${!user ? "Login to comment" : "Write a comment..."
