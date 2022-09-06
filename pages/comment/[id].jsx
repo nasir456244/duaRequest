@@ -79,6 +79,9 @@ const CommentPage = () => {
           bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
         })
     }, [changeState.comment]);
+
+    useEffect(() => bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
+    ,[chat])
   
   const fetchComments = async (queryId) => {
     if(!user) return;
@@ -86,7 +89,7 @@ const CommentPage = () => {
     const queryParams = [
       collection(db, "Prayers", queryId, "comments"),
       orderBy("createdAt", "desc"),
-      limit(7),
+      limit(5),
     ];
       const q = query(...queryParams);
       const data = await getDocs(q);
@@ -103,7 +106,7 @@ const CommentPage = () => {
     const queryParams = [
       collection(db, "Prayers", queryId, "comments"),
       orderBy("createdAt", "desc"),
-      limit(5),
+      limit(3),
     ];
     if (lastKey) {
       
@@ -210,8 +213,8 @@ const CommentPage = () => {
                       id={comment?.id}
                     />
                   ))}
-                  <div ref={bottomRef} />
                 </InfiniteScroll>
+                <div ref={bottomRef} />
               </div>
             )}
             <form onSubmit={handleSubmit(sendComment)}>
@@ -229,9 +232,7 @@ const CommentPage = () => {
                     disabled={!user}
                     value={chat}
                     className={styles.input}
-                    onChange={(e) => {
-                      bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
-                      setChat(e.target?.value) }}
+                    onChange={(e) =>setChat(e.target?.value) }
                     minLength={4}
                     maxLength={250}
                     placeholder={`${!user ? "Login to comment" : "Write a comment..."

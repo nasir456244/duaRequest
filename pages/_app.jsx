@@ -13,14 +13,16 @@ function MyApp({ Component, pageProps }) {
   const router = useRouter()
 
   useEffect(() => {
-    const handleRouteChange = (url) => {
-      gtag.pageview(url)
-    }
-    router.events.on('routeChangeComplete', handleRouteChange)
-    router.events.on('hashChangeComplete', handleRouteChange)
-    return () => {
-      router.events.off('routeChangeComplete', handleRouteChange)
-      router.events.off('hashChangeComplete', handleRouteChange)
+    if (process.env.NODE_ENV === 'production') {
+      const handleRouteChange = (url) => {
+        gtag.pageview(url)
+      }
+      router.events.on('routeChangeComplete', handleRouteChange)
+      router.events.on('hashChangeComplete', handleRouteChange)
+      return () => {
+        router.events.off('routeChangeComplete', handleRouteChange)
+        router.events.off('hashChangeComplete', handleRouteChange)
+      }
     }
   }, [router.events])
 
