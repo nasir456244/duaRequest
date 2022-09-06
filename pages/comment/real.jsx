@@ -73,15 +73,17 @@ const CommentPage = () => {
       getDocs(query(collection(db, "Prayers", queryId, "comments"),
         orderBy("createdAt", "desc"), limit(1))).then(data => {
           if (data.docs[0]?.id === comments[comments.length - 1]?.id) return
-          setComments([...data.docs.map(doc => ({ id: doc.id, ...doc.data() })), ...comments]);
+          setComments([...comments, ...data.docs.map(doc => ({ id: doc.id, ...doc.data() }))]);
           setCommentsLoding(false);
           setTotalSize(totalSize + data?.docs.length)
         })
-    }, [changeState.comment, user]);
+    }, [changeState.comment]);
 
+    useEffect( () => bottomRef.current?.scrollIntoView({ behavior: 'smooth' }),[chat])
   
   const fetchComments = async (queryId) => {
-    if(!user || !isPaidAccount) return;
+    if(!user) return;
+    if(!isPaidAccount) return;
     const queryParams = [
       collection(db, "Prayers", queryId, "comments"),
       orderBy("createdAt", "desc"),
@@ -89,7 +91,7 @@ const CommentPage = () => {
     ];
       const q = query(...queryParams);
       const data = await getDocs(q);
-      setComments([...data?.docs.map(doc => ({ id: doc.id, ...doc.data() }))]);
+      setComments([...data?.docs.map(doc => ({ id: doc.id, ...doc.data() }))].reverse());
       setCommentsLoding(false);
       setTotalSize(data?.docs.length)
       setLastKey(data?.docs[data?.docs?.length - 1]);
@@ -110,7 +112,7 @@ const CommentPage = () => {
       const q = query(...queryParams);
       const data = await getDocs(q);
       setTimeout( () => {
-        setComments([...comments, ...data?.docs.map(doc => ({ id: doc.id, ...doc.data() }))]);
+        setComments([...data?.docs.map(doc => ({ id: doc.id, ...doc.data() })).reverse(), ...comments]);
         setCommentsLoding(false);
         setTotalSize(totalSize + data?.docs.length)
         setLastKey(data?.docs?.length && data?.docs[data?.docs?.length - 1]);
@@ -191,7 +193,7 @@ const CommentPage = () => {
               <div
                 className={styles.body} >
                 <InfiniteScroll
-                  isReverse={false}
+                  isReverse={true}
                   loadMore={fetchMoreData}
                   hasMore={comments?.length <= totalSize}
                   useWindow={false}
