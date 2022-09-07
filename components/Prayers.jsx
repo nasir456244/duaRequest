@@ -36,7 +36,7 @@ const Prayers = () => {
     if (firstRender) {
       ref.current = false
       fetchData()
-      // fetchComments()
+      setIsPrayerLoading(false);
       return
     }
     getDocs(query(collection(db, "Prayers"),
@@ -53,7 +53,6 @@ const Prayers = () => {
     const data = await getDocs(query(collection(db, "Prayers"),
       orderBy("createdAt", "desc"), limit(5)))
     setPrayers(data.docs.map(doc => ({ id: doc.id, ...doc.data() })));
-    setIsPrayerLoading(false);
     setLastKey(data?.docs[data?.docs?.length - 1]);
     setTotalSize(data?.docs.length);
   }
