@@ -23,7 +23,7 @@ const styles = {
   listContainer: `hover:shadow-2xl my-[6px] max-w-full flex flex-col bg-[#ffffff] rounded-2xl break-words overflow-hidden max-h-full`,
 };
 
-const Prayer = ({ address, id, prayer, timestamp, name, image, }) => {
+const Prayer = ({ address, id, prayer, timestamp, name, image }) => {
   const [likes, setLikes] = useState([]);
   const [hasliked, setHasLiked] = useState(false);
   const [comment, setComment] = useState("");
@@ -122,17 +122,17 @@ const Prayer = ({ address, id, prayer, timestamp, name, image, }) => {
     <div className={styles.listContainer}>
       {user && isPaidAccount &&
         <>
-          <div className="flex justify-center md:p-4 sm:p-9 sm:py-4  overflow-hidden ">
-            <div className="relative sm:right-2 w-full h-full rounded-[50%]">
+          <div className="flex justify-start px-3 py-2 gap-3 max-w-full overflow-hidden">
+            <div className="rounded-[50%] h-max w-max">
               <Image layout="fixed"  height={42} alt='profile' width={42} className="flex rounded-[50%]" src={image} />
             </div>
             
-            <div className="flex flex-col w-full ml-1">
+            <div className="flex flex-col w-full overflow-hidden ">
               <div className="flex justify-between items-center ">
                 <p className="font-semibold text-[14px] text-[#000000] not-italic ">{name}</p>
                 <TimeAgo datetime={timestamp} className="font-medium text-xs pr-[4px]" />
               </div>
-              <p className="font-medium text-[#8C8C8C] pr-[4px] " >{prayer}</p>
+              <p className="font-medium text-[#8C8C8C] pr-[4px]  overflow-hidden w-full " >{prayer}</p>
               <div className="flex mt-4 rounded-lg ">
                 <div className="flex overflow-hidden justify-start px-2 items-center h-12  ">
                   {user && hasliked ? (
@@ -216,7 +216,6 @@ const Prayer = ({ address, id, prayer, timestamp, name, image, }) => {
           }
 
           <div className=" bg-opacity-100 bg-[#f1f1f1] flex flex-col max-w-full max-h-full">
-
           {comments?.slice(-3)?.map((comment) => (
             <div
               key={comment?.id}

@@ -40,12 +40,12 @@ const MyPrayers = ({ address, name, createdAt, image, prayer, id, deleteConfirma
             )}
 
             <div className={styles.listContainer}>
-              <div className="flex h-full w-full justify-center py-4 px-3  overflow-hidden ">
-              <div className="rounded-[50%] h-full w-max">
+              <div className="flex justify-start px-3 py-2 gap-3 max-w-full overflow-hidden ">
+              <div className="rounded-[50%] h-max w-max">
               <Image layout="fixed"  height={42} alt='profile' width={42} className="flex rounded-[50%]" src={image} />
             </div>
 
-                <div className="flex flex-col max-w-[460px] ml-2 ">
+                <div className="flex flex-col w-full overflow-hidden  ">
                   <div className="flex justify-between items-center ">
                     <p className="font-semibold text-[14px] text-[#000000] not-italic ">
                       {name}
