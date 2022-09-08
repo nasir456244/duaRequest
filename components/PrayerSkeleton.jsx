@@ -2,7 +2,7 @@ import React from 'react'
 
 
 const styles = {
-    loadingMainContainer: `grid grid-cols-1 mt-[34px] gap-2 w-[700px] animate-pulses`,
+    loadingMainContainer: `grid grid-cols-1 mt-[34px] gap-2 w-[620px] animate-pulses`,
     loadingListContainer: `flex flex-col p-[20px] rounded-2xl break-all overflow-hidden max-h-full
     max-w-full bg-white`,
 }

@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useRef, useContext } from "react";
-import PrayerSkeleton from "./PrayerSkeleton";
 import { db } from "../lib/firebaseConfig";
 import {
   collection,
@@ -23,7 +22,6 @@ const Prayers = () => {
   const [totalSize, setTotalSize] = useState(0);
   const [prayers, setPrayers] = useState([]);
   const [lastKey, setLastKey] = useState("");
-  const [isPrayerLoading, setIsPrayerLoading] = useState(true);
   const ref = useRef(true)
   const { changeState } = useStateValue()
   const { user } = useContext(PrayerRequestContext)
@@ -36,7 +34,6 @@ const Prayers = () => {
     if (firstRender) {
       ref.current = false
       fetchData()
-      setIsPrayerLoading(false);
       return
     }
     getDocs(query(collection(db, "Prayers"),
@@ -56,6 +53,8 @@ const Prayers = () => {
     setLastKey(data?.docs[data?.docs?.length - 1]);
     setTotalSize(data?.docs.length);
   }
+
+  
 
   const fetchMoreData = async () => {
     if(!user || !isPaidAccount) return;
@@ -81,13 +80,7 @@ const Prayers = () => {
     return (
       <div className={styles.container}>
         {user && isPaidAccount &&
-          <>
-        
-            {isPrayerLoading ? (
-              <>
-                <PrayerSkeleton />
-              </>
-            ) : (
+
               <div className={styles.listMainContainer}>
                 <InfiniteScroll
                   loadMore={fetchMoreData}
@@ -106,9 +99,7 @@ const Prayers = () => {
                     />
                   ))}
                 </InfiniteScroll>
-              </div>
-            )}
-          </>
+              </div>        
         }    
       </div>
     );
