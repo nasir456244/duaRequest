@@ -19,6 +19,7 @@ import { useForm } from "react-hook-form";
 import Image from "next/image";
 import useStateValue from "hooks/useStateValue";
 import PrayerSkeleton from "./PrayerSkeleton";
+import _, { delay } from "lodash";
 
 
 const styles = {
@@ -39,6 +40,7 @@ const Prayer = ({ address, id, prayer, timestamp, name, image }) => {
   const [isPrayerLoading, setIsPrayerLoading] = useState(true);
 
 
+
     useEffect(
       () =>
         {user && isPaidAccount && setHasLiked(
@@ -54,25 +56,25 @@ const Prayer = ({ address, id, prayer, timestamp, name, image }) => {
         setLikes([...data.docs.map(doc => ({ id: doc.id, ...doc.data() }))]);
       }); return;}
     }
-   
+
+
     useEffect(() => {
       if(!user || !isPaidAccount) return;
       const firstRender = ref.current;
       if(firstRender) {
-        setIsPrayerLoading(true)
         ref.current = false;
         showLikes();
         fetchComments();
-        setIsPrayerLoading(false);
+        delay(() => setIsPrayerLoading(false),500);
         return;
       };
       getDocs(query(collection(db, "Prayers", id, "comments"),
         orderBy("createdAt", "desc"), limit(1))).then(data => {
           if (data?.docs[0]?.id === comments[comments?.length - 1]?.id) return;
           setComments([...comments, ...data.docs.map(doc => ({ id: doc.id, ...doc.data() }))]);
+          return;
       })
     },[changeState.comment])
-
 
     const fetchComments = async () => {
       if(!user || !isPaidAccount) return;
@@ -84,6 +86,7 @@ const Prayer = ({ address, id, prayer, timestamp, name, image }) => {
       const q = query(...queryParams);
       const data = await getDocs(q)
       setComments([...data?.docs.map(doc => ({ id: doc.id, ...doc.data() }))].reverse());
+      return;
     } 
   
   const likepost = () => {

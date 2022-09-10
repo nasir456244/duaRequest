@@ -52,16 +52,6 @@ const Skeleton = () => {
                         </div>
                     </div>
                 </div>
-                <div className={styles.loadingListContainer}>
-                    <div className='flex flex-col w-full h-full'>
-                        <p className='w-[220px] mr-[40px] h-[30px] bg-gray-300 rounded-2xl'></p>
-                        <p className='max-w-full rounded-2xl h-[130px] mt-[10px] bg-gray-300'></p>
-                        <div className='w-full flex flex-row justify-end'>
-
-                        <p className='w-[220px] mt-[10px] ml-[85px] text-right h-[30px] bg-gray-300 rounded-2xl'></p>
-                        </div>
-                    </div>
-                </div>
     </div>
   )
 }
