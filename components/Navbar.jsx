@@ -6,6 +6,7 @@ import { useRouter } from "next/router";
 import { PrayerRequestContext } from "../context/PrayerRequest";
 import Image from "next/image";
 import Icon from '@/public/icon.png';
+import { MdAccountCircle } from "react-icons/md";
 
 const styles = {
   container: `w-full h-[100px] sm:justify-between flex justify-around items-center p-[12px] overflow-hidden`,
@@ -58,8 +59,8 @@ const Navbar = () => {
         }
       </div>
 
-      {user?.image &&
         <div className="flex items-center justify-center sm:hidden w-[100px] text-[#fff]">
+      {user?.image ?
 
           <Image 
             alt="profile"
@@ -70,16 +71,11 @@ const Navbar = () => {
             width={50}
 
           />
+          :
+          <MdAccountCircle className="cursor-pointer w-[45px] h-[45px]" onClick={() => router.push("/login")} />
+        }
         </div>
-      }
-      {!user &&
-        <button
-          onClick={() => router.push("/login")}
-          className="text-[#112EA0] bg-[#FFFFFF] relative left-7  w-[110px] py-2 px-5 rounded-[7px]"
-        >
-          Login
-        </button>
-      }
+      
 
       <div className={styles.menuContainer}>
         <div className="flex justify-end  w-[100px]  ">

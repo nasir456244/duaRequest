@@ -19,7 +19,7 @@ import { useForm } from "react-hook-form";
 import Image from "next/image";
 import useStateValue from "hooks/useStateValue";
 import PrayerSkeleton from "./PrayerSkeleton";
-import _, { delay } from "lodash";
+import _ from "lodash";
 
 
 const styles = {
@@ -65,7 +65,7 @@ const Prayer = ({ address, id, prayer, timestamp, name, image }) => {
         ref.current = false;
         showLikes();
         fetchComments();
-        delay(() => setIsPrayerLoading(false),500);
+        setIsPrayerLoading(false);
         return;
       };
       getDocs(query(collection(db, "Prayers", id, "comments"),
@@ -88,7 +88,7 @@ const Prayer = ({ address, id, prayer, timestamp, name, image }) => {
       setComments([...data?.docs.map(doc => ({ id: doc.id, ...doc.data() }))].reverse());
       return;
     } 
-  
+
   const likepost = () => {
     if(!user || !isPaidAccount) return;
     if (hasliked) return
@@ -96,6 +96,7 @@ const Prayer = ({ address, id, prayer, timestamp, name, image }) => {
     setLikes([...likes, {id:user?.uid, uid: user?.uid}]);
     return;
   };
+
 
   const sendComment = () => {
     try {
