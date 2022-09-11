@@ -49,9 +49,9 @@ const Prayers = () => {
     if(!user || !isPaidAccount) return;
     const data = await getDocs(query(collection(db, "Prayers"),
       orderBy("createdAt", "desc"), limit(5)))
-    setPrayers(data.docs.map(doc => ({ id: doc.id, ...doc.data() })));
+    setPrayers(data?.docs.map(doc => ({ id: doc?.id, ...doc?.data() })));
     setLastKey(data?.docs[data?.docs?.length - 1]);
-    setTotalSize(data?.docs.length);
+    setTotalSize(data?.docs?.length);
   }
 
   

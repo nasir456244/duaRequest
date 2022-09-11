@@ -2,7 +2,7 @@ import Link from 'next/link'
 import React from 'react'
 
 const styles = {
-  container: `text-[#fff] relative bottom-[2px] font-medium overflow-hidden w-full flex justify-center items-center gap-4`,
+  container: `text-[#fff] max-h-screen relative bottom-[2px] font-medium overflow-hidden w-full flex justify-center items-center gap-4`,
 }
 
 const Footer = () => {
