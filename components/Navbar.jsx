@@ -98,9 +98,9 @@ const Navbar = () => {
             className="text-white cursor-pointer transition-all duration-500 hover:scale-110 flex absolute left-[10px] top-[10px]"
           />
           <div className={styles.OpenMenuContainer}>
-            {user && 
 
-              <div className="flex items-center justify-center md:hidden relative bottom-[50px] w-[100px] text-[#fff]">
+            <div className="flex items-center justify-center md:hidden relative bottom-[50px] w-[100px] text-[#fff]">
+              {user ?
                 <Image 
                   alt="profile"
                   onClick={() => router.push('/dashboard')}
@@ -109,8 +109,10 @@ const Navbar = () => {
                   height={50}
                   width={50}
                 />
-              </div>   
+              :
+              <MdAccountCircle className="cursor-pointer w-[45px] h-[45px]" onClick={() => router.push("/login")} />
               }
+            </div>   
             <li className={styles.listItem}>
               <Link href="/">
                 <a className={styles.item}>Home</a>
