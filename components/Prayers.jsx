@@ -12,6 +12,7 @@ import Prayer from "./Prayer";
 import InfiniteScroll from "react-infinite-scroller";
 import useStateValue from "hooks/useStateValue";
 import { PrayerRequestContext } from "@/context/PrayerRequest";
+import PrayerSkeleton from './PrayerSkeleton';
 
 const styles = {
   container: `w-full flex justify-center p-[12px] text-[srgb(192, 51, 51)] flex overflow-x-hidden`,
@@ -26,15 +27,16 @@ const Prayers = () => {
   const { changeState } = useStateValue()
   const { user } = useContext(PrayerRequestContext)
   const isPaidAccount = user?.stripeRole !== "free"
-
+  const [isPrayerLoading, setIsPrayerLoading] = useState(true);
   
   useEffect(() => {
     if(!user || !isPaidAccount) return;
     const firstRender = ref.current
     if (firstRender) {
       ref.current = false
-      fetchData()
-      return
+      fetchData();
+      setIsPrayerLoading(false);
+      return;
     }
     getDocs(query(collection(db, "Prayers"),
       orderBy("createdAt", "desc"), limit(1))).then(data => {
@@ -80,7 +82,11 @@ const Prayers = () => {
     return (
       <div className={styles.container}>
         {user && isPaidAccount &&
-
+          <>
+          { isPrayerLoading ?
+              <PrayerSkeleton />
+              :
+            
               <div className={styles.listMainContainer}>
                 <InfiniteScroll
                   loadMore={fetchMoreData}
@@ -99,7 +105,9 @@ const Prayers = () => {
                     />
                   ))}
                 </InfiniteScroll>
-              </div>        
+              </div>
+          }
+        </>        
         }    
       </div>
     );

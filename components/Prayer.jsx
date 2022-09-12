@@ -18,8 +18,7 @@ import { addComment, likePrayer } from "@/lib/db";
 import { useForm } from "react-hook-form";
 import Image from "next/image";
 import useStateValue from "hooks/useStateValue";
-import PrayerSkeleton from "./PrayerSkeleton";
-import _ from "lodash";
+import _, { delay } from "lodash";
 
 
 const styles = {
@@ -37,7 +36,7 @@ const Prayer = ({ address, id, prayer, timestamp, name, image }) => {
   const isPaidAccount = user?.stripeRole !== "free"
   const ref = useRef(true)
   const { changeState, setChangeState } = useStateValue()
-  const [isPrayerLoading, setIsPrayerLoading] = useState(true);
+  const [isCommentLoading, setIsCommentLoading] = useState(true);
 
 
 
@@ -65,7 +64,7 @@ const Prayer = ({ address, id, prayer, timestamp, name, image }) => {
         ref.current = false;
         showLikes();
         fetchComments();
-        setIsPrayerLoading(false);
+        setIsCommentLoading(false);
         return;
       };
       getDocs(query(collection(db, "Prayers", id, "comments"),
@@ -125,10 +124,6 @@ const Prayer = ({ address, id, prayer, timestamp, name, image }) => {
   };
 
   return (
-    <>
-      {isPrayerLoading ?
-        <PrayerSkeleton />
-        :
         <div className={styles.listContainer}>
           
           
@@ -214,6 +209,7 @@ const Prayer = ({ address, id, prayer, timestamp, name, image }) => {
                   {errors?.comment && <span className="font-medium w-full flex items-center justify-center relative top-2 text-[#f00]">This is required</span>}
                 </div>
               </div>
+              
               {likes?.length > 0 ? 
                 <p className="text-[13px] font-semibold pl-5 pb-3 pt-3 bg-opacity-100 bg-[#f1f1f1] w-full">
                   {likes?.length > 0 &&
@@ -227,6 +223,16 @@ const Prayer = ({ address, id, prayer, timestamp, name, image }) => {
                 </p>
               }
 
+              {isCommentLoading ? 
+              <div className=" bg-opacity-100 bg-[#f1f1f1] flex flex items-center justify-center max-w-full max-h-full">
+                <div className="w-full flex items-center justify-around gap-5 h-[100px] px-5 animate-pulse">
+                  <div className="w-[50px] h-[50px] bg-gray-300 rounded-[50%]" />
+                  <div className="w-[60%] bg-gray-300 h-[50px] rounded-[10px]" />
+                  <div className="w-[100px] h-[30px] bg-gray-300 rounded-[10px]"/>
+                </div>
+                
+              </div>
+              :
               <div className=" bg-opacity-100 bg-[#f1f1f1] flex flex-col max-w-full max-h-full">
               {comments?.slice(-3)?.map((comment) => (
                 <div
@@ -255,12 +261,10 @@ const Prayer = ({ address, id, prayer, timestamp, name, image }) => {
                   </div>
                 </div>
               ))}
-              </div>
+              </div>}
             </>
           }
         </div>
-      }
-    </>  
   );
 };
 
