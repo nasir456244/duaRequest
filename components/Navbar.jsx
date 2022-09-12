@@ -99,7 +99,7 @@ const Navbar = () => {
             onClick={() => {
               isMenuOpen && setIsMenuOpen(false);
             }}
-            className='mt-10 text-white cursor-pointer transition-all duration-500 hover:scale-110 flex absolute left-[10px] top-[10px]'
+            className='mt-15 text-white cursor-pointer transition-all duration-500 hover:scale-110 flex absolute left-[10px] top-[10px]'
           />
           <div className={styles.OpenMenuContainer}>
 
