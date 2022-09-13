@@ -9,7 +9,7 @@ import Icon from '@/public/icon.png';
 import { MdAccountCircle } from "react-icons/md";
 
 const styles = {
-  container: `w-full mt-10 h-[100px] sm:justify-between flex justify-around items-center p-[12px] overflow-hidden`,
+  container: `w-full h-[100px] sm:justify-between flex justify-around items-center p-[12px] overflow-hidden`,
   logo: `lg:text-[1.8rem] md:text-[1.4rem] text-[#fff] flex items-center justify-center `,
   item: `sm:border-b-2 sm:border-[#0ABEEE]`,
   list: `md:flex hidden items-center justify-center xs:fixed xs:bottom-[20px] lg:static`,
@@ -27,10 +27,6 @@ const Navbar = () => {
   const { user } = useContext(PrayerRequestContext)
   const isPaidAccount = user?.stripeRole !== "free"
   return (
-    <>
-    <div className={styles.trial}>
-        <p>Free trial offer for the first 150 users.</p>
-    </div>
     <div className={styles.container}>
       <div className={styles.logo}>
         <div className="flex items-center justify-center">
@@ -99,7 +95,7 @@ const Navbar = () => {
             onClick={() => {
               isMenuOpen && setIsMenuOpen(false);
             }}
-            className='mt-[55px] text-white cursor-pointer transition-all duration-500 hover:scale-110 flex absolute left-[10px] top-[10px]'
+            className='text-white cursor-pointer transition-all duration-500 hover:scale-110 flex absolute left-[10px] top-[10px]'
           />
           <div className={styles.OpenMenuContainer}>
 
@@ -141,7 +137,6 @@ const Navbar = () => {
         </div>
       )}
     </div>
-    </>
   );
 };
 
