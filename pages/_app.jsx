@@ -49,6 +49,13 @@ function MyApp({ Component, pageProps }) {
             });`,
         }}
       />
+      <Script
+        id="Adsense-id"
+        data-ad-client={process.env.NEXT_PUBLIC_GADSENSE_ID}
+        async={true}
+        strategy="beforeInteractive"
+        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"
+      />
       <PrayerRequestProvider>
         <StateProvider>
           <DefaultSeo {...SEO} />

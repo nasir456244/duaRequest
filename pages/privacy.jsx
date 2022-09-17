@@ -70,6 +70,10 @@ const privacy = () => {
                 
                 <p><b>Research and development </b>We may use your personal information to administer surveys and other market research and for other research and development purposes, including to analyze and improve the Services and our business. As part of these activities, we may create anonymous data (including aggregated and/or de-identified data) from the personal information we collect. We convert personal information we collect into anonymous data by removing information that makes the data personally identifiable to you. We may use this anonymous data and share it with third parties for our lawful business purposes, including to analyzing and improving the Services and promoting our business.</p>
                 
+                
+                <p><b>Marketing</b>. We may send you marketing communications via email and other channels as permitted by law. We also work with third-party advertising partners who use cookies and similar technologies to help us advertise our services. These advertisements are delivered by our advertising partners and may be targeted based on your geographic area and activity on the Services and other online services. </p>
+
+
                 <p><b>Compliance and operations</b>. We may use your personal information to:</p>
                 
                 <li className='ml-4 '>operate our business;</li>
@@ -84,6 +88,10 @@ const privacy = () => {
                 
                 <p>DuaRequest will disclose your personal information, without notice, only if required to do so by law or in the good faith belief that such action is necessary to: (a) Conform to the edicts of the law or comply with the legal process served on DuaRequest or the site; (b) protect and defend the rights or property of DuaRequest; And, (c) act under exigent circumstances to protect the personal safety of users of our website, or the public.</p>
                 
+                <h2 className='text-[19px] mb-4'>OUR ADVERTISING PARTNERS</h2>
+
+                <p>Some of the advertisers on our site may use cookies and web beacons. Our advertising partners are listed below. Each of our advertising partners has their own Privacy Policy for their policies on user data. </p>
+
                 <h2 className='text-[19px] mb-4'>INFORMATION WE PROCESS BECAUSE WE HAVE A CONTRACTUAL OBLIGATION WITH YOU</h2>
                 
                 <p>When you use our website, you agree to our terms and conditions, a contract is formed between you and us.</p>
@@ -114,6 +122,10 @@ const privacy = () => {
                 
                 <p>For more general information on cookies, please read `&quot;`What Are Cookies`&quot;` from Cookie Consent.</p>
                 
+                <h2 className='text-[19px] mb-4'>THIRD PARTY PRIVACY POLICIES</h2>
+
+                <p>PrayerRequest Privacy Policy does not apply to other advertisers or websites. Thus, we are advising you to consult the respective Privacy Policies of these third-party ad servers for more detailed information. It may include their practices and instructions about how to opt-out of certain options.</p>
+
                 <h2 className='text-[19px] mb-4'>CHILDREN`&apos;`S INFORMATION</h2>
                 
                 <p>Another part of our priority is adding protection for children while using the internet. We encourage parents and guardians to observe, participate in, and/or monitor and guide their online activity.</p>
