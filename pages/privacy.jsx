@@ -17,7 +17,7 @@ const privacy = () => {
 
                 <h1 className='text-[26px] mb-2'>PRIVACY POLICY</h1>
                 
-                <h3 className='text-[16px] mb-5'>Last updated 4 September, 2022</h3>
+                <h3 className='text-[16px] mb-5'>Last updated 17 September, 2022</h3>
                 
                 <p>
                 This Privacy Policy describes how your personal information is collected, used, and shared when you visit https://duarequest.app (the “Site”).  
