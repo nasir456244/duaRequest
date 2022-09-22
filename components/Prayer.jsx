@@ -18,7 +18,7 @@ import { addComment, likePrayer } from "@/lib/db";
 import { useForm } from "react-hook-form";
 import Image from "next/image";
 import useStateValue from "hooks/useStateValue";
-import _, { delay } from "lodash";
+import _ from "lodash";
 
 
 const styles = {
@@ -51,9 +51,11 @@ const Prayer = ({ address, id, prayer, timestamp, name, image }) => {
 
 
     const showLikes = async () => {
-      {user && isPaidAccount && getDocs(collection(db, "Prayers", id, "likes")).then(data => {
+      if(!user || !isPaidAccount) return;
+      getDocs(collection(db, "Prayers", id, "likes")).then(data => {
         setLikes([...data.docs.map(doc => ({ id: doc.id, ...doc.data() }))]);
-      }); return;}
+      });
+      return;
     }
 
 
@@ -64,7 +66,6 @@ const Prayer = ({ address, id, prayer, timestamp, name, image }) => {
         ref.current = false;
         showLikes();
         fetchComments();
-        setIsCommentLoading(false);
         return;
       };
       getDocs(query(collection(db, "Prayers", id, "comments"),
@@ -75,6 +76,7 @@ const Prayer = ({ address, id, prayer, timestamp, name, image }) => {
       })
     },[changeState.comment])
 
+
     const fetchComments = async () => {
       if(!user || !isPaidAccount) return;
       const queryParams = [
@@ -83,19 +85,20 @@ const Prayer = ({ address, id, prayer, timestamp, name, image }) => {
         limit(3),
       ]
       const q = query(...queryParams);
-      const data = await getDocs(q)
+      setIsCommentLoading(false);
+      const data = await getDocs(q);
       setComments([...data?.docs.map(doc => ({ id: doc.id, ...doc.data() }))].reverse());
       return;
     } 
 
+
   const likepost = () => {
     if(!user || !isPaidAccount) return;
-    if (hasliked) return
+    if (hasliked) return;
     likePrayer(id, user?.uid);
     setLikes([...likes, {id:user?.uid, uid: user?.uid}]);
     return;
   };
-
 
   const sendComment = () => {
     try {
@@ -116,7 +119,6 @@ const Prayer = ({ address, id, prayer, timestamp, name, image }) => {
       setChangeState({ ...changeState, comment: !changeState.comment });
       return;
     } catch (error) {
-      console.log(error);
       toast.error(error.message, {
         style: { background: "#04111d", color: "#fff" },
       });
@@ -125,8 +127,6 @@ const Prayer = ({ address, id, prayer, timestamp, name, image }) => {
 
   return (
         <div className={styles.listContainer}>
-          
-          
           {user && isPaidAccount &&
             <>
               <div className="flex justify-start px-3 py-2 gap-3 max-w-full overflow-hidden">
@@ -206,7 +206,7 @@ const Prayer = ({ address, id, prayer, timestamp, name, image }) => {
                         </button>
                     </form>
                   </div>
-                  {errors?.comment && <span className="font-medium w-full flex items-center justify-center relative top-2 text-[#f00]">This is required</span>}
+                  {errors?.comment && <span className="font-medium w-full flex items-center justify-center relative top-2 mb-2 text-[#f00]">This is required</span>}
                 </div>
               </div>
               
@@ -229,8 +229,7 @@ const Prayer = ({ address, id, prayer, timestamp, name, image }) => {
                   <div className="w-[50px] h-[50px] bg-gray-300 rounded-[50%]" />
                   <div className="w-[60%] bg-gray-300 h-[50px] rounded-[10px]" />
                   <div className="w-[100px] h-[30px] bg-gray-300 rounded-[10px]"/>
-                </div>
-                
+                </div> 
               </div>
               :
               <div className=" bg-opacity-100 bg-[#f1f1f1] flex flex-col max-w-full max-h-full">

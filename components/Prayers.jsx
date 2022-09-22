@@ -13,6 +13,7 @@ import InfiniteScroll from "react-infinite-scroller";
 import useStateValue from "hooks/useStateValue";
 import { PrayerRequestContext } from "@/context/PrayerRequest";
 import PrayerSkeleton from './PrayerSkeleton';
+import { delay } from "lodash";
 
 const styles = {
   container: `w-full flex justify-center p-[12px] text-[srgb(192, 51, 51)] flex overflow-x-hidden`,
@@ -35,7 +36,6 @@ const Prayers = () => {
     if (firstRender) {
       ref.current = false
       fetchData();
-      setIsPrayerLoading(false);
       return;
     }
     getDocs(query(collection(db, "Prayers"),
@@ -54,6 +54,7 @@ const Prayers = () => {
     setPrayers(data?.docs.map(doc => ({ id: doc?.id, ...doc?.data() })));
     setLastKey(data?.docs[data?.docs?.length - 1]);
     setTotalSize(data?.docs?.length);
+    delay(() => setIsPrayerLoading(false),160);
   }
 
   
