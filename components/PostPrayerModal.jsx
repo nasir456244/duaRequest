@@ -32,7 +32,7 @@ const PostPrayerModal = () => {
   const postPrayer = () => {
     try {
       if (!user || !isPaidAccount || !prayer) return;
-      const check = parseInt(localStorage.getItem("others"));
+      const check = parseInt(localStorage.getItem(user?.uid));
       if(check) return;
       const prayerToPost = prayer.replace(/\s+/g, " ").trim();
       if(prayerToPost.length < 50 || prayerToPost.length > 500) return;
@@ -49,7 +49,7 @@ const PostPrayerModal = () => {
       };
       createPrayer(newPrayer);
       setChangeState({ ...changeState, prayer: !changeState.prayer });
-      localStorage.setItem("others", "1");
+      localStorage.setItem(user?.uid, "1");
       return;
     } catch (error) {
       console.log(error);
@@ -60,7 +60,7 @@ const PostPrayerModal = () => {
   };
 
   const openModal = () => {
-    const check = parseInt(localStorage.getItem("others"));
+    const check = parseInt(localStorage.getItem(user?.uid));
     if(!check) {
       setModalOpen(true);
       return;

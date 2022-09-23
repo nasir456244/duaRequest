@@ -97,9 +97,9 @@ const Prayer = ({ address, id, prayer, timestamp, name, image }) => {
     if (hasliked) return;
     likePrayer(id, user?.uid);
     setLikes([...likes, {id:user?.uid, uid: user?.uid}]);
-    const check = parseInt(localStorage.getItem("others"));
-    if(check && check < 6) localStorage.setItem("others", ++check);
-    if(check && check == 6) localStorage.removeItem("others");
+    const check = parseInt(localStorage.getItem(user?.uid));
+    if(check && check < 6) localStorage.setItem(user?.uid, ++check);
+    if(check && check == 6) localStorage.removeItem(user?.uid);
     return;
   };
 
