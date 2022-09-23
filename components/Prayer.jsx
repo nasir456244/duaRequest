@@ -97,6 +97,9 @@ const Prayer = ({ address, id, prayer, timestamp, name, image }) => {
     if (hasliked) return;
     likePrayer(id, user?.uid);
     setLikes([...likes, {id:user?.uid, uid: user?.uid}]);
+    const check = parseInt(localStorage.getItem("others"));
+    if(check && check < 6) localStorage.setItem("others", ++check);
+    if(check && check == 6) localStorage.removeItem("others");
     return;
   };
 
@@ -124,6 +127,7 @@ const Prayer = ({ address, id, prayer, timestamp, name, image }) => {
       });
     }
   };
+
 
   return (
         <div className={styles.listContainer}>

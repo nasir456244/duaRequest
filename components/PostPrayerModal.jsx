@@ -28,11 +28,12 @@ const PostPrayerModal = () => {
   const { changeState, setChangeState } = useStateValue()
   const isPaidAccount = user?.stripeRole !== "free"
 
-
   //Post Prayer
   const postPrayer = () => {
     try {
       if (!user || !isPaidAccount || !prayer) return;
+      const check = parseInt(localStorage.getItem("others"));
+      if(check) return;
       const prayerToPost = prayer.replace(/\s+/g, " ").trim();
       if(prayerToPost.length < 50 || prayerToPost.length > 500) return;
       setPrayer("");
@@ -47,7 +48,8 @@ const PostPrayerModal = () => {
         uid: user?.uid,
       };
       createPrayer(newPrayer);
-      setChangeState({ ...changeState, prayer: !changeState.prayer })
+      setChangeState({ ...changeState, prayer: !changeState.prayer });
+      localStorage.setItem("others", "1");
       return;
     } catch (error) {
       console.log(error);
@@ -57,15 +59,25 @@ const PostPrayerModal = () => {
     }
   };
 
+  const openModal = () => {
+    const check = parseInt(localStorage.getItem("others"));
+    if(!check) {
+      setModalOpen(true);
+      return;
+    }
+    toast(`You need to prayer for others ${check} / 5 times before you can request prayer.`, {
+      style: { background: "#04111d", color: "#fff" },
+      duration: 8000,
+    });
+    return;
+  }
   return (
     <>
       {user && isPaidAccount && (
         <div className={`${modalOpen ? styles.empty : styles.show}`}>
           <button
             className="fixed bottom-[60px] right-[60px] z-20 text-[#000] transition-all duration-500 hover:text-white hover:scale-125"
-            onClick={() => {
-              setModalOpen(true);
-            }}
+            onClick={openModal}
           >
             <FaRegEdit size={28} />
           </button>
