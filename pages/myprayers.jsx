@@ -13,7 +13,7 @@ import MyPrayers from "../components/MyPrayers";
 import PrayerSkeleton from "../components/PrayerSkeleton";
 import { PrayerRequestContext } from "../context/PrayerRequest";
 import InfiniteScroll from "react-infinite-scroller";
-import _ from "lodash";
+import _, { delay } from "lodash";
 import { DeletePrayer } from "@/lib/db";
 import Footer from "@/components/Footer";
 import Link from "next/link";
@@ -76,7 +76,7 @@ const MyPrayer = () => {
         const sortedDocs = _.filter(prayerDocs, (doc) => doc.uid === user.uid)
         setPrayers(sortedDocs);
         setLastKey(data?.docs[data?.docs?.length - 1]);
-        setIsPrayerLoading(false);
+        delay(() => setIsPrayerLoading(false),160);
         setTotalSize(sortedDocs.length)
       };
       if (user?.uid && isPaidAccount) {

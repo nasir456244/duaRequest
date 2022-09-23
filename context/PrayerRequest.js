@@ -104,7 +104,6 @@ export const PrayerRequestProvider = ({ children }) => {
 
   useEffect(() => {
     const unsubscribe = auth.onIdTokenChanged(handleUser)
-
     return () => unsubscribe();
   }, [])
 
