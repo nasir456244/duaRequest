@@ -65,7 +65,7 @@ const PostPrayerModal = () => {
       setModalOpen(true);
       return;
     }
-    toast(`You need to prayer for others ${check} / 5 times before you can request prayer.`, {
+    toast(`You need to prayer for others ${check} / 6 times before you can request prayer.`, {
       style: { background: "#04111d", color: "#fff" },
       duration: 8000,
     });
