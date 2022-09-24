@@ -98,8 +98,8 @@ const Prayer = ({ address, id, prayer, timestamp, name, image }) => {
     likePrayer(id, user?.uid);
     setLikes([...likes, {id:user?.uid, uid: user?.uid}]);
     const check = parseInt(localStorage.getItem(user?.uid));
-    if(check && check < 6) localStorage.setItem(user?.uid, ++check);
-    if(check && check == 6) localStorage.removeItem(user?.uid);
+    if(check && check <= 5) localStorage.setItem(user?.uid, check - 1);
+    if(check && check == 1) localStorage.removeItem(user?.uid);
     return;
   };
 

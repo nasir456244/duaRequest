@@ -49,7 +49,7 @@ const PostPrayerModal = () => {
       };
       createPrayer(newPrayer);
       setChangeState({ ...changeState, prayer: !changeState.prayer });
-      localStorage.setItem(user?.uid, "1");
+      localStorage.setItem(user?.uid, "5");
       return;
     } catch (error) {
       console.log(error);
@@ -65,7 +65,7 @@ const PostPrayerModal = () => {
       setModalOpen(true);
       return;
     }
-    toast(`You need to prayer for others ${check} / 6 times before you can request prayer.`, {
+    toast(`You need to prayer for others ${check} times before you can request prayer.`, {
       style: { background: "#04111d", color: "#fff" },
       duration: 8000,
     });
