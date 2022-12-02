@@ -38,18 +38,19 @@ export const PrayerRequestProvider = ({ children }) => {
     });
     signInWithPopup(auth, googleProvider)
       .then(response => {
-        toast.dismiss(loading)
         handleUser(response.user)
         toast.success('success', {
           style: { background: "#04111d", color: "#fff" },
         })        
-        router.push('/dashboard')
+        router.push('/community')
       })
       .catch(error => {
-        toast.dismiss(loading)
         toast.error(error.message, {
           style: { background: "#04111d", color: "#fff" },
         });
+      })
+      .finally(() => {
+        toast.dismiss(loading)
       })
   }
 
@@ -60,7 +61,6 @@ export const PrayerRequestProvider = ({ children }) => {
     });
     signInWithPopup(auth, facebookProvider)
       .then(response => {
-        toast.dismiss(loading)
         handleUser(response.user)
         toast.success('success', {
           style: { background: "#04111d", color: "#fff" },
@@ -68,10 +68,12 @@ export const PrayerRequestProvider = ({ children }) => {
         router.push('/dashboard')
       })
       .catch(error => {
-        toast.dismiss(loading)
         toast.error(error.message, {
           style: { background: "#04111d", color: "#fff" },
         });
+      })
+      .finally(() => {
+        toast.dismiss(loading)  
       })
   }
 

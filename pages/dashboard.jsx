@@ -15,7 +15,7 @@ const styles = {
   setting: `max-w-[600px] bg-[#fff] sm:mb-[40px] md:mb-[100px] h-max pb-4 shadow-2xl rounded-[4px] `,
   top: `w-full bg-[#F7FAFC] border-b-2 border-[#E2E8F0] flex items-center justify-between p-5 shadow-2xl rounded-[4px]`,
   buttons: `w-full flex items-center justify-end pr-5`,
-  stripeButton: `font-semibold text-[16px] hover:bg-[#2d3748] w-max h-max ml-1 rounded-[5px] 
+  donateButton: `font-semibold text-[16px] hover:bg-[#2d3748] w-max h-max ml-1 rounded-[5px] 
   text-[#fff] bg-[#000] py-2 px-4`,
 }
 
@@ -37,21 +37,25 @@ const Dashboard = () => {
             <div className={styles.setting}>
               <div className={styles.top}>
                 <p className='text-[#718096] font-semibold text-[14px] not-italic'>SETTINGS</p>
-                <p className='bg-[#ceedff] text-[13px] not-italic px-1 font-semibold text-[#153e75] uppercase'>Premium</p>
+                <p className='bg-[#ceedff] text-[13px] not-italic px-1 font-semibold text-[#153e75] uppercase'>Free</p>
               </div>
 
               <div className={styles.middle}>
 
-                <p className='font-medium p-5'>Dua Request uses Stripe to update, change, or cancel your subscription. You can also update card information and billing addresses through the secure portal.</p>
+                <p className='font-medium p-5'>Dua is like a conversation with Allah Almighty in which we put our
+          needs before Him and ask His help in the resolution of our
+          problems.You can request prayer for you and your family. There are
+          many people here to pray for you. And we will pray for you.</p>
               </div>
 
               <div className={styles.buttons}>
                 <button onClick={logout} className=' hover:bg-[#EDF2F7] font-medium text-[15px] mr-1 rounded-[5px] py-[9px] px-4'> Log Out</button>
         
-                  <button
-                    className={`${styles.stripeButton}`}>
-                    Manage Billing
-                  </button>
+                  <a href="https://gofund.me/7f2eff41"
+                    target='_blank'
+                    className={`${styles.donateButton}`}>
+                    Donate
+                  </a>
 
 
                 
@@ -71,7 +75,10 @@ const Dashboard = () => {
 
             <div className={styles.middle}>
 
-              <p className='font-medium p-5'>Dua Request uses Stripe to update, change, or cancel your subscription. You can also update card information and billing addresses through the secure portal.</p>
+              <p className='font-medium p-5'>Dua is like a conversation with Allah Almighty in which we put our
+          needs before Him and ask His help in the resolution of our
+          problems.You can request prayer for you and your family. There are
+          many people here to pray for you. And we will pray for you.</p>
             </div>
 
             <div className={styles.buttons}>

@@ -21,7 +21,7 @@ const Banner = () => {
         </p>
         <div className="flex items-center gap-8 flex-wrap lg:justify-start justify-center">
           <div className="border cursor-pointer border-[#1cd1b5] px-6 py-3 rounded-3xl bg-gradient-to-r from-[#00d6d8] to-[#00a9d5] hover:scale-110 transform transition-all ease-in-out duration-500 custom-btn-animation">
-            <Link href={`${user ? '/dashboard' : '/login'}`}>
+            <Link href={`${user ? '/community' : '/login'}`}>
 
               <a
                 href="#!"
@@ -32,7 +32,7 @@ const Banner = () => {
             </Link>
           </div>
           <div className="border cursor-pointer border-[#1cd1b5] px-6 py-3 rounded-3xl hover:scale-110 transform transition-all ease-in-out duration-500">
-            <Link href={`${user ? '/dashboard' : '/login'}`}>
+            <Link href={`${user ? '/community' : '/login'}`}>
               <a
                 href="#!"
                 className="text-white font-primary text-[1rem] tracking-wider"

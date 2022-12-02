@@ -122,38 +122,7 @@ const terms = () => {
                 <li className='ml-4 '>The use of the Service is at the User`&apos;`s own expense and risk. The User is responsible for meeting the technical and functional requirements and using the electronic communication facilities that are necessary to be able to access and use the Service. The User will at all times bear the risk of loss, theft or damage to any of its data. </li>
                 <li className='ml-4 '>DuaRequest will have the right (but not the obligation), at its sole discretion, to review, edit, limit, refuse or remove Content, or to limit or refuse the User access to the Service. More specifically in the event the use of the Service, according to us, violates these Terms of Use.</li>
                 <li className='ml-4 '>We may disclose the User`&apos;`s Personal Data or Content, or other data relating to the use of the Service, to third parties where it believes, in good faith, that it is necessary to comply with a court order, ongoing judicial proceeding, criminal or civil subpoena, or other legal process or to exercise its constitutional rights of defense against legal claims.</li>
-                <h2 className='text-[19px] mb-4'>PRICE AND PAYMENT</h2>
                 
-                <p>
-                    You must pay in the currency in which the service price is quoted or is
-                    selected. If you do not hold an account in the relevant currency you may
-                    pay by debit or credit card (or any other method that we may introduce
-                    from time to time) and your card company should exchange the amount
-                    charged to the currency of your country at their current rate. We are
-                    using the Stripe payment gateway for all the transactions.
-                </p>
-                    <li className='ml-4 '>
-                        Payment may be made by credit card. debit card or any other such method
-                        as DuaRequest may introduce at its absolute discretion.&nbsp;
-                    </li>
-                    <li className='ml-4 '>
-                        DuaRequest reserves the absolute right to accept or refuse any payment
-                        made in any form.&nbsp;
-                    </li>
-                    <li className='ml-4 '>
-                        DuaRequest cannot guarantee that a particular Service will always be
-                        available.&nbsp;  
-                    </li>
-                    <li className='ml-4 '>
-                        To maximize security DuaRequest does not hold any credit/debit card
-                        details. They are held by third-party payment providers.&nbsp;
-
-                    </li>
-                    <li className='ml-4 '>
-                        Your credit card company may also do security checks to confirm it is
-                        you making the Order. Your statutory rights are unaffected by these
-                        Terms.&nbsp;
-                    </li>
                 <h2 className='text-[19px] mb-4'> PERSONAL INFORMATION</h2>
                 <p>
                     Your submission of personal information through the store is regulated by

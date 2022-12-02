@@ -46,7 +46,7 @@ const HowRequest = () => {
         </div>
         <div className="flex justify-center cursor-pointer xl:justify-start items-center mt-12">
           <div className="border border-[#1cd1b5] px-6 py-3 rounded-3xl bg-gradient-to-r from-[#00d6d8] to-[#00a9d5] hover:scale-110 transform transition-all ease-in-out duration-500 custom-btn-animation">
-            <Link href={`${user ? '/dashboard' : '/login'}`}>
+            <Link href={`${user ? '/community' : '/login'}`}>
               <a
                 className="text-white font-primary text-[1rem] tracking-wider"
                 >

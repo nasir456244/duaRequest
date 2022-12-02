@@ -1,6 +1,5 @@
 import React from "react";
 import Navbar from "@/components/Navbar";
-import Head from "next/head";
 import Footer from "@/components/Footer";
 import Banner from "@/components/Home/Banner";
 import Service from "@/components/Home/Service";
@@ -22,7 +21,6 @@ const Home = () => {
       <Features />
       <HowRequest />
       <Footer />
-
     </div>
   );
 };
