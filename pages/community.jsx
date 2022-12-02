@@ -2,7 +2,6 @@ import React, { useContext } from "react";
 import Navbar from "../components/Navbar";
 import { Toaster } from "react-hot-toast";
 import Prayers from "../components/Prayers";
-import PostPrayerModal from "../components/PostPrayerModal";
 import { PrayerRequestContext } from "@/context/PrayerRequest";
 import Footer from "@/components/Footer";
 import Link from "next/link";
@@ -16,15 +15,13 @@ const styles = {
 
 const Home = () => {
   const { user } = useContext(PrayerRequestContext)
-  const isPaidAccount = user?.stripeRole !== "free"
   
   return (
     <div className={styles.container}>
       <Navbar />
-      {user && isPaidAccount ?
+      {user ?
         <>
           <Toaster position="bottom-center" reverseOrder={false} />
-          {<PostPrayerModal />}
           <Prayers />
         </>
         :
@@ -36,12 +33,12 @@ const Home = () => {
               </div>
 
               <div>
-                <p className='font-medium p-5'>{!user ? 'Login to see other duas and to request your dua.' : user && !isPaidAccount && 'one step away, get subscription to start requesting dua. go to dashboard'} </p>
+                <p className='font-medium p-5'>Login to see other duas and to request your dua. </p>
               </div>
 
               <div className={styles.buttons}>
-                <Link href={`${!user ? '/login' : user && !isPaidAccount && '/dashboard'}`} >
-                  <a className='bg-[#EDF2F7] font-medium text-[15px] mr-1 rounded-[5px] py-[9px] px-4'>{!user ? 'Log in' : user && !isPaidAccount && 'dashboard'}</a>
+                <Link href={'/login'} >
+                  <a className='bg-[#EDF2F7] font-medium text-[15px] mr-1 rounded-[5px] py-[9px] px-4'>Log in</a>
                 </Link>
               </div>
           </div>

@@ -21,7 +21,7 @@ export const PrayerRequestProvider = ({ children }) => {
   const handleUser = async rawUser => {
     if (rawUser) {
       const user = await formatUser(rawUser)
-      const { token, stripeRole, ...userWithoutToken } = user
+      const { token, ...userWithoutToken } = user
       createUser(user?.uid, userWithoutToken)
       setUser(user)
       return user
@@ -75,20 +75,13 @@ export const PrayerRequestProvider = ({ children }) => {
       })
   }
 
-  const logout = () => {
+  const logout = async () => {
     if(!user) return
-    signOut(auth).then(() => {
-      router.push('/login')
-      handleUser(false)
-    })
+    await signOut(auth)
+    handleUser(false)
+    router.push('/login')
   }
 
-  const getStripeRole = async () => {
-    await auth?.currentUser?.getIdToken(true)
-    const decodedToken = await auth?.currentUser?.getIdTokenResult()
-
-    return decodedToken?.claims?.stripeRole || 'free';
-  }
 
   const formatUser = async user => {
     const token = await user?.getIdToken()
@@ -98,7 +91,6 @@ export const PrayerRequestProvider = ({ children }) => {
       email: user?.email,
       image: user?.photoURL,
       token,
-      stripeRole: await getStripeRole()
     }
   }
 

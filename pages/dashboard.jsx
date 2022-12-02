@@ -1,9 +1,7 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext } from 'react'
 import Navbar from '@/components/Navbar'
 import { PrayerRequestContext } from '@/context/PrayerRequest'
-import { createCheckoutSession, goToBillingPortal } from '@/lib/checkout'
 import Image from 'next/image'
-import { MoonLoader } from 'react-spinners';
 import Link from 'next/link'
 import Footer from '@/components/Footer'
 
@@ -23,9 +21,6 @@ const styles = {
 
 const Dashboard = () => {
   const { user, logout } = useContext(PrayerRequestContext)
-  const [loading, setLoading] = useState(false)
-  const isPaidAccount = user?.stripeRole !== "free"
-
 
   return (
     <div className={styles.container}>
@@ -42,7 +37,7 @@ const Dashboard = () => {
             <div className={styles.setting}>
               <div className={styles.top}>
                 <p className='text-[#718096] font-semibold text-[14px] not-italic'>SETTINGS</p>
-                <p className='bg-[#ceedff] text-[13px] not-italic px-1 font-semibold text-[#153e75] uppercase'>{isPaidAccount ? 'Premium' : 'free'}</p>
+                <p className='bg-[#ceedff] text-[13px] not-italic px-1 font-semibold text-[#153e75] uppercase'>Premium</p>
               </div>
 
               <div className={styles.middle}>
@@ -52,24 +47,14 @@ const Dashboard = () => {
 
               <div className={styles.buttons}>
                 <button onClick={logout} className=' hover:bg-[#EDF2F7] font-medium text-[15px] mr-1 rounded-[5px] py-[9px] px-4'> Log Out</button>
-                {isPaidAccount ?
+        
                   <button
-                    onClick={() => { setLoading(true); goToBillingPortal() }}
-                    className={`${styles.stripeButton} ${loading && 'flex justify-center w-[150px] h-[40px] bg-[#2d3748] cursor-auto'} `}>
-                    {loading ? <MoonLoader color='#fff' loading={loading} size={20} /> : 'Manage Billing'}
-
+                    className={`${styles.stripeButton}`}>
+                    Manage Billing
                   </button>
 
-                  :
 
-                  <button
-                    onClick={() => { setLoading(true); createCheckoutSession(user?.uid) }}
-                    className={`${styles.stripeButton} ${loading && 'flex justify-center w-[150px] h-[40px] bg-[#2d3748] cursor-auto'} `}>
-                    {loading ? <MoonLoader color='#fff' loading={loading} size={20} /> : 'Buy Premium'}
-
-                  </button>
-
-                }
+                
               </div>
 
             </div>

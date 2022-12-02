@@ -1,48 +1,34 @@
-import React, { useState, useEffect, useContext, useRef } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import TimeAgo from "timeago-react";
 import { BsFillSuitHeartFill } from "react-icons/bs";
-import { FaCommentAlt, FaSmileWink } from "react-icons/fa";
 import { db } from "../lib/firebaseConfig";
 import {
   collection,
-  orderBy,
-  query,
-  serverTimestamp,
   getDocs,
-  limit,
 } from "firebase/firestore";
-import { HiPaperAirplane } from "react-icons/hi";
-import { useRouter } from "next/router";
 import { PrayerRequestContext } from "@/context/PrayerRequest";
-import { addComment, likePrayer } from "@/lib/db";
-import { useForm } from "react-hook-form";
+import { DeletePrayer, likePrayer } from "@/lib/db";
 import Image from "next/image";
-import useStateValue from "hooks/useStateValue";
-import _ from "lodash";
-
+import CommentsModal from './CommentsModal'
+import { ImBin2 } from "react-icons/im";
+import DeleteModal from "./DeleteModal";
+import { useMutation } from "@tanstack/react-query";
 
 const styles = {
   listContainer: `hover:shadow-2xl my-[6px] max-w-full flex flex-col bg-[#ffffff] rounded-2xl break-words overflow-hidden max-h-full`,
 };
 
-const Prayer = ({ address, id, prayer, timestamp, name, image }) => {
+const Prayer = ({ uid, id, prayer, timestamp, name, image, remClient }) => {
   const [likes, setLikes] = useState([]);
   const [hasliked, setHasLiked] = useState(false);
-  const [comment, setComment] = useState("");
-  const [comments, setComments] = useState([]);
-  const router = useRouter();
   const { user } = useContext(PrayerRequestContext)
-  const { register, handleSubmit, formState:{errors} } = useForm();
-  const isPaidAccount = user?.stripeRole !== "free"
-  const ref = useRef(true)
-  const { changeState, setChangeState } = useStateValue()
-  const [isCommentLoading, setIsCommentLoading] = useState(true);
-
+  const [isdeleteprayerId, setDeletePrayerID] = useState("");
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
 
     useEffect(
       () =>
-        {user && isPaidAccount && setHasLiked(
+        {user && setHasLiked(
           likes?.findIndex((like) => like?.id === user?.uid) !== -1
         )},
       [likes, user]
@@ -51,7 +37,7 @@ const Prayer = ({ address, id, prayer, timestamp, name, image }) => {
 
 
     const showLikes = async () => {
-      if(!user || !isPaidAccount) return;
+      if(!user) return;
       getDocs(collection(db, "Prayers", id, "likes")).then(data => {
         setLikes([...data.docs.map(doc => ({ id: doc.id, ...doc.data() }))]);
       });
@@ -60,40 +46,13 @@ const Prayer = ({ address, id, prayer, timestamp, name, image }) => {
 
 
     useEffect(() => {
-      if(!user || !isPaidAccount) return;
-      const firstRender = ref.current;
-      if(firstRender) {
-        ref.current = false;
-        showLikes();
-        fetchComments();
-        return;
-      };
-      getDocs(query(collection(db, "Prayers", id, "comments"),
-        orderBy("createdAt", "desc"), limit(1))).then(data => {
-          if (data?.docs[0]?.id === comments[comments?.length - 1]?.id) return;
-          setComments([...comments, ...data.docs.map(doc => ({ id: doc.id, ...doc.data() }))]);
-          return;
-      })
-    },[changeState.comment])
-
-
-    const fetchComments = async () => {
-      if(!user || !isPaidAccount) return;
-      const queryParams = [
-        collection(db, "Prayers", id, "comments"),
-        orderBy("createdAt", "desc"),
-        limit(3),
-      ]
-      const q = query(...queryParams);
-      setIsCommentLoading(false);
-      const data = await getDocs(q);
-      setComments([...data?.docs.map(doc => ({ id: doc.id, ...doc.data() }))].reverse());
-      return;
-    } 
+      if(!user) return;
+        showLikes();      
+    },[])
 
 
   const likepost = () => {
-    if(!user || !isPaidAccount) return;
+    if(!user) return;
     if (hasliked) return;
     likePrayer(id, user?.uid);
     setLikes([...likes, {id:user?.uid, uid: user?.uid}]);
@@ -103,36 +62,39 @@ const Prayer = ({ address, id, prayer, timestamp, name, image }) => {
     return;
   };
 
-  const sendComment = () => {
-    try {
-      if (!user || !isPaidAccount || !comment) return;
-      const commentToSend = comment.replace(/\s+/g, " ").trim();
-      if(commentToSend.length < 4 || commentToSend.length > 60) return;
-      setComment("");
-      
-      const newComment = {
-        address: user?.email,
-        name: user?.name,
-        comment: commentToSend?.slice(0, 60),
-        createdAt: serverTimestamp(),
-        image: user?.image,
-        uid: user?.uid
-      }
-      addComment(id, newComment)
-      setChangeState({ ...changeState, comment: !changeState.comment });
-      return;
-    } catch (error) {
-      toast.error(error.message, {
-        style: { background: "#04111d", color: "#fff" },
-      });
+
+  const deletePrayer = (id) => {
+    if (!user) return;
+    setIsDeleteModalOpen(true);
+    setDeletePrayerID(id);
+    return;
+  };
+
+  const removeClientMutation = useMutation(DeletePrayer, {
+    onSuccess: () => {
+      remClient(id);
+    },
+  });
+
+  const deleteConfirmation = (event, id) => {
+    if(!user) return;
+    if (event) {
+      return removeClientMutation.mutate(id)
     }
+
   };
 
 
   return (
         <div className={styles.listContainer}>
-          {user && isPaidAccount &&
+          {user &&
             <>
+            {isDeleteModalOpen && (
+              <DeleteModal
+                setDeleteDua={(e) => deleteConfirmation(e, id)}
+                setIsDeleteModalOpen={setIsDeleteModalOpen}
+              />
+            )}
               <div className="flex justify-start px-3 py-2 gap-3 max-w-full overflow-hidden">
                 <div className="rounded-[50%] h-max w-max">
                   <Image layout="fixed"  height={42} alt='profile' width={42} className="flex rounded-[50%]" src={image} />
@@ -144,7 +106,7 @@ const Prayer = ({ address, id, prayer, timestamp, name, image }) => {
                     <TimeAgo datetime={timestamp} className="font-medium text-xs pr-[4px]" />
                   </div>
                   <p className="font-medium text-[#8C8C8C] pr-[4px]  overflow-hidden w-full " >{prayer}</p>
-                  <div className="flex mt-4 rounded-lg ">
+                  <div className="flex mt-4 rounded-lg justify-between ">
                     <div className="flex overflow-hidden justify-start px-2 items-center h-12  ">
                       {user && hasliked ? (
                         <BsFillSuitHeartFill
@@ -164,53 +126,27 @@ const Prayer = ({ address, id, prayer, timestamp, name, image }) => {
                         />
                       )}
                       {user && hasliked ? (
-                        <p  className="mt-[2px] mx-[8px] text-[#0ABEEE] sm:hidden">Pray</p>
+                        <p  className="mt-[2px] mx-[8px] text-[#0ABEEE] sm:hidden">Prayed</p>
                       ) : (
                         <p className="mt-[2px]  mx-[8px] text-[#8C8C8C] sm:hidden">Pray</p>
                       )}
+                      <CommentsModal id={id} uid={uid} />
 
-                      <FaCommentAlt
-                        src={image}
-                        atl="comment"
-                        className="cursor-pointer mx-2 mt-[2px] text-[22px] sm:text-[35px] text-[#ADADAD]"
-                        onClick={() => {
-                          router.push(`/comment/${id}`);
-                        }}
-                      />
-                      <p onClick={() => {
-                          router.push(`/comment/${id}`);
-                        }} className=" mt-[2px] cursor-pointer text-[#8C8C8C] sm:hidden">Comments</p>
                     </div>
-                    <form className="flex w-[333px] relative  top-1 overflow-hidden justify-between items-center bg-[#F2F2F2] p-3 h-[38px] rounded-md" onSubmit={handleSubmit(sendComment)}>
-                        <FaSmileWink className="text-[#8C8C8C] text-[25px] sm:text-[42px]" />
+                    {uid === user?.uid && (
 
-                        <input
-                          {...register('comment', {required: true, minLength: 4 ,maxLength: 60})}
-
-                          disabled={!user}
-                          required
-                          type="text"
-                          value={comment}
-                          minLength={4}
-                          maxLength={60}
-                          onChange={(e) => {
-                            setComment(e.target?.value);
-                          }}
-                          placeholder={` ${user ? "Write a comment..." : "Login to comment"
-                            }`}
-                            className="w-[344px] md:text-[15px] sm:text-[13px] bg-[#f2f2f2] border-nonfocus:ring-0 outline-none m-[15px] overflow-hidden	"
-                            />
-                        <button
-                          type="submit"
-                          size={25}
-                          disabled={!comment.trim() || comment.length < 4 || comment.length > 60}
-                          className={`flex  disabled:text-[#8c8c8c] text-[#112EA0] disabled:cursor-not-allowed transition-all ease-out duration-300 hover:scale-105 rotate-90`}
-                          >
-                          <HiPaperAirplane size={25} />
-                        </button>
-                    </form>
+                      <div
+                      className="flex items-center cursor-pointer"
+                      onClick={() => deletePrayer(id)}
+                      >
+                        <ImBin2 className=" w-[15.75px] h-[18px] text-[#f9072b] " />
+                        <p className="font-semibold text-[14px] leading-5 text-[#f9072b] ml-2">
+                          Delete
+                        </p>
+                      </div>
+                    )}
+                    
                   </div>
-                  {errors?.comment && <span className="font-medium w-full flex items-center justify-center relative top-2 mb-2 text-[#f00]">This is required</span>}
                 </div>
               </div>
               
@@ -225,46 +161,8 @@ const Prayer = ({ address, id, prayer, timestamp, name, image }) => {
                 <p className="text-[13px] font-semibold pl-5 pb-3 pt-3 bg-opacity-100 bg-[#f1f1f1] w-full">
                   0 Prayers
                 </p>
-              }
-
-              {isCommentLoading ? 
-              <div className=" bg-opacity-100 bg-[#f1f1f1] flex flex items-center justify-center max-w-full max-h-full">
-                <div className="w-full flex items-center justify-around gap-5 h-[100px] px-5 animate-pulse">
-                  <div className="w-[50px] h-[50px] bg-gray-300 rounded-[50%]" />
-                  <div className="w-[60%] bg-gray-300 h-[50px] rounded-[10px]" />
-                  <div className="w-[100px] h-[30px] bg-gray-300 rounded-[10px]"/>
-                </div> 
-              </div>
-              :
-              <div className=" bg-opacity-100 bg-[#f1f1f1] flex flex-col max-w-full max-h-full">
-              {comments?.slice(-3)?.map((comment) => (
-                <div
-                  key={comment?.id}
-                  className="flex p-4 pt-4 max-h-full overflow-hidden max-w-full"
-                  >
-                  <Image
-                    src={`${comment?.image}`}
-                    alt="profile"
-                    className="rounded-[50%] ml-1"
-                    width={40}
-                    height={40}  
-                    />
-                  
-                  <div className="flex-1 flex-row w-64 ml-2">
-                    <p className="font-semibold text-[14px] text-[#000000] not-italic">{comment?.name}</p>
-                    <p className="text-[14px] text-[#8C8C8C] sm:w-[180px] text-ellipsis whitespace-nowrap overflow-hidden w-full">
-                      {comment?.comment}
-                    </p>
-                  </div>
-
-                  <div className="flex w-max h-max overflow-hidden">
-                    <p className="font-medium w-max h-max flex justify-end text-xs leading-4	drop-shadow-3xl">
-                      <TimeAgo datetime={comment?.createdAt?.toDate()} />
-                    </p>
-                  </div>
-                </div>
-              ))}
-              </div>}
+              }     
+             
             </>
           }
         </div>

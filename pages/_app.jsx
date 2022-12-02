@@ -4,10 +4,11 @@ import { PrayerRequestProvider } from '../context/PrayerRequest'
 import Script from 'next/script'
 import { useRouter } from 'next/router'
 import * as gtag from '../lib/gtag'
-import { StateProvider } from 'hooks/useStateValue'
 import { DefaultSeo } from 'next-seo'
 import SEO from 'next-seo.config'
 import Head from 'next/head'
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
 
 function MyApp({ Component, pageProps }) {
   const router = useRouter()
@@ -24,6 +25,15 @@ function MyApp({ Component, pageProps }) {
       }
     
   }, [router.events])
+
+
+  const queryClient = new QueryClient({
+    defaultOptions:{
+      queries:{
+        retry: false,
+      }
+    }
+  });
 
   return (
     <>
@@ -49,22 +59,12 @@ function MyApp({ Component, pageProps }) {
             });`,
         }}
       />
-      <Script
-        id="Adsense-id"
-        data-ad-client={process.env.NEXT_PUBLIC_GADSENSE_ID}
-        async={true}
-        strategy="beforeInteractive"
-        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"
-      />
-      <PrayerRequestProvider>
-        <StateProvider>
-          <DefaultSeo {...SEO} />
-          <Component {...pageProps} />
-        </StateProvider>
-      </PrayerRequestProvider>
-
-
-
+      <QueryClientProvider client={queryClient}>
+        <PrayerRequestProvider>
+            <DefaultSeo {...SEO} />
+            <Component {...pageProps} />
+        </PrayerRequestProvider>
+      </QueryClientProvider>
     </>
   )
 }

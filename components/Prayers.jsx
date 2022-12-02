@@ -1,19 +1,13 @@
-import React, { useEffect, useState, useRef, useContext } from "react";
-import { db } from "../lib/firebaseConfig";
+import React, { useState, useContext } from "react";
 import {
-  collection,
-  orderBy,
   limit,
-  query,
-  startAfter,
-  getDocs,
 } from "firebase/firestore";
 import Prayer from "./Prayer";
-import InfiniteScroll from "react-infinite-scroller";
-import useStateValue from "hooks/useStateValue";
 import { PrayerRequestContext } from "@/context/PrayerRequest";
 import PrayerSkeleton from './PrayerSkeleton';
-import { delay } from "lodash";
+import { useQuery } from "@tanstack/react-query";
+import { getPrayers } from "queries/getAllPrayers";
+import PostPrayerModal from "./PostPrayerModal";
 
 const styles = {
   container: `w-full flex justify-center p-[12px] text-[srgb(192, 51, 51)] flex overflow-x-hidden`,
@@ -21,96 +15,95 @@ const styles = {
 };
 
 const Prayers = () => {
-  const [totalSize, setTotalSize] = useState(0);
+  const limit = 5;
   const [prayers, setPrayers] = useState([]);
-  const [lastKey, setLastKey] = useState("");
-  const ref = useRef(true)
-  const { changeState } = useStateValue()
   const { user } = useContext(PrayerRequestContext)
-  const isPaidAccount = user?.stripeRole !== "free"
-  const [isPrayerLoading, setIsPrayerLoading] = useState(true);
-  
-  useEffect(() => {
-    if(!user || !isPaidAccount) return;
-    const firstRender = ref.current
-    if (firstRender) {
-      ref.current = false
-      fetchData();
-      return;
+  const [lastDoc, setLastDoc] = useState();
+  const [page, setPage] = useState(1);
+
+
+  const { data, isLoading } = useQuery(
+    ["Prayers", page],
+    () => getPrayers(lastDoc, limit, user),
+    {
+      onSuccess(data) {
+        const newData = data?.docs.map((doc) => ({
+          id: doc?.id,
+          ...doc?.data(),
+        }));
+
+        // filter exiting data
+        const filteredData = prayers?.filter(
+          (x) => !newData.find((y) => y.id === x.id)
+        );
+
+        setPrayers([...filteredData, ...newData]);
+      },
+      enabled: !!user,
+      keepPreviousData: true,
+      staleTime: Infinity,
+      refetchOnWindowFocus: false,
     }
-    getDocs(query(collection(db, "Prayers"),
-      orderBy("createdAt", "desc"), limit(1))).then(data => {
-        if (data.docs[0]?.id === prayers[0]?.id) return
-        setPrayers([...data.docs.map(doc => ({ id: doc.id, ...doc.data() })), ...prayers]);
-        setTotalSize(totalSize + data?.docs.length);
-      })
+  );
 
-  }, [changeState.prayer, user]);
-
-  const fetchData = async () => {
-    if(!user || !isPaidAccount) return;
-    const data = await getDocs(query(collection(db, "Prayers"),
-      orderBy("createdAt", "desc"), limit(5)))
-    setPrayers(data?.docs.map(doc => ({ id: doc?.id, ...doc?.data() })));
-    setLastKey(data?.docs[data?.docs?.length - 1]);
-    setTotalSize(data?.docs?.length);
-    delay(() => setIsPrayerLoading(false),160);
-  }
-
-  
-
-  const fetchMoreData = async () => {
-    if(!user || !isPaidAccount) return;
-    const queryParams = [
-      collection(db, "Prayers"),
-      orderBy("createdAt", "desc"),
-      limit(5),
-    ];
-    if (lastKey) {
-      queryParams.push(startAfter(lastKey));
-      const q = query(...queryParams);
-      const data = await getDocs(q);
-      setTimeout( () => {
-        setPrayers([...prayers, ...data?.docs.map(doc => ({ id: doc.id, ...doc.data() }))]);
-        setLastKey(data?.docs?.length && data?.docs[data?.docs?.length - 1]);
-        setTotalSize(totalSize + data?.docs.length);
-      },500)
+  const handleNextPage = () => {
+    if (!data?.empty) {
+      setPage(page + 1);
+      setLastDoc(data?.docs[data?.docs?.length - 1]);
     }
   };
 
+  const addClient = (doc) => {
+    setPrayers((prev) => [doc, ...prev]);
+  };
 
+  const remClient = (id) => {
+    return setPrayers((prev) => prev.filter((data) => data.id !== id));
+  };
 
     return (
+      <>
+        {<PostPrayerModal addClient={addClient} />}
       <div className={styles.container}>
-        {user && isPaidAccount &&
+        {user &&
           <>
-          { isPrayerLoading ?
+
+          { isLoading ?
               <PrayerSkeleton />
               :
-            
+              
               <div className={styles.listMainContainer}>
-                <InfiniteScroll
-                  loadMore={fetchMoreData}
-                  hasMore={prayers?.length <= totalSize}
-                  threshold={10}
-                >
                   {prayers?.map((prayer, index) => (
                     <Prayer
-                      image={prayer?.image}
-                      name={prayer?.name}
-                      id={prayer?.id}
-                      key={prayer?.id + "" + index}
-                      address={prayer?.address}
-                      prayer={prayer?.prayer}
-                      timestamp={prayer?.createdAt?.toDate()}
+                    image={prayer?.image}
+                    name={prayer?.name}
+                    id={prayer?.id}
+                    key={prayer?.id}
+                    uid={prayer?.uid}
+                    prayer={prayer?.prayer}
+                    remClient={remClient}
+                    timestamp={prayer?.createdAt?.seconds ? prayer?.createdAt?.toDate() : null}
                     />
-                  ))}
-                </InfiniteScroll>
+                    ))}
+                <div className="flex m-4 gap-4">
+                  <button
+                    disabled={!!data?.empty}
+                    className="middle none font-sans font-bold center uppercase transition-all  disabled:shadow-none disabled:pointer-events-none text-xs py-3 rounded-lg shadow-md shadow-blue-500/20 hover:shadow-lg hover:shadow-blue-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none bg-cyan-500 px-4 text-white disabled:bg-gray-300"
+                    onClick={handleNextPage}
+                  >
+                    Load More
+                  </button>
+                </div>
+                
               </div>
-          }
+              
+            }
+          
+          
         </>        
         }    
       </div>
+        </>
     );
         
 

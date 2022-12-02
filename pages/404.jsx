@@ -6,7 +6,7 @@ import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 
 const styles = {
-    container: `flex justify-center items-center select-none mt-20 `,
+    container: `flex justify-center items-center select-none mt-20 mb-10 `,
     body: ` flex flex-col  items-center`,
     goBack: `flex justify-center items-center bg-[#ffffff] w-[140px] h-[45px] rounded-md text-[#112EA0] font-semibold hover:shadow-2xl text-[17px]`
 

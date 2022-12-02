@@ -25,7 +25,7 @@ const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const router = useRouter();
   const { user } = useContext(PrayerRequestContext)
-  const isPaidAccount = user?.stripeRole !== "free"
+
   return (
     <div className={styles.container}>
       <div className={styles.logo}>
@@ -37,7 +37,7 @@ const Navbar = () => {
         </Link>
       </div>
       <div className={styles.list}>
-      {user && isPaidAccount &&
+      {user &&
           <>
             <li className={router.pathname == "/" ? styles.activeItem : styles.listItem}>
               <Link href="/">
@@ -48,11 +48,6 @@ const Navbar = () => {
             <li className={router.pathname == "/community" ? styles.activeItem : styles.listItem}>
               <Link href="/community">
                 <a className={styles.item}>Community</a>
-              </Link>
-            </li>
-            <li className={router.pathname == "/myprayers" ? styles.activeItem : styles.listItem}>
-              <Link href="/myprayers">
-                <a className={styles.item}>My Prayers</a>
               </Link>
             </li>
           </>
@@ -118,16 +113,11 @@ const Navbar = () => {
                 <a className={styles.item}>Home</a>
               </Link>
             </li>
-            {user && isPaidAccount &&
+            {user &&
               <>
                 <li className={styles.listItem}>
                   <Link href="/community">
                     <a className={styles.item}>Community</a>
-                  </Link>
-                </li>
-                <li className={styles.listItem}>
-                  <Link href="/myprayers">
-                    <a className={styles.item}>My Prayers</a>
                   </Link>
                 </li>
               </>

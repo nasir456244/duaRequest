@@ -8,7 +8,7 @@ import {
 } from "firebase/firestore";
 import { createPrayer } from "../lib/db";
 import { FaRegEdit } from "react-icons/fa";
-import useStateValue from "hooks/useStateValue";
+import { useMutation } from "@tanstack/react-query";
 
 const styles = {
   modalBackground: `w-screen z-50 sm:p-3 h-screen fixed sm:p-1 flex justify-center items-center overflow-hidden `,
@@ -20,35 +20,40 @@ const styles = {
   post: ` px-9 py-3 hover:shadow-2xl text-xl rounded-lg `,
 };
 
-const PostPrayerModal = () => {
+const PostPrayerModal = ({addClient}) => {
   const { register, handleSubmit, formState:{errors}, reset } = useForm();
   const { user } = useContext(PrayerRequestContext);
   const [prayer, setPrayer] = useState("");
   const [modalOpen, setModalOpen] = useState(false);
-  const { changeState, setChangeState } = useStateValue()
-  const isPaidAccount = user?.stripeRole !== "free"
+
+
+  const addClientMutation = useMutation(createPrayer, {
+    onSuccess: (doc) => {
+      addClient(doc);
+    },
+  });
+
 
   //Post Prayer
   const postPrayer = () => {
     try {
-      if (!user || !isPaidAccount || !prayer) return;
+      if (!user || !prayer) return;
       const check = parseInt(localStorage.getItem(user?.uid));
       if(check) return;
       const prayerToPost = prayer.replace(/\s+/g, " ").trim();
-      if(prayerToPost.length < 50 || prayerToPost.length > 500) return;
+      if(prayerToPost.length < 20 || prayerToPost.length > 200) return;
       setPrayer("");
       reset({prayer: ''});
       setModalOpen(false);
       const newPrayer = {
         address: user?.email,
-        prayer: prayerToPost?.slice(0,500),
+        prayer: prayerToPost?.slice(0,200),
         createdAt: serverTimestamp(),
         image: user?.image,
         name: user?.name,
         uid: user?.uid,
       };
-      createPrayer(newPrayer);
-      setChangeState({ ...changeState, prayer: !changeState.prayer });
+      addClientMutation.mutate(newPrayer);
       localStorage.setItem(user?.uid, "5");
       return;
     } catch (error) {
@@ -73,7 +78,7 @@ const PostPrayerModal = () => {
   }
   return (
     <>
-      {user && isPaidAccount && (
+      {user && (
         <div className={`${modalOpen ? styles.empty : styles.show}`}>
           <button
             className="fixed bottom-[60px] right-[60px] z-20 text-[#000] transition-all duration-500 hover:text-white hover:scale-125"
@@ -104,15 +109,15 @@ const PostPrayerModal = () => {
               <form onSubmit={handleSubmit(postPrayer)}>
                 <div className={styles.body}>
                   <textarea
-                  {...register('prayer', {required: true, minLength: 50 ,maxLength: 500})}
+                  {...register('prayer', {required: true, minLength: 20 ,maxLength: 200})}
                     className={styles.input}
                     rows={8}
                     onChange={(e) => {
                       setPrayer(e.target.value);
                     }}
-                    minLength={50}
+                    minLength={20}
                     value={prayer}
-                    maxLength={500}
+                    maxLength={200}
                     placeholder="Your prayer..."
                   />
                 </div>
@@ -132,7 +137,7 @@ const PostPrayerModal = () => {
                   </button>
                   <button
                     type="submit"
-                    disabled={!prayer.trim() || prayer.length < 50 || prayer.length > 500}
+                    disabled={!prayer.trim() || prayer.length < 20 || prayer.length > 200}
                     className={`${styles.post
                       } ${`disabled:cursor-not-allowed disabled:bg-[#9d9d9d] disabled:text-white bg-[#0bbe20] `}`}
                   >
