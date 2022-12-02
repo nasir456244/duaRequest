@@ -51,7 +51,7 @@ const Dashboard = () => {
               <div className={styles.buttons}>
                 <button onClick={logout} className=' hover:bg-[#EDF2F7] font-medium text-[15px] mr-1 rounded-[5px] py-[9px] px-4'> Log Out</button>
         
-                  <a href="https://www.buymeacoffee.com/DuaRequest"
+                  <a rel="noreferrer" href="https://www.buymeacoffee.com/DuaRequest"
                     target='_blank'
                     className={`${styles.donateButton}`}>
                     Donate
