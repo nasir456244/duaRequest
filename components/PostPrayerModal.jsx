@@ -11,8 +11,8 @@ import { FaRegEdit } from "react-icons/fa";
 import { useMutation } from "@tanstack/react-query";
 
 const styles = {
-  modalBackground: `w-screen z-50 sm:p-3 h-screen fixed sm:p-1 flex justify-center items-center overflow-hidden `,
-  modalContainer: `overflow-hidden sm:w-full w-[460px] max-h-[600px] transitio-all rounded-[12px] bg-[#fff] shadow-2xl flex flex-col p-[25px]`,
+  modalBackground: `w-screen z-50 p-2 h-screen fixed flex justify-center items-center overflow-hidden `,
+  modalContainer: `overflow-hidden w-[460px] max-h-[600px] transitio-all rounded-[12px] bg-[#fff] shadow-2xl flex flex-col p-[25px]`,
   title: `inline-block text-center mt-[10px] mb-[40px] text-2xl`,
   input: `w-full h-full p-2 z-50 text-xl resize-none break-all border-2 rounded-lg`,
   footer: `flex justify-around pt-6 `,
@@ -121,7 +121,7 @@ const PostPrayerModal = ({addClient}) => {
                     placeholder="Your prayer..."
                   />
                 </div>
-                <p className="font-medium w-full flex justify-end relative bottom-[8px] pr-2 text-[#8C8C8C] w-full"> {`${prayer?.length + '/500'}`}</p>
+                <p className="font-medium w-full flex justify-end relative bottom-[8px] pr-2 text-[#8C8C8C] w-full"> {`${prayer?.length + '/200'}`}</p>
                 {errors?.prayer && <span className="font-medium text-[#f00]">This is required</span>}
                 <div className={styles.footer}>
                   <button

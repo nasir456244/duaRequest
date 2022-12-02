@@ -7,10 +7,9 @@ import { PrayerRequestContext } from "@/context/PrayerRequest";
 
 const list = [
   { id: 1, text: "Login to your account" },
-  { id: 2, text: "Get subscription" },
-  { id: 3, text: "Request your prayer" },
-  { id: 4, text: "Pray for others" },
-  { id: 5, text: "Leave the rest to Allah" },
+  { id: 2, text: "Request your prayer" },
+  { id: 3, text: "Pray for others" },
+  { id: 4, text: "Leave the rest to Allah" },
 ];
 
 const HowRequest = () => {

@@ -65,7 +65,7 @@ const Prayers = () => {
       <>
         {<PostPrayerModal addClient={addClient} />}
       <div className={styles.container}>
-        {user &&
+        {user ?
           <>
 
           { isLoading ?
@@ -73,7 +73,7 @@ const Prayers = () => {
               :
               
               <div className={styles.listMainContainer}>
-                  {prayers?.map((prayer, index) => (
+                  {prayers?.map((prayer) => (
                     <Prayer
                     image={prayer?.image}
                     name={prayer?.name}
@@ -100,7 +100,9 @@ const Prayers = () => {
             }
           
           
-        </>        
+        </>
+        :
+        <PrayerSkeleton />        
         }    
       </div>
         </>

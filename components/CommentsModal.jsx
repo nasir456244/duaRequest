@@ -16,9 +16,9 @@ import toast from "react-hot-toast";
 
 const styles = {
   mainContainer: ` p-3 w-screen h-screen fixed left-0 top-0 z-40 flex items-center justify-center`,
-  modalContainer: `flex flex-col z-50 overflow-auto sm:max-h-[77vh] md:max-h-[800px] bg-white w-[580px]  overflow-hidden `,
+  modalContainer: `flex flex-col z-50 overflow-auto h-max bg-white w-[580px]  overflow-hidden `,
   title: `text-[20px] text-black font-bold	leading-7 flex justify-center`,
-  body: `border overflow-auto mt-[15px] mb-[5px] p-[10px] rounded-xl h-[700px] `,
+  body: `border overflow-auto mt-[15px] mb-[5px] p-[10px] rounded-xl h-[60vh] `,
   input: `w-full p-2 text-[15px] resize-none break-all bg-[#F2F2F2] outline-0 text-[#000000] mr-2 rounded-[12px] overflow-hidden`,
   footer: `flex flex-row items-center justify-center content-center w-full p-4  `,
   postButton: `rounded-[50%] p-2 flex items-center justify-center text-[#fff] `,
@@ -110,7 +110,7 @@ const CommentPage = ({ id }) => {
         <div onClick={() => setIsOpen(true)} className="flex overflow-hidden justify-start items-center h-12 ">
             <FaCommentAlt
             alt="comment"
-            className="cursor-pointer mx-2 mt-[2px] text-[22px]  sm:text-[29px] text-[#ADADAD]"                   
+            className="cursor-pointer mx-2 mt-[2px] text-[22px]  text-[#ADADAD]"                   
             />
             <p className=" mt-[2px] cursor-pointer text-[#8C8C8C] sm:hidden">Comments</p>
         </div>

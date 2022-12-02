@@ -15,7 +15,7 @@ import DeleteModal from "./DeleteModal";
 import { useMutation } from "@tanstack/react-query";
 
 const styles = {
-  listContainer: `hover:shadow-2xl my-[6px] max-w-full flex flex-col bg-[#ffffff] rounded-2xl break-words overflow-hidden max-h-full`,
+  listContainer: `hover:shadow-2xl my-[3px] max-w-full flex flex-col bg-[#ffffff] rounded-2xl break-words overflow-hidden max-h-full`,
 };
 
 const Prayer = ({ uid, id, prayer, timestamp, name, image, remClient }) => {
@@ -110,7 +110,7 @@ const Prayer = ({ uid, id, prayer, timestamp, name, image, remClient }) => {
                     <div className="flex overflow-hidden justify-start px-2 items-center h-12  ">
                       {user && hasliked ? (
                         <BsFillSuitHeartFill
-                          className={` flex text-[25px] sm:mr-1  sm:text-[45px] text-[#0ABEEE] ${!user && "cursor-not-allowed "
+                          className={` flex text-[25px] sm:mr-1  text-[#0ABEEE] ${!user && "cursor-not-allowed "
                             }`}
                           disabled={!user}
                           onClick={likepost}
@@ -121,7 +121,7 @@ const Prayer = ({ uid, id, prayer, timestamp, name, image, remClient }) => {
                           onClick={likepost}
                           className={`${!user
                             ? "cursor-not-allowed text-[25px] sm:mr-1 text-[#ADADAD] sm:text-[45px] "
-                            : "hover:scale-125 text-[25px] sm:mr-1 sm:text-[45px] cursor-pointer text-[#ADADAD] transition-all duration-150 ease-out cursor-pointer"
+                            : "hover:scale-125 text-[25px] sm:mr-1 cursor-pointer text-[#ADADAD] transition-all duration-150 ease-out cursor-pointer"
                             } mt-[2px]`}
                         />
                       )}

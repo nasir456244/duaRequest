@@ -18,32 +18,9 @@ const Home = () => {
   
   return (
     <div className={styles.container}>
-      <Navbar />
-      {user ?
-        <>
-          <Toaster position="bottom-center" reverseOrder={false} />
-          <Prayers />
-        </>
-        :
-        <div className="w-full h-[85vh] flex items-center justify-center">
-          <div className={styles.setting}>
-              <div className={styles.top}>
-                <p className='text-[#718096] font-semibold text-[14px] not-italic'>SETTINGS</p>
-                <p className='bg-[#ceedff] text-[13px] not-italic px-1 font-semibold text-[#153e75] uppercase'></p>
-              </div>
-
-              <div>
-                <p className='font-medium p-5'>Login to see other duas and to request your dua. </p>
-              </div>
-
-              <div className={styles.buttons}>
-                <Link href={'/login'} >
-                  <a className='bg-[#EDF2F7] font-medium text-[15px] mr-1 rounded-[5px] py-[9px] px-4'>Log in</a>
-                </Link>
-              </div>
-          </div>
-        </div>
-      }
+      <Navbar /> 
+      <Toaster position="bottom-center" reverseOrder={false} />
+      <Prayers />
       <Footer />
     </div>
   );
