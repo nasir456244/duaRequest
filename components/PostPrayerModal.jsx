@@ -70,7 +70,7 @@ const PostPrayerModal = ({addClient}) => {
       setModalOpen(true);
       return;
     }
-    toast(`You need to prayer for others ${check} times before you can request prayer.`, {
+    toast(`You need to pray for others ${check} ${check == 1 ? 'more time' : 'times'} before you can request prayer.`, {
       style: { background: "#04111d", color: "#fff" },
       duration: 8000,
     });
