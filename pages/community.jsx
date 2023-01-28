@@ -1,10 +1,7 @@
 import React, { useContext } from "react";
 import Navbar from "../components/Navbar";
-import { Toaster } from "react-hot-toast";
 import Prayers from "../components/Prayers";
-import { PrayerRequestContext } from "@/context/PrayerRequest";
 import Footer from "@/components/Footer";
-import Link from "next/link";
 
 const styles = {
   container: `max-w-full flex flex-col overflow-x-hidden select-none`,
@@ -14,12 +11,10 @@ const styles = {
 };
 
 const Home = () => {
-  const { user } = useContext(PrayerRequestContext)
   
   return (
     <div className={styles.container}>
       <Navbar /> 
-      <Toaster position="bottom-center" reverseOrder={false} />
       <Prayers />
       <Footer />
     </div>

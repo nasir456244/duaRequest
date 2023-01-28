@@ -54,11 +54,8 @@ const Dashboard = () => {
                   <a rel="noreferrer" href="https://www.buymeacoffee.com/DuaRequest"
                     target='_blank'
                     className={`${styles.donateButton}`}>
-                    Donate
+                    Support
                   </a>
-
-
-                
               </div>
 
             </div>

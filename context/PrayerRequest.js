@@ -31,6 +31,7 @@ export const PrayerRequestProvider = ({ children }) => {
     }
   }
 
+
   const SignInWithGoogle = () => {
     if(user) return
     const loading = toast.loading('authenticating', {
@@ -39,17 +40,13 @@ export const PrayerRequestProvider = ({ children }) => {
     signInWithPopup(auth, googleProvider)
       .then(response => {
         handleUser(response.user)
-        toast.success('success', {
-          style: { background: "#04111d", color: "#fff" },
-        })        
         router.push('/community')
       })
       .catch(error => {
         toast.error(error.message, {
           style: { background: "#04111d", color: "#fff" },
         });
-      })
-      .finally(() => {
+      }).finally(() => {
         toast.dismiss(loading)
       })
   }
@@ -62,10 +59,7 @@ export const PrayerRequestProvider = ({ children }) => {
     signInWithPopup(auth, facebookProvider)
       .then(response => {
         handleUser(response.user)
-        toast.success('success', {
-          style: { background: "#04111d", color: "#fff" },
-        })
-        router.push('/dashboard')
+        router.push('/community')
       })
       .catch(error => {
         toast.error(error.message, {

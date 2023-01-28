@@ -57,10 +57,9 @@ const PostPrayerModal = ({addClient}) => {
       localStorage.setItem(user?.uid, "5");
       return;
     } catch (error) {
-      console.log(error);
       toast.error(error.message, {
         style: { background: "#04111d", color: "#fff" },
-      });
+      })
     }
   };
 

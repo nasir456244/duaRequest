@@ -8,6 +8,7 @@ import { DefaultSeo } from 'next-seo'
 import SEO from 'next-seo.config'
 import Head from 'next/head'
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { Toaster } from 'react-hot-toast'
 
 
 function MyApp({ Component, pageProps }) {
@@ -62,6 +63,7 @@ function MyApp({ Component, pageProps }) {
       <QueryClientProvider client={queryClient}>
         <PrayerRequestProvider>
             <DefaultSeo {...SEO} />
+            <Toaster position="bottom-center" reverseOrder={false} />
             <Component {...pageProps} />
         </PrayerRequestProvider>
       </QueryClientProvider>

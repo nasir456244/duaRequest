@@ -3,7 +3,6 @@ import { PrayerRequestContext } from '@/context/PrayerRequest'
 import { useRouter } from 'next/router'
 import { FaFacebook } from "react-icons/fa";
 import Navbar from '../components/Navbar';
-import { Toaster } from "react-hot-toast";
 import Footer from '@/components/Footer';
 import {FcGoogle} from 'react-icons/fc'
 import Link from 'next/link';
@@ -17,8 +16,6 @@ const Login = () => {
 
         <div className='max-w-screen max-h-screen overflow-hidden'>
             <Navbar />
-            <Toaster position="bottom-center" reverseOrder={false} />
-
         <div className='text-[#fff] w-screen h-screen flex flex-col items-center justify-center '>
             {user ?
                 <div className='flex flex-col items-center'>

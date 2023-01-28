@@ -97,7 +97,6 @@ const CommentPage = ({ id }) => {
       addClientMutation.mutate({CommentId: id, newComment});
       return;
     } catch (error) {
-      console.log(error);
       toast.error(error.message, {
         style: { background: "#04111d", color: "#fff" },
       });
